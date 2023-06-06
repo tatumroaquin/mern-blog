@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import cors from './middleware/cors.ts';
+import cors from './middlewares/cors.ts';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 

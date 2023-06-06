@@ -1,6 +1,6 @@
 import { Router, } from 'express';
-import { userSignUpValidator, userSignInValidator } from '../middleware/user.validator.ts';
-import { runValidation } from '../middleware/run-validator.ts';
+import { userSignUpValidator, userSignInValidator } from '../middlewares/user.validator.ts';
+import { runValidation } from '../middlewares/run-validator.ts';
 import { userSignUpController } from '../controllers/auth.controller.ts';
 import { userSignInController } from '../controllers/auth.controller.ts';
 
