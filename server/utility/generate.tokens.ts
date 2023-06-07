@@ -12,7 +12,7 @@ export function generateTokens(user: User ) {
     payload,
     process.env.JWT_REFRESH_TOKEN_SECRET!,
     {
-      expiresIn: '1w',
+      expiresIn: '1d',
     }
   );
 
