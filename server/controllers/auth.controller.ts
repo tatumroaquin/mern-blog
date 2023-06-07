@@ -43,7 +43,7 @@ export async function userSignInController(req: Request, res: Response) {
   const { accessToken, refreshToken } = generateTokens(user);
 
   try {
-    const existingToken = RefreshToken.findOne({ id: user.id });
+    const existingToken = RefreshToken.findOne({ userId: user.id });
 
     //https://stackoverflow.com/a/75705700
     //https://stackoverflow.com/a/11522714
@@ -58,9 +58,13 @@ export async function userSignInController(req: Request, res: Response) {
     return res.json({ error: 'User log in failed, please try again later' });
   }
 
+  res.cookie('jwt', refreshToken, {
+    httpOnly: true,
+    maxAge: 24 * Math.pow(60, 2) * 1000, // 1 day
+  });
+
   res.json({
     success: 'User logged in successfully',
-    refreshToken,
     accessToken,
   });
 }
