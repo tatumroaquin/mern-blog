@@ -9,6 +9,7 @@ interface UserSchema {
   userName: string;
   email: string;
   passwordHash: string;
+  roles: string[];
 }
 
 interface UserModel extends UserSchema, Document {
@@ -40,6 +41,11 @@ const userSchema: Schema = new Schema<UserSchema>({
     type: String,
     required: true,
   },
+  roles: {
+    type: [String],
+    enum: ['user', 'admin'],
+    default: ['user'],
+  },
 });
 
 userSchema.methods = {
@@ -52,14 +58,13 @@ userSchema.methods = {
 };
 
 userSchema
-.virtual('password')
-.set(function(password) {
-  this._password = password;
-  this.salt = this.genSalt();
-  this.passwordHash = this.genHash(password);
-})
-.get(function() {
-  this._password;
-})
+  .virtual('password')
+  .set(function (password) {
+    this._password = password;
+    this.passwordHash = this.genHash(password);
+  })
+  .get(function () {
+    this._password;
+  });
 
 export default model<UserModel>('User', userSchema);
