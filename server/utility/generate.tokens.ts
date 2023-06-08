@@ -20,7 +20,7 @@ export function generateTokens(user: User ) {
     payload,
     process.env.JWT_ACCESS_TOKEN_SECRET!,
     {
-      expiresIn: '15s',
+      expiresIn: '45s',
     }
   );
 
