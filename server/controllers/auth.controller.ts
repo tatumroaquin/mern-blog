@@ -68,3 +68,30 @@ export async function userSignInController(req: Request, res: Response) {
     accessToken,
   });
 }
+
+export async function userLogOutController(req: Request, res: Response) {
+  const { cookies } = req;
+
+  if (!cookies?.jwt) return res.sendStatus(204);
+
+  const decodedToken: any = jwt.decode(cookies.jwt);
+
+  const refreshToken = await RefreshToken.findOne({
+    userId: decodedToken.id,
+  });
+
+  // no refreshtoken in db just clear cookie
+  if (!refreshToken) {
+    res.clearCookie('jwt', { httpOnly: true });
+    return res.json({ success: 'User has been logged out' });
+  }
+
+  // has refreshtoken in db, delete record and clear cookie
+  try {
+    await refreshToken.deleteOne();
+    res.clearCookie('jwt', { httpOnly: true });
+    return res.json({ success: 'User has been logged out' });
+  } catch (error: any) {
+    return res.json({ error: error.message });
+  }
+}

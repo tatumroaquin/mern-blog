@@ -4,15 +4,20 @@ import {
   userSignInValidator,
 } from '../middlewares/user.validator.ts';
 import { runValidation } from '../middlewares/run-validator.ts';
-import { userSignUpController } from '../controllers/auth.controller.ts';
-import { userSignInController } from '../controllers/auth.controller.ts';
+import {
+  userSignUpController,
+  userSignInController,
+  userLogOutController,
+} from '../controllers/auth.controller.ts';
 import { verifyToken } from '../middlewares/verify.token.ts';
+import { checkRole } from '../middlewares/role.checker.ts';
 
 const router = Router();
 
 router.post(
   '/signup',
   verifyToken,
+  checkRole('admin'),
   userSignUpValidator,
   runValidation,
   userSignUpController
@@ -23,5 +28,6 @@ router.post(
   runValidation,
   userSignInController
 );
+router.get('/logout', userLogOutController);
 
 export default router;
