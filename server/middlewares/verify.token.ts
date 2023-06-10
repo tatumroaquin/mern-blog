@@ -15,11 +15,15 @@ export function verifyToken(
 
   if (!authHeader) return res.sendStatus(401);
 
-  const token = authHeader.split(' ')[1];
+  const accessToken = authHeader.split(' ')[1];
 
-  jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET!, (error, decoded) => {
-    if (error) return res.sendStatus(403);
-    req.user = decoded;
-    next();
-  });
+  jwt.verify(
+    accessToken,
+    process.env.JWT_ACCESS_TOKEN_SECRET!,
+    (error, decoded) => {
+      if (error) return res.sendStatus(403);
+      req.user = decoded;
+      next();
+    }
+  );
 }
