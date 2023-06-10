@@ -10,6 +10,7 @@ interface UserSchema {
   email: string;
   passwordHash: string;
   roles: string[];
+  tokens: string[];
 }
 
 interface UserModel extends UserSchema, Document {
@@ -46,6 +47,7 @@ const userSchema: Schema = new Schema<UserSchema>({
     enum: ['user', 'admin'],
     default: ['user'],
   },
+  tokens: [String],
 });
 
 userSchema.methods = {
