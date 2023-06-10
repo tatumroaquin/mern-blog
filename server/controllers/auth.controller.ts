@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.model.ts';
-import RefreshToken from '../models/RefreshToken.model.ts';
 
 import { generateTokens } from '../utility/generate.tokens.ts';
 
@@ -43,16 +42,8 @@ export async function userSignInController(req: Request, res: Response) {
   const { accessToken, refreshToken } = generateTokens(user);
 
   try {
-    const existingToken = RefreshToken.findOne({ userId: user.id });
-
-    //https://stackoverflow.com/a/75705700
-    //https://stackoverflow.com/a/11522714
-    if (existingToken) await existingToken.deleteOne();
-
-    await new RefreshToken({
-      userId: user.id,
-      token: refreshToken,
-    }).save();
+    user.tokens.push(refreshToken);
+    await user.save();
   } catch (error: any) {
     console.log(error.message);
     return res.json({ error: 'User log in failed, please try again later' });
@@ -72,26 +63,35 @@ export async function userSignInController(req: Request, res: Response) {
 export async function userLogOutController(req: Request, res: Response) {
   const { cookies } = req;
 
-  if (!cookies?.jwt) return res.sendStatus(204);
+  if (!cookies.jwt) return res.status(204).json({ error: 'No jwt cookie found' });
 
-  const decodedToken: any = jwt.decode(cookies.jwt);
+  const refreshCookie = cookies.jwt;
 
-  const refreshToken = await RefreshToken.findOne({
-    userId: decodedToken.id,
-  });
+  jwt.verify(
+    refreshCookie,
+    process.env.JWT_REFRESH_TOKEN_SECRET!,
+    async (error: jwt.VerifyErrors | null, decoded: any) => {
+      if (error) return res.json({ error: error.message });
 
-  // no refreshtoken in db just clear cookie
-  if (!refreshToken) {
-    res.clearCookie('jwt', { httpOnly: true });
-    return res.json({ success: 'User has been logged out' });
-  }
+      const { id } = decoded;
 
-  // has refreshtoken in db, delete record and clear cookie
-  try {
-    await refreshToken.deleteOne();
-    res.clearCookie('jwt', { httpOnly: true });
-    return res.json({ success: 'User has been logged out' });
-  } catch (error: any) {
-    return res.json({ error: error.message });
-  }
+      const user = await User.findOne({ _id: id });
+
+      // no user with that refreshtoken
+      if (!user) {
+        res.clearCookie('jwt', { httpOnly: true });
+        return res.status(204).json({ success: 'User has been logged out' });
+      }
+
+      // has refreshtoken in db, delete record and clear cookie
+      try {
+        user.tokens = user.tokens.filter((token) => token !== refreshCookie);
+        await user.save();
+        res.clearCookie('jwt', { httpOnly: true });
+        return res.json({ success: 'User has been logged out' });
+      } catch (error: any) {
+        return res.json({ error: error.message });
+      }
+    }
+  );
 }
