@@ -6,7 +6,7 @@ export default function (origin?: string) {
     res.setHeader('Access-Control-Allow-Origin', domain ?? '*');
     res.setHeader(
       'Access-Control-Allow-Headers',
-      'Origin X-Requested-With Accept, Content-Type, Authorization'
+      'Origin, X-Requested-With, Accept, Content-Type, Authorization'
     );
     res.setHeader(
       'Access-Control-Allow-Methods',
