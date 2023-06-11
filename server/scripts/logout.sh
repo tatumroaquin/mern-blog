@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 
-jwt_cookie="$1"
+logout() {
+	curl \
+		-v \
+		-G \
+		-b "jwt=$1" \
+		'http://localhost:8000/auth/logout'
+}
 
-curl \
-	-v \
-	-b "$jwt_cookie" \
-	'http://localhost:8000/logout'
+logout $1
