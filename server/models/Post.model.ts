@@ -2,14 +2,20 @@ import { Schema, model } from 'mongoose';
 import slugify from 'slugify';
 
 interface PostSchema {
+  userId: Schema.Types.ObjectId;
   title: string;
   description?: string;
   markdown: string;
   slug: string;
   tags: string[];
+  createdAt: Date;
 }
 
 const postSchema: Schema = new Schema<PostSchema>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -25,9 +31,13 @@ const postSchema: Schema = new Schema<PostSchema>({
     unique: true,
   },
   tags: [String],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-postSchema.pre('save', function () {
+postSchema.pre('validate', function () {
   if (this.title) {
     this.slug = slugify(this.title, { lower: true, trim: true });
   }
