@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.ts';
 import userRoutes from './routes/user.routes.ts';
 import tokenRoutes from './routes/token.routes.ts';
+import postRoutes from './routes/post.routes.ts';
 
 dotenv.config({ path: '../.env' });
 
@@ -20,13 +21,17 @@ app.use(cookieParser());
 
 app.use(morgan('tiny'));
 
-mongoose.connect(process.env.MONGODB_URI!).then(() => {
-  console.log('[mongodb]: connection successful');
-}).catch((err) => console.log(`[mongodb]: connection failed! ${err.message}`));
+mongoose
+  .connect(process.env.MONGODB_URI!)
+  .then(() => {
+    console.log('[mongodb]: connection successful');
+  })
+  .catch((err) => console.log(`[mongodb]: connection failed! ${err.message}`));
 
-app.use(userRoutes);
-app.use(authRoutes);
-app.use(tokenRoutes);
+app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/token', tokenRoutes);
+app.use('/post', postRoutes);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
