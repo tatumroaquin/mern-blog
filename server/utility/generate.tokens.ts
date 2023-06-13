@@ -12,7 +12,7 @@ export function generateTokens(user: User ) {
     payload,
     process.env.JWT_REFRESH_TOKEN_SECRET!,
     {
-      expiresIn: '1d',
+      expiresIn: process.env.JWT_RT_EXPIRY!
     }
   );
 
@@ -20,7 +20,7 @@ export function generateTokens(user: User ) {
     payload,
     process.env.JWT_ACCESS_TOKEN_SECRET!,
     {
-      expiresIn: '45s',
+      expiresIn: process.env.JWT_AT_EXPIRY!
     }
   );
 
