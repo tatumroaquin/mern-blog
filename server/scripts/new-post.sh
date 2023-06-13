@@ -4,7 +4,7 @@ newpost() {
 	curl \
 		-H 'Content-Type: application/json' \
 		-H "Authorization: Bearer $1" \
-		-d "{ \"userId\":\"$2\", \"title\":\"$3\", \"description\":\"$4\", \"markdown\":\"$5\", \"tags\":[ \"hacking\", \"programming\" ]}" \
+		-d "{ \"title\":\"$2\", \"description\":\"$3\", \"markdown\":\"$4\", \"tags\":[ \"hacking\", \"programming\" ]}" \
 		'http://localhost:8000/post/new'
 }
 
