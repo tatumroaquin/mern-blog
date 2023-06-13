@@ -1,36 +1,30 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import User from '../models/User.model.ts';
+import Token from '../models/Token.model.ts';
+
 import { generateTokens } from '../utility/generate.tokens.ts';
 
 //https://dev.to/bahdcoder/the-ultimate-guide-to-jwt-server-side-auth-with-refresh-tokens-4jb3
 export async function refreshTokenController(req: Request, res: Response) {
-  const { cookies } = req;
+  const { jwt } = req.cookies;
 
-  if (!cookies?.jwt) return res.sendStatus(403);
+  if (!jwt) return res.sendStatus(403);
 
-  const user = await User.findOne({ tokens: cookies.jwt });
+  const user = await User.findOne({ tokens: jwt });
 
   // no user attached to token, means reuse attempt, delete all refresh tokens
   if (!user) {
-    jwt.verify(
-      cookies.jwt,
+    JWT.verify(
+      jwt,
       process.env.JWT_REFRESH_TOKEN_SECRET!,
-      async (error: jwt.VerifyErrors | null, decoded: any) => {
-        if (error) return res.json({ error: error.message });
+      async (error: JWT.VerifyErrors | null, decoded: any) => {
+        if (error) return res.status(403).json({ error: error.message });
 
-        const hackedUser = await User.findOne({ id: decoded.id });
-
-        if (!hackedUser) {
-          return res.json({
-            error: 'Refresh token details are invalid',
-          });
-        }
-
-        hackedUser.tokens = [];
+        const hackedUser = await User.findOne({ _id: decoded.id });
 
         try {
-          await hackedUser.save();
+          await Token.deleteMany({ userId: hackedUser?._id });
         } catch (error: any) {
           return res.json({ error: error.message });
         }
@@ -39,14 +33,11 @@ export async function refreshTokenController(req: Request, res: Response) {
     return res.status(403).json({ error: 'Refresh token reuse detected' });
   }
 
-  jwt.verify(
-    cookies.jwt,
+  JWT.verify(
+    jwt,
     process.env.JWT_REFRESH_TOKEN_SECRET!,
-    async (error: jwt.VerifyErrors | null, decoded: any) => {
-      if (error) {
-        user.tokens = user.tokens.filter((token) => token !== cookies.jwt);
-        await user.save();
-      }
+    async (error: JWT.VerifyErrors | null, decoded: any) => {
+      if (error) await Token.findOneAndDelete({ content: jwt });
 
       const { id, roles } = decoded;
 
@@ -57,10 +48,8 @@ export async function refreshTokenController(req: Request, res: Response) {
 
       const { accessToken, refreshToken } = generateTokens(user);
 
-      user.tokens.push(refreshToken);
-
       try {
-        await user.save();
+        await new Token({ userId: user.id, content: refreshToken }).save();
       } catch (error: any) {
         return res.json({ error: error.message });
       }

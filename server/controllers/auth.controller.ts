@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import User from '../models/User.model.ts';
+import Token from '../models/Token.model.ts';
 
 import { generateTokens } from '../utility/generate.tokens.ts';
 
@@ -42,10 +43,8 @@ export async function userSignInController(req: Request, res: Response) {
   const { accessToken, refreshToken } = generateTokens(user);
 
   try {
-    user.tokens.push(refreshToken);
-    await user.save();
+    await new Token({ userId: user._id, content: refreshToken }).save();
   } catch (error: any) {
-    console.log(error.message);
     return res.json({ error: 'User log in failed, please try again later' });
   }
 
@@ -61,33 +60,34 @@ export async function userSignInController(req: Request, res: Response) {
 }
 
 export async function userLogOutController(req: Request, res: Response) {
-  const { cookies } = req;
+  const { jwt } = req.cookies;
 
-  if (!cookies.jwt) return res.status(204).json({ error: 'No jwt cookie found' });
+  if (!jwt) return res.status(204).json({ error: 'No jwt cookie found' });
 
-  const refreshCookie = cookies.jwt;
-
-  jwt.verify(
-    refreshCookie,
+  JWT.verify(
+    jwt,
     process.env.JWT_REFRESH_TOKEN_SECRET!,
-    async (error: jwt.VerifyErrors | null, decoded: any) => {
+    async (error: JWT.VerifyErrors | null, decoded: any) => {
       if (error) return res.json({ error: error.message });
 
-      const { id } = decoded;
-
-      const user = await User.findOne({ _id: id });
+      const user = await User.findOne({ _id: decoded.id });
+      const refreshToken = await Token.findOne({ content: jwt });
+      res.clearCookie('jwt', { httpOnly: true });
 
       // no user with that refreshtoken
       if (!user) {
-        res.clearCookie('jwt', { httpOnly: true });
-        return res.status(204).json({ success: 'User has been logged out' });
+        return res
+          .status(204)
+          .json({ error: 'Refresh token user does not exists' });
+      }
+
+      if (!refreshToken) {
+        return res.status(204).json({ error: 'Refresh token does not exist' });
       }
 
       // has refreshtoken in db, delete record and clear cookie
       try {
-        user.tokens = user.tokens.filter((token) => token !== refreshCookie);
-        await user.save();
-        res.clearCookie('jwt', { httpOnly: true });
+        refreshToken.deleteOne();
         return res.json({ success: 'User has been logged out' });
       } catch (error: any) {
         return res.json({ error: error.message });
