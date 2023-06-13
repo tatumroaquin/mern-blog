@@ -3,6 +3,7 @@ import { verifyToken } from '../middlewares/verify.token.ts';
 import {
   createPostController,
   deletePostController,
+  getAllPostsController,
   getPostBySlugController,
   getPostsByUserIdController,
   updatePostController,
@@ -22,6 +23,7 @@ router.get(
   getPostByUserIdValidator,
   getPostsByUserIdController
 );
+router.get('/all', getAllPostsController);
 router.put('/edit/:postSlug', verifyToken, updatePostController);
 router.delete('/delete/:postSlug', verifyToken, deletePostController);
 
