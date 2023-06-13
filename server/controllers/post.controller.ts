@@ -37,11 +37,12 @@ export async function getPostsByUserIdController(req: Request, res: Response) {
   res.json({ success: `Posts by ${userId} retrieved`, posts });
 }
 
-export async function getAllPostsController(req: Request, res: Response) {
-  const posts = Post.find({});
+export async function getAllPostsController(_: Request, res: Response) {
+  const posts = await Post.find({});
 
-  if (!posts)
-    res.status(204).json({ success: 'No posts the database is empty' });
+  if (!posts) {
+    return res.status(204).json({ success: 'No posts the database is empty' });
+  }
   res.json({ success: 'All posts retrieved', posts });
 }
 
