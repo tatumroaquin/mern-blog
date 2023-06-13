@@ -9,6 +9,7 @@ interface PostSchema {
   slug: string;
   tags: string[];
   createdAt: Date;
+  updatedAt: Date;
 }
 
 const postSchema: Schema = new Schema<PostSchema>({
@@ -32,6 +33,10 @@ const postSchema: Schema = new Schema<PostSchema>({
   },
   tags: [String],
   createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
     type: Date,
     default: Date.now,
   },
