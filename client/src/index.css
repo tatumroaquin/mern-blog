@@ -1,26 +1,55 @@
+/* Red Hat Mono */
 @font-face {
-  src: url('./assets/fonts/HackNerdFont-Regular.ttf') format('truetype');
+  src: url('/fonts/RedHatMono/RedHatMono-VariableFont_wght.ttf') format('truetype');
+  font-family: 'Red Hat Mono';
+  font-style: normal;
+}
+@font-face {
+  src: url('/fonts/RedHatMono/RedHatMono-Italic-VariableFont_wght.ttf') format('truetype');
+  font-family: 'Red Hat Mono';
+  font-style: italic;
+}
+
+/* Hack Nerd Font Mono */
+@font-face {
+  src: url('/fonts/HackNF/HackNerdFontMono-Regular.ttf') format('truetype');
   font-family: 'Hack';
   font-style: normal;
   font-weight: normal;
 }
 @font-face {
-  src: url('./assets/fonts/HackNerdFont-Italic.ttf') format('truetype');
+  src: url('/fonts/HackNF/HackNerdFontMono-Italic.ttf') format('truetype');
   font-family: 'Hack';
   font-style: italic;
   font-weight: normal;
 }
 @font-face {
-  src: url('./assets/fonts/HackNerdFont-Bold.ttf') format('truetype');
+  src: url('/fonts/HackNF/HackNerdFontMono-Bold.ttf') format('truetype');
   font-family: 'Hack';
   font-style: normal;
   font-weight: bold;
 }
 @font-face {
-  src: url('./assets/fonts/HackNerdFont-BoldItalic.ttf') format('truetype');
+  src: url('/fonts/HackNF/HackNerdFontMono-BoldItalic.ttf') format('truetype');
   font-family: 'Hack';
   font-style: italic;
   font-weight: bold;
+}
+
+:root {
+  --gold: #d5a021;
+  --light-green: #adfc92;
+  --green: #57e389;
+  --secondary: #eff3ce;
+  --yellow: #f6d32d;
+
+  --text: #020401;
+  /* --background: #f6fcf3; */
+  --background: #ffffff;
+  --primary-button: #7a29a8;
+  --secondary-button: #e7f7de;
+  --accent: #3e1556;
+  font-size: 18px;
 }
 
 *,
@@ -28,6 +57,11 @@
 *::after {
   padding: 0;
   margin: 0;
-  list-style: none;
   box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Red Hat Mono';
 }
