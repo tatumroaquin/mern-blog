@@ -1,0 +1,47 @@
+.post {
+  width: 50%;
+  min-height: 100vh;
+  margin: 2rem auto;
+  line-height: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .date {
+    display: flex;
+    flex-direction: column;
+    font-style: italic;
+  }
+
+  table {
+    min-width: 50%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin: 0 auto;
+    padding: 0.5rem;
+    word-break: break-word;
+    th,
+    td {
+      border: 1px solid black;
+      padding: 0 1rem;
+    }
+  }
+
+  ol,
+  ul {
+    margin-left: 1rem;
+
+    li {
+      list-style-position: inside;
+    }
+  }
+
+  code {
+    font-family: 'Hack' !important;
+  }
+}
