@@ -1,0 +1,21 @@
+.signin {
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+  width: 25rem;
+  &__button {
+    width: 100%;
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.signup__link {
+  color: var(--american-purple);
+  align-self: center;
+  margin-top: 1rem;
+}
