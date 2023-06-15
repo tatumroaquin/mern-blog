@@ -1,0 +1,28 @@
+.input {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  &__label {
+    margin-bottom: 0.2rem;
+    padding: 0.1rem;
+    color: var(--rich-black);
+  }
+
+  &__field {
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--rich-black);
+    background-color: var(--cultured);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    color: var(--rich-black);
+    outline: none;
+
+    &:focus {
+      border-color: var(--goldenrod);
+    }
+  }
+}

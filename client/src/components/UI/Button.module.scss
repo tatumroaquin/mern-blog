@@ -1,0 +1,20 @@
+.button {
+  background-color: var(--grape);
+  border-radius: 0.3rem;
+  border: none;
+  color: var(--cultured);
+  font: inherit;
+  padding: 0.5rem 1.3rem;
+  transition-timing-function: ease-in-out;
+  transition: 0.3s;
+
+  &:hover {
+    box-shadow: 0 0.1rem 0.1rem black;
+    background-color: var(--goldenrod);
+    color: var(--cultured);
+    cursor: pointer;
+  }
+  &:active {
+    background-color: var(--grape);
+  }
+}
