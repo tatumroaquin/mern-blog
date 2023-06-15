@@ -10,12 +10,16 @@
   .title {
     font-size: 2rem;
     font-weight: bold;
+    color: var(--majorelle-blue);
   }
 
   .date {
     display: flex;
     flex-direction: column;
     font-style: italic;
+    b {
+      color: var(--goldenrod);
+    }
   }
 
   table {

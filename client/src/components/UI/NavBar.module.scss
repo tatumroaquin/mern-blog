@@ -1,5 +1,5 @@
 .navbar {
-  background-color: var(--green);
+  background-color: var(--very-light-malachite-green);
   min-height: 2rem;
   display: flex;
   align-items: center;
@@ -32,11 +32,11 @@
   }
   &__link {
     text-decoration: none;
-    color: var(--text);
+    color: var(--rich-black);
   }
   &__link:hover {
     text-decoration: none;
-    color: var(--gold);
+    color: var(--goldenrod);
   }
   &__link--active {
     text-decoration: none;
@@ -48,21 +48,21 @@
     background: transparent;
     flex-direction: column;
     justify-content: space-between;
-    border: 0.1rem solid var(--accent);
+    border: 0.1rem solid var(--rich-black);
     height: 2.6rem;
     width: 3rem;
     padding: 0.5rem;
 
     span {
       content: ' ';
-      background-color: var(--accent);
+      background-color: var(--rich-black);
       height: 0.13rem;
       width: 100%;
     }
 
     &::before,
     &::after {
-      background-color: var(--accent);
+      background-color: var(--rich-black);
       content: ' ';
       height: 0.13rem;
       width: 100%;
@@ -70,7 +70,8 @@
     }
 
     &:hover {
-      border-color: var(--yellow);
+      border-color: var(--sunglow);
+      cursor: pointer;
     }
     &:focus {
       border-color: white;
@@ -97,7 +98,7 @@
       &--expanded {
         display: flex;
         position: absolute;
-        background-color: var(--light-green);
+        background-color: var(--pale-green);
         top: 100%;
         left: 0;
         width: 100%;

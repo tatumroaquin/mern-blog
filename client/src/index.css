@@ -1,11 +1,13 @@
 /* Red Hat Mono */
 @font-face {
-  src: url('/fonts/RedHatMono/RedHatMono-VariableFont_wght.ttf') format('truetype');
+  src: url('/fonts/RedHatMono/RedHatMono-VariableFont_wght.ttf')
+    format('truetype');
   font-family: 'Red Hat Mono';
   font-style: normal;
 }
 @font-face {
-  src: url('/fonts/RedHatMono/RedHatMono-Italic-VariableFont_wght.ttf') format('truetype');
+  src: url('/fonts/RedHatMono/RedHatMono-Italic-VariableFont_wght.ttf')
+    format('truetype');
   font-family: 'Red Hat Mono';
   font-style: italic;
 }
@@ -37,18 +39,20 @@
 }
 
 :root {
-  --gold: #d5a021;
-  --light-green: #adfc92;
-  --green: #57e389;
-  --secondary: #eff3ce;
-  --yellow: #f6d32d;
-
-  --text: #020401;
-  /* --background: #f6fcf3; */
-  --background: #ffffff;
-  --primary-button: #7a29a8;
+  --cultured: #f6fcf3;
   --secondary-button: #e7f7de;
-  --accent: #3e1556;
+
+  --sunglow: #f6d32d;
+  --goldenrod: #d5a021;
+
+  --pale-green: #adfc92;
+  --very-light-malachite-green: #57e389;
+  --majorelle-blue: #6352dd;
+
+
+  --grape: #7a29a8;
+  --american-purple: #3e1556;
+  --rich-black: #020401;
   font-size: 18px;
 }
 
@@ -61,7 +65,7 @@
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text);
+  background-color: var(--cultured);
+  color: var(--rich-black);
   font-family: 'Red Hat Mono';
 }
