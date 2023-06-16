@@ -17,7 +17,7 @@ export const NavBar = () => {
           <img src='/eye-code.png' alt="tatum's eye code logo" />
         </NavLink>
         <NavLink to='/'>
-          <b>Tatum's Blog</b>
+          <b>#!/blog/tatum</b>
         </NavLink>
       </div>
 
