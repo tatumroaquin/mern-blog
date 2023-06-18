@@ -41,7 +41,7 @@ export const signUpForm: IFormObject = {
       type: 'email',
       placeholder: 'Enter Email',
     }),
-    validationRules: [requiredRule('lastName')],
+    validationRules: [requiredRule('email')],
   } as IInputObject,
   username: {
     ...inputFactory({
