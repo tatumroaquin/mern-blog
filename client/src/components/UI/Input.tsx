@@ -1,38 +1,32 @@
+import { IInput } from '../../types';
 import styles from './Input.module.scss';
 
-interface Input<T> {
-  id: T;
-  name: T;
-  label: T;
-  placeholder: T;
-  type: T;
-  value?: T;
-  required?: boolean;
-}
-
 export const Input = ({
-  id,
   label,
   name,
   placeholder,
   type,
   value,
-  required,
-}: Input<string>) => {
+  onChange,
+  errorMessage,
+  isValid,
+}: IInput) => {
   return (
     <div className={styles['input__container']}>
-      <label className={styles['input__label']} htmlFor={`${id}`}>
+      <label className={styles['input__label']} htmlFor={`${name}`}>
         {label}
       </label>
       <input
         className={styles['input__field']}
-        id={id}
         name={name}
         placeholder={placeholder}
         type={type}
         value={value}
-        required={required}
+        onChange={onChange}
       />
+      {errorMessage && !isValid && (
+        <span className={styles['input__error']}>{errorMessage}</span>
+      )}
     </div>
   );
 };
