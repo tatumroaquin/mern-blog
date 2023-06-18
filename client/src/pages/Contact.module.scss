@@ -1,0 +1,28 @@
+.contact {
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__heading {
+    margin-bottom: 1rem;
+  }
+  &__socials {
+    &--card {
+      flex-direction: row;
+      flex-wrap: wrap;
+      font-family: 'Hack';
+      gap: 1rem;
+    }
+    &--link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--majorelle-blue);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    &--shadow {
+      filter: drop-shadow(0 0 1px var(--dark-cultured));
+    }
+  }
+}

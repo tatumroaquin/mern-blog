@@ -5,6 +5,8 @@ import { Home } from './pages/Home';
 import { Post } from './pages/Post';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
+import { About } from './pages/About';
+import { Contact } from './pages/Contact';
 
 const markdown = `
   Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
@@ -46,8 +48,8 @@ function App() {
               <Route path='signin' element={<SignIn />} />
               <Route path='signup' element={<SignUp />} />
             </Route>
-            <Route path='about' element={<Home />} />
-            <Route path='contact' element={<Home />} />
+            <Route path='about' element={<About />} />
+            <Route path='contact' element={<Contact />} />
           </Routes>
         </Layout>
       </Router>
