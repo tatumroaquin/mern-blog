@@ -25,4 +25,8 @@
       border-color: var(--goldenrod);
     }
   }
+
+  &__error {
+    color: red;
+  }
 }
