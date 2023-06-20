@@ -4,13 +4,13 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import oneDark from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 
-import styles from './Post.module.scss';
+import styles from './ViewPost.module.scss';
 
-interface Post {
+interface ViewPost {
   children: string;
 }
 
-export const Post: FC<Post> = ({ children }) => {
+export const ViewPost: FC<ViewPost> = ({ children }) => {
   return (
     <article className={styles['post']}>
       <h1 className={styles['title']}>How to Title</h1>
