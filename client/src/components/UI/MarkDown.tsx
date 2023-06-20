@@ -5,6 +5,8 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import oneDark from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 
+import styles from './MarkDown.module.scss';
+
 interface Markdown {
   children: string;
   className?: string;
@@ -12,7 +14,7 @@ interface Markdown {
 
 export const MarkDown: FC<Markdown> = ({ children, className }) => {
   return (
-    <article className={clsx({ [`${className}`]: !!className })}>
+    <article className={clsx(styles['markdown'], { [`${className}`]: !!className })}>
       <ReactMarkdown
         children={String(children)}
         remarkPlugins={[remarkGfm]}
