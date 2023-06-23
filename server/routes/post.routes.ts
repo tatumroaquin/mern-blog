@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import Post from '../models/Post.model.ts';
+
 import { verifyToken } from '../middlewares/verify.token.ts';
 import {
   createPostController,
@@ -13,6 +15,7 @@ import {
   getPostBySlugValidator,
   getPostByUserIdValidator,
 } from '../middlewares/post.validator.ts';
+import { paginate } from '../middlewares/paginate.ts';
 
 const router = Router();
 
@@ -23,7 +26,7 @@ router.get(
   getPostByUserIdValidator,
   getPostsByUserIdController
 );
-router.get('/all', getAllPostsController);
+router.get('/all', paginate('posts', true), getAllPostsController);
 router.put('/edit/:postSlug', verifyToken, updatePostController);
 router.delete('/delete/:postSlug', verifyToken, deletePostController);
 

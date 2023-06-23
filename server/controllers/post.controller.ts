@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import slugify from 'slugify';
 import Post from '../models/Post.model.ts';
 
 interface IUserRequest extends Request {
@@ -9,6 +10,13 @@ export async function createPostController(req: IUserRequest, res: Response) {
   const { title, description = '', markdown, tags = [] } = req.body;
 
   const userId = req.user?.id;
+
+  const postExist = await Post.findOne({
+    slug: slugify(title, { lower: true, trim: true, strict: true }),
+  });
+
+  if (postExist)
+    return res.json({ error: 'Post with that title already exist' });
 
   try {
     await new Post({ userId, title, description, markdown, tags }).save();
@@ -37,13 +45,14 @@ export async function getPostsByUserIdController(req: Request, res: Response) {
   res.json({ success: `Posts by ${userId} retrieved`, posts });
 }
 
-export async function getAllPostsController(_: Request, res: Response) {
-  const posts = await Post.find({});
+export async function getAllPostsController(req: Request, res: Response) {
+  const { result } = res.locals;
 
-  if (!posts) {
-    return res.status(204).json({ success: 'No posts the database is empty' });
+  try {
+    return res.json({ success: 'All posts retrieved', result });
+  } catch (e: any) {
+    return res.json({ error: e.message });
   }
-  res.json({ success: 'All posts retrieved', posts });
 }
 
 export async function updatePostController(req: IUserRequest, res: Response) {
