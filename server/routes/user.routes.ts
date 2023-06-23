@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import { getUserById } from '../controllers/user.controller.ts';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: 'INDEX PAGE' });
-});
+router.get('/:id', getUserById);
 
 export default router;
