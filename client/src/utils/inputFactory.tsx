@@ -1,4 +1,4 @@
-import { ICreateInput, IInputObject, IRenderInput } from '../types';
+import { IInputFactory, IInputObject, IRenderInput } from '../types';
 
 import { Input } from '../components/UI/Input';
 
@@ -8,9 +8,9 @@ export const inputFactory = ({
   type,
   defaultValue = '',
   placeholder = '',
-}: ICreateInput): IInputObject => {
+}: IInputFactory): IInputObject => {
   return {
-    label,
+    name,
     value: defaultValue,
     valid: false,
     errorMessage: '',
