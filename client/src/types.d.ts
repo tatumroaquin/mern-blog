@@ -9,14 +9,6 @@ export interface IInput {
   onChange: (e: FormEvent<HTMLInputElement>) => void;
 }
 
-export interface ICreateInput {
-  label: string;
-  name: string;
-  type: string;
-  defaultValue?: string;
-  placeholder?: string;
-}
-
 export interface IRenderInput {
   key: string;
   value?: string;
@@ -26,7 +18,7 @@ export interface IRenderInput {
   onChange: (e: FormEvent<HTMLInputElement>) => void;
 }
 
-export interface IUseInput {
+export interface IInputFactory {
   label: string;
   name: string;
   type: string;
@@ -41,7 +33,7 @@ export interface IValidationRule {
 }
 
 export interface IInputObject {
-  label: string;
+  name: string;
   value: string;
   valid: boolean;
   errorMessage: string;
@@ -58,23 +50,52 @@ export interface IInputObject {
   validationRules?: IValidationRule[]
 }
 
-// export interface IInputObject {
-//   name: string;
-//   placeholder?: string;
-//   valid: boolean;
-//   value: string;
-//   errorMessage: string;
-//   touched?: boolean;
-//   renderInput: ({
-//     key,
-//     value,
-//     isValid,
-//     errorMessage,
-//     onChange,
-//   }: IRenderInput) => JSX.Element;
-//   validationRules?: IValidationRule[];
+export interface ITextArea {
+  name: string;
+  placeholder?: string;
+  value?: string;
+  errorMessage?: string;
+  className?: string;
+  defaultValue?: string;
+  isValid: boolean;
+  onChange: (e: FormEvent<HTMLInputElement>) => void;
 }
 
+export interface IRenderTextArea {
+  key: string;
+  value?: string;
+  placeholder?: string;
+  errorMessage: string;
+  isValid: boolean;
+  onChange: (e: FormEvent<HTMLTextAreaElement>) => void;
+}
+
+export interface ITextAreaObject {
+  name: string;
+  value: string;
+  valid: boolean;
+  errorMessage: string;
+  touched: boolean;
+  placeholder?: string;
+  renderInput: ({
+    key,
+    value,
+    placeholder,
+    errorMessage,
+    isValid,
+    onChange,
+  }: IRenderTextArea) => JSX.Element;
+  validationRules?: IValidationRule[]
+}
+
+export interface ITextAreaFactory {
+  name: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
+}
+
+
 export interface IFormObject {
-  [field: string]: IInputObject;
+  [field: string]: IInputObject | ITextAreaObject;
 }

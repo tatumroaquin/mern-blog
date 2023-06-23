@@ -1,25 +1,28 @@
 import { useState, useCallback, FormEvent } from 'react';
-import { IInputObject, IFormObject } from '../types';
+import { IInputObject, ITextAreaObject, IFormObject } from '../types';
 
 export function useForm(formObject: IFormObject) {
   const [form, setForm] = useState(formObject);
 
-  const isInputValid = useCallback((inputObject: IInputObject) => {
-    if (!inputObject.validationRules) return true;
+  const isInputValid = useCallback(
+    (inputObject: IInputObject | ITextAreaObject) => {
+      if (!inputObject.validationRules) return true;
 
-    for (const rule of inputObject.validationRules) {
-      if (!rule.validate(inputObject.value, form)) {
-        inputObject.errorMessage = rule.errorMessage;
-        return false;
+      for (const rule of inputObject.validationRules) {
+        if (!rule.validate(inputObject.value, form)) {
+          inputObject.errorMessage = rule.errorMessage;
+          return false;
+        }
       }
-    }
 
-    return true;
-  }, [form]);
+      return true;
+    },
+    [form]
+  );
 
   const onChange = useCallback(
-    (e: FormEvent<HTMLInputElement>) => {
-      const { name, value } = e.target as HTMLInputElement;
+    (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = (e.target as HTMLInputElement | HTMLTextAreaElement);
 
       const inputObject = { ...form[name] };
 
@@ -39,18 +42,20 @@ export function useForm(formObject: IFormObject) {
   );
 
   function renderForm() {
-    return Object.values(form).map((inputObject: IInputObject) => {
-      const { label, value, valid, errorMessage, placeholder, renderInput } =
-        inputObject;
-      return renderInput({
-        key: label,
-        value,
-        errorMessage,
-        isValid: valid,
-        placeholder,
-        onChange,
-      });
-    });
+    return Object.values(form).map(
+      (inputObject: IInputObject | ITextAreaObject) => {
+        const { name, value, valid, errorMessage, placeholder, renderInput } =
+          inputObject;
+        return renderInput({
+          key: name,
+          value,
+          errorMessage,
+          isValid: valid,
+          placeholder,
+          onChange,
+        });
+      }
+    );
   }
 
   const isFormValid = useCallback(() => {
