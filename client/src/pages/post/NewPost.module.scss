@@ -1,0 +1,24 @@
+.post-new {
+  min-height: 80vh;
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    min-height: inherit;
+    outline: none;
+    button {
+      align-self: center;
+    }
+  }
+
+  &__markdown {
+    word-wrap: break-word;
+    border: 1px solid var(--rich-black);
+    min-height: inherit;
+    width: 50%;
+  }
+}
