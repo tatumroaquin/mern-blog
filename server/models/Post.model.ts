@@ -44,7 +44,7 @@ const postSchema: Schema = new Schema<PostSchema>({
 
 postSchema.pre('validate', function () {
   if (this.title) {
-    this.slug = slugify(this.title, { lower: true, trim: true });
+    this.slug = slugify(this.title, { lower: true, trim: true, strict: true });
   }
 });
 
