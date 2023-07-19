@@ -4,6 +4,7 @@ export default function (origin?: string) {
   return function (_: Request, res: Response, next: NextFunction) {
     const domain = origin ?? process.env.CLIENT_URL;
     res.setHeader('Access-Control-Allow-Origin', domain ?? '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Accept, Content-Type, Authorization'
