@@ -1,12 +1,8 @@
-import { Document } from 'mongoose';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.model.ts';
 
-interface User extends Document {
-  roles: string[];
-}
-
-export function generateTokens(user: User ) {
-  const payload = { id: user.id, roles: user.roles };
+export function generateTokens(user: InstanceType<typeof User> ) {
+  const payload = { id: user._id, roles: user.roles };
 
   const refreshToken = jwt.sign(
     payload,
