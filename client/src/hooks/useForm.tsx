@@ -1,11 +1,12 @@
 import { useState, useCallback, FormEvent } from 'react';
-import { IInputObject, ITextAreaObject, IFormObject } from '../types';
+import { IInputObject, ITextAreaObject, IFormObject, ISelectObject } from '../types';
+import { MultiValue, ActionMeta } from 'react-select';
 
 export function useForm(formObject: IFormObject) {
   const [form, setForm] = useState(formObject);
 
   const isInputValid = useCallback(
-    (inputObject: IInputObject | ITextAreaObject) => {
+    (inputObject: IInputObject | ITextAreaObject | ISelectObject) => {
       if (!inputObject.validationRules) return true;
 
       for (const rule of inputObject.validationRules) {
@@ -20,7 +21,7 @@ export function useForm(formObject: IFormObject) {
     [form]
   );
 
-  const onChange = useCallback(
+  const onInputChange = useCallback(
     (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = (e.target as HTMLInputElement | HTMLTextAreaElement);
 
@@ -41,18 +42,49 @@ export function useForm(formObject: IFormObject) {
     [form, isInputValid]
   );
 
+  const onSelectChange = useCallback(
+    (items: MultiValue<{value: string}>, action: ActionMeta<{name: string}>) => {
+
+      let { name } = action;
+      if (!name || name.length === 0) name = 'tags';
+
+      const inputObject = { ...form[name] };
+
+      inputObject.value = items.map(item => item.value);
+
+      const isValidInput = isInputValid(inputObject);
+
+      if (!isValidInput && inputObject.valid) inputObject.valid = false;
+
+      if (isValidInput && !inputObject.valid) inputObject.valid = true;
+
+      inputObject.touched = true;
+
+      setForm((currentForm) => ({ ...currentForm, [name!]: inputObject }));
+    },
+    [form, isInputValid]
+  )
+
   function renderForm() {
     return Object.values(form).map(
       (inputObject: IInputObject | ITextAreaObject) => {
-        const { name, value, valid, errorMessage, placeholder, renderInput } =
+        const { type, name, value, valid, errorMessage, placeholder, renderInput } =
           inputObject;
+
+          let onChange: any = onInputChange;
+
+          if (type && type.includes('select')) {
+            onChange = onSelectChange;
+          }
+          //TODO: add 'type' field in IInputObject, ITextAreaObject, and ISelectObject
+          // use 'type' to determine the whether to use onInputChange or onSelectChange
         return renderInput({
           key: name,
           value,
           errorMessage,
           isValid: valid,
           placeholder,
-          onChange,
+          onChange
         });
       }
     );
@@ -66,5 +98,5 @@ export function useForm(formObject: IFormObject) {
     return true;
   }, [form]);
 
-  return { renderForm, isFormValid };
+  return { form, renderForm, isFormValid };
 }
