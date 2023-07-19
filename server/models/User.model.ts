@@ -1,9 +1,9 @@
-import { Document, Schema, model } from 'mongoose';
+import { Schema, Model, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 //https://stackoverflow.com/questions/277044/do-i-need-to-store-the-salt-with-bcrypt
 
-interface UserSchema {
+export interface UserSchema {
   firstName: string;
   lastName: string;
   userName: string;
@@ -12,13 +12,13 @@ interface UserSchema {
   roles: string[];
 }
 
-interface UserModel extends UserSchema, Document {
-  _password?: string;
-  genHash: (password: string) => string;
-  authenticate: (password: string) => boolean;
+export interface UserVirtuals {
+  password: string;
 }
 
-const userSchema: Schema = new Schema<UserSchema>({
+export type UserModel = Model<UserSchema, object, UserVirtuals>
+
+const userSchema: Schema = new Schema<UserSchema, UserModel, UserVirtuals>({
   firstName: {
     type: String,
     required: true,
@@ -67,4 +67,4 @@ userSchema
     this._password;
   });
 
-export default model<UserModel>('User', userSchema);
+export default model('User', userSchema);
