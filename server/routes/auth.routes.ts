@@ -9,14 +9,14 @@ import {
   userSignInController,
   userLogOutController,
 } from '../controllers/auth.controller.ts';
-import { verifyToken } from '../middlewares/verify.token.ts';
+import { verifyAccessToken } from '../middlewares/verify.token.ts';
 import { checkRole } from '../middlewares/role.checker.ts';
 
 const router = Router();
 
 router.post(
   '/signup',
-  verifyToken,
+  verifyAccessToken,
   checkRole('admin'),
   userSignUpValidator,
   runValidation,

@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import JWT, { JwtPayload } from 'jsonwebtoken';
 
 interface IUserRequest extends Request {
-  user?: JwtPayload | string;
+  accessTokenPayload?: JwtPayload | string;
+  refreshTokenPayload?: JwtPayload | string;
 }
 
-export function verifyToken(
+export function verifyAccessToken(
   req: IUserRequest,
   res: Response,
   next: NextFunction
@@ -17,13 +18,35 @@ export function verifyToken(
 
   const accessToken = authHeader.split(' ')[1];
 
-  jwt.verify(
-    accessToken,
-    process.env.JWT_ACCESS_TOKEN_SECRET!,
-    (error, decoded) => {
-      if (error) return res.sendStatus(403);
-      req.user = decoded;
-      next();
-    }
-  );
+  try {
+    req.accessTokenPayload = JWT.verify(
+      accessToken,
+      process.env.JWT_ACCESS_TOKEN_SECRET!
+    );
+    next();
+  } catch (e: any) {
+    return res.status(401).json({ error: 'Invalid access token' });
+  }
+}
+
+export function verifyRefreshToken(
+  req: IUserRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const { jwt } = req.cookies;
+
+  if (!jwt) return res.status(401).json({ error: 'No JWT Cookie Passed' });
+
+  const refreshToken = jwt;
+
+  try {
+    req.refreshTokenPayload = JWT.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET!
+    );
+    next();
+  } catch (e: any) {
+    return res.status(401).json({ error: 'Invalid refresh token' });
+  }
 }
