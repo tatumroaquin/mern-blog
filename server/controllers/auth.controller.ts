@@ -50,11 +50,15 @@ export async function userSignInController(req: Request, res: Response) {
 
   res.cookie('jwt', refreshToken, {
     httpOnly: true,
+    secure: true,
+    sameSite: 'none',
     maxAge: 24 * Math.pow(60, 2) * 1000, // 1 day
   });
 
   res.json({
     success: 'User logged in successfully',
+    roles: user.roles,
+    username: user.userName,
     accessToken,
   });
 }
@@ -72,7 +76,7 @@ export async function userLogOutController(req: Request, res: Response) {
 
       const user = await User.findOne({ _id: decoded.id });
       const refreshToken = await Token.findOne({ content: jwt });
-      res.clearCookie('jwt', { httpOnly: true });
+      res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'none'});
 
       // no user with that refreshtoken
       if (!user) {
