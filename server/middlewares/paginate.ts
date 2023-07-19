@@ -56,7 +56,7 @@ export const paginate = (modelName: string, reverse?: boolean) => {
           },
           { $unwind: '$author' },
           {
-            $unset: ['markdown', 'userId', 'user.email', 'user.roles', 'user.passwordHash'],
+            $unset: ['markdown', 'userId', 'author.email', 'author.roles', 'author.passwordHash'],
           },
         ]);
         break;
