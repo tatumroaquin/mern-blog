@@ -1,0 +1,30 @@
+.select {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  &__label {
+    margin-bottom: 0.2rem;
+    padding: 0.1rem;
+    color: var(--rich-black);
+  }
+
+  &__field {
+    background-color: transparent !important;
+    border-color: var(--rich-black) !important;
+    border-radius: 0 !important;
+    color: var(--rich-black);
+    margin-bottom: 0.5rem;
+    outline-color: orange !important;
+
+    &:focus {
+      border-color: var(--goldenrod);
+    }
+  }
+
+  &__error {
+    color: red;
+  }
+}
