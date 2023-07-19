@@ -6,6 +6,7 @@ interface SendRequest {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTION';
   body?: string | null;
   headers?: HeadersInit;
+  withCredentials?: boolean;
 }
 
 export const useHttp = () => {
@@ -21,16 +22,19 @@ export const useHttp = () => {
       method = 'GET',
       body = null,
       headers = {},
+      withCredentials = false,
     }: SendRequest) => {
       activeRequests.current.push(abortController);
 
       try {
         setIsLoading(true);
+
         const response = await fetch(url, {
           method,
           headers,
           body,
           signal: abortController.signal,
+          credentials: withCredentials ? 'include' : 'omit',
         });
 
         const data: any = await response.json();
@@ -44,19 +48,20 @@ export const useHttp = () => {
             data.error || 'Request failed, something went wrong!'
           );
         }
-        setIsLoading(false);
         return data;
       } catch (e: any) {
         setError(e.message);
-        setIsLoading(false);
         console.log(e.message);
+      } finally {
+        setIsLoading(false);
       }
     },
     []
   );
 
-  useEffect(() => {
-    activeRequests.current.forEach((request) => request.abort());
-  }, []);
+  // useEffect(() => {
+  //   activeRequests.current.forEach((request) => request.abort());
+  // }, []);
+
   return { isLoading, error, setError, sendRequest };
 };
