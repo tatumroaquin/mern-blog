@@ -9,62 +9,61 @@ import { generateTokens } from '../utility/generate.tokens.ts';
 export async function refreshTokenController(req: Request, res: Response) {
   const { jwt } = req.cookies;
 
-  if (!jwt) return res.sendStatus(403);
+  let payload: any;
+  try {
+    payload = JWT.verify(jwt, process.env.JWT_REFRESH_TOKEN_SECRET!);
+  } catch (e: any) {
+    await Token.deleteOne({ content: jwt });
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+    return res.status(403).json({ error: 'Invalid refresh token' });
+  }
 
-  const user = await User.findOne({ tokens: jwt });
+  const tokenExists = await Token.exists({ userId: payload.id });
 
-  // no user attached to token, means reuse attempt, delete all refresh tokens
-  if (!user) {
-    JWT.verify(
-      jwt,
-      process.env.JWT_REFRESH_TOKEN_SECRET!,
-      async (error: JWT.VerifyErrors | null, decoded: any) => {
-        if (error) return res.status(403).json({ error: error.message });
+  // token is NOT in database, reuse attempt, delete all refresh tokens
+  if (!tokenExists) {
+    const hackedUser = await User.findOne({ _id: payload.id });
 
-        const hackedUser = await User.findOne({ _id: decoded.id });
-
-        try {
-          await Token.deleteMany({ userId: hackedUser?._id });
-        } catch (error: any) {
-          return res.json({ error: error.message });
-        }
-      }
-    );
+    try {
+      await Token.deleteMany({ userId: hackedUser?._id });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
     return res.status(403).json({ error: 'Refresh token reuse detected' });
   }
 
-  JWT.verify(
-    jwt,
-    process.env.JWT_REFRESH_TOKEN_SECRET!,
-    async (error: JWT.VerifyErrors | null, decoded: any) => {
-      if (error) await Token.findOneAndDelete({ content: jwt });
+  const { id, roles } = payload;
 
-      const { id, roles } = decoded;
+  const user = await User.findOne({ _id: id });
 
-      if (user.id !== id || user.roles !== roles)
-        return res.json({
-          error: 'User id and roles does not match token',
-        });
+  if (!user)
+    return res.status(403).json({ error: 'No user attached to token' });
 
-      const { accessToken, refreshToken } = generateTokens(user);
+  if (user.id !== id)
+    return res.json({
+      error: 'User id does not match token',
+    });
 
-      try {
-        await new Token({ userId: user.id, content: refreshToken }).save();
-      } catch (error: any) {
-        return res.json({ error: error.message });
-      }
+  user.roles.forEach((role: string) => {
+    if (!roles.includes(role))
+      return res.status(403).json({ error: 'User roles does not match token' });
+  });
 
-      res.clearCookie('jwt', { httpOnly: true });
+  const { accessToken } = generateTokens(user);
 
-      res.cookie('jwt', refreshToken, {
-        httpOnly: true,
-        maxAge: 24 * Math.pow(60, 2) * 1000,
-      });
-
-      return res.json({
-        success: 'Access token has been refreshed',
-        accessToken,
-      });
-    }
-  );
+  res.json({
+    success: 'Access token has been refreshed',
+    roles,
+    username: user.userName,
+    accessToken,
+  });
 }
