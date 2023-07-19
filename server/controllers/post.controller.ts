@@ -9,6 +9,8 @@ interface IUserRequest extends Request {
 export async function createPostController(req: IUserRequest, res: Response) {
   const { title, description = '', markdown, tags = [] } = req.body;
 
+  console.log('TITLE', title);
+
   const userId = req.user?.id;
 
   const postExist = await Post.findOne({
@@ -28,11 +30,35 @@ export async function createPostController(req: IUserRequest, res: Response) {
 
 export async function getPostBySlugController(req: Request, res: Response) {
   const { postSlug } = req.params;
-  const post = await Post.findOne({ slug: postSlug });
-  if (!post) {
-    return res.status(404).json({ error: 'Post does not exist' });
+  try {
+    // const post = await Post.findOne({ slug: postSlug });
+    const post = await Post.aggregate([
+      { $match: { slug: postSlug } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      { $unwind: '$author' },
+      {
+        $unset: [
+          'userId',
+          'author.email',
+          'author.roles',
+          'author.passwordHash',
+        ],
+      },
+    ]);
+    if (!post) {
+      return res.status(404).json({ error: 'Post does not exist' });
+    }
+    return res.json({ success: 'Post retrieved', post: post[0] });
+  } catch (e: any) {
+    return res.json({ error: e.message });
   }
-  res.json({ success: 'Post retrieved', post });
 }
 
 export async function getPostsByUserIdController(req: Request, res: Response) {
