@@ -3,7 +3,10 @@ import { IFormObject, IValidationRule } from '../types';
 function createRule(
   name: string,
   errorMessage: string,
-  validatorFunction: (inputValue: string, formObject: IFormObject) => boolean
+  validatorFunction: (
+    inputValue: string | any[],
+    formObject: IFormObject
+  ) => boolean
 ): IValidationRule {
   return {
     name,
@@ -16,7 +19,7 @@ export function requiredRule(inputName: string) {
   return createRule(
     'required',
     `${inputName} required`,
-    (inputValue, _) => !!inputValue
+    (inputValue, _) => inputValue.length !== 0
   );
 }
 
