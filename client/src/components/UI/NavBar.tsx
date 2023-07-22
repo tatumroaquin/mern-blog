@@ -1,13 +1,27 @@
 import { NavLink } from 'react-router-dom';
-import styles from './NavBar.module.scss';
-import { useState } from 'react';
+import { Button } from './Button';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { useAuth } from '../../hooks/useAuth';
+import styles from './NavBar.module.scss';
 
 export const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { auth } = useAuth();
+  const [isSignedIn, setIsSignedIn] = useState(Boolean(auth?.accessToken));
+
+  useEffect(() => {
+    setIsSignedIn(Boolean(auth?.accessToken));
+  }, [auth]);
 
   function handleNavLink({ isActive }: { isActive: boolean }) {
     return isActive ? styles['navbar__link--active'] : styles['navbar__link'];
+  }
+
+  function handleButton({ isActive }: { isActive: boolean }) {
+    return isActive
+      ? styles['navbar__button--active']
+      : styles['navbar__button'];
   }
 
   return (
@@ -23,8 +37,11 @@ export const NavBar = () => {
 
       <button
         className={styles['navbar__hamburger']}
-        onClick={() => {
-          setIsExpanded((currentState) => !currentState);
+        onFocus={() => setIsExpanded(true)}
+        onBlur={(e) => {
+          //https://github.com/facebook/react/issues/4210
+          (e.relatedTarget as HTMLElement)?.click();
+          setIsExpanded(false);
         }}
       >
         <span></span>
@@ -35,26 +52,53 @@ export const NavBar = () => {
           [`${styles['navbar__items--expanded']}`]: isExpanded,
         })}
       >
-        <li className={styles['navbar__item']}>
-          <NavLink className={handleNavLink} to='/post/new'>
-            New Post
-          </NavLink>
-        </li>
-        <li className={styles['navbar__item']}>
-          <NavLink className={handleNavLink} to='/auth/signin'>
-            Sign In
-          </NavLink>
-        </li>
-        <li className={styles['navbar__item']}>
+        {isSignedIn && (
+          <li className={styles['navbar__item']} key='/post/new'>
+            <NavLink className={handleNavLink} to='/post/new'>
+              New Post
+            </NavLink>
+          </li>
+        )}
+        {!isSignedIn && (
+          <li className={styles['navbar__item']} key='/auth/signin'>
+            <NavLink className={handleNavLink} to='/auth/signin'>
+              Sign In
+            </NavLink>
+          </li>
+        )}
+        <li className={styles['navbar__item']} key='/about'>
           <NavLink className={handleNavLink} to='/about'>
             About
           </NavLink>
         </li>
-        <li className={styles['navbar__item']}>
+        <li className={styles['navbar__item']} key='/contact'>
           <NavLink className={handleNavLink} to='/contact'>
             Contact
           </NavLink>
         </li>
+        {isSignedIn && (
+          <li className={styles['navbar__item']} key='/user/view'>
+            <NavLink className={handleNavLink} to='/user/view'>
+              {!isExpanded && (
+                <img
+                  className={styles['navbar__profile']}
+                  src='/account2.png'
+                  alt='user account icon'
+                />
+              )}
+              {isExpanded && 'Account'}
+            </NavLink>
+          </li>
+        )}
+        {isSignedIn && (
+          <li className={styles['navbar__item']} key='/auth/logout'>
+            <Button>
+              <NavLink className={handleButton} to='/auth/logout'>
+                Logout
+              </NavLink>
+            </Button>
+          </li>
+        )}
       </ul>
     </nav>
   );

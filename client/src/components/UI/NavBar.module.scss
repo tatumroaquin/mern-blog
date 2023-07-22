@@ -3,9 +3,10 @@
   min-height: 2rem;
   display: flex;
   align-items: center;
-  padding: 0 20%;
+  padding: 0 14%;
   justify-content: space-between;
   font-size: 1.5rem;
+  width: 100%;
 
   &__items {
     display: flex;
@@ -15,6 +16,18 @@
   }
   &__item {
     list-style-type: none;
+  }
+  &__button {
+    text-decoration: none;
+    color: white;
+  }
+  &__button:hover {
+    text-decoration: none;
+    color: white;
+  }
+  &__button--active {
+    text-decoration: none;
+    color: white;
   }
 
   &__brand {
@@ -84,10 +97,17 @@
       }
     }
   }
+
+  &__profile {
+    margin-bottom: 0;
+    width: 40px;
+    height: 40px;
+    transform: translateY(10%);
+  }
 }
 @media only screen and (max-width: 1450px) {
   .navbar {
-  padding: 0 2rem;
+    padding: 0 2rem;
     position: relative;
     &__items {
       flex-direction: column;
