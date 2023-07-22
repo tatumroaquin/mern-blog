@@ -14,7 +14,7 @@ interface Markdown {
 
 export const MarkDown: FC<Markdown> = ({ children, className }) => {
   return (
-    <article className={clsx(styles['markdown'], { [`${className}`]: !!className })}>
+    <div className={clsx(styles['markdown'], { [`${className}`]: !!className })}>
       <ReactMarkdown
         children={String(children)}
         remarkPlugins={[remarkGfm]}
@@ -36,6 +36,6 @@ export const MarkDown: FC<Markdown> = ({ children, className }) => {
           },
         }}
       />
-    </article>
+    </div>
   );
 };
