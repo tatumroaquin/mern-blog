@@ -1,15 +1,16 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import { NavBar } from './NavBar';
 
 interface Layout {
-  children: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const Layout: FC<Layout> = ({ children }) => {
+export const Layout: FC<Layout> = () => {
   return (
     <>
       <NavBar />
-      {children}
+      <Outlet />
     </>
   );
 };
