@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
   gap: 1rem;
   width: 25rem;
   &__button {
@@ -12,10 +11,15 @@
   &__form {
     display: flex;
     flex-direction: column;
+    gap: .8rem;
+  }
+
+  &__persist {
+    display: flex;
+    gap: 1rem;
   }
 }
 .signup__link {
   color: var(--american-purple);
   align-self: center;
-  margin-top: 1rem;
 }
