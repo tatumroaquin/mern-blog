@@ -1,6 +1,6 @@
 import { IFormObject, IInputObject } from '../../types';
-import { inputFactory } from '../../utils/inputFactory';
-import { requiredRule } from '../../utils/validator';
+import { inputFactory } from '../../utility/inputFactory';
+import { requiredRule } from '../../utility/validator';
 
 export const signInForm: IFormObject = {
   email: {
