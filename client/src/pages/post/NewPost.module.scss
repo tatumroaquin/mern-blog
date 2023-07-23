@@ -16,6 +16,7 @@
   }
 
   &__markdown {
+    font-size: inherit;
     word-wrap: break-word;
     border: 1px solid var(--rich-black);
     min-height: inherit;
