@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import styles from './Home.module.scss';
 
 export const Home = () => {
-  const [posts, setPosts] = useState<any>([]);
-  const { isLoading, error, setError, sendRequest } = useHttp();
+  const [posts, setPosts] = useState([]);
+  const { isLoading, sendRequest } = useHttp();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -21,7 +21,6 @@ export const Home = () => {
         });
         if (response) {
           setPosts(response.result.data);
-          console.log(response.result.data);
         }
       } catch (e: any) {
         console.log(e);
@@ -35,6 +34,7 @@ export const Home = () => {
       <h1 className={styles['home__title']}>Recent Posts</h1>
       <br />
       {isLoading && <Spinner />}
+      {!isLoading && posts.length === 0 && <p>No posts found</p>}
       {!isLoading && posts && (
         <div className={styles['posts']}>
           {posts.map((post: any) => (
