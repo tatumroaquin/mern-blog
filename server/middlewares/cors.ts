@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import { allowedOrigins } from '../config.ts';
 
-export default function (origin?: string) {
-  return function (_: Request, res: Response, next: NextFunction) {
-    const domain = origin ?? process.env.CLIENT_URL;
-    res.setHeader('Access-Control-Allow-Origin', domain ?? '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+export default function () {
+  return function (req: Request, res: Response, next: NextFunction) {
     res.setHeader(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Accept, Content-Type, Authorization'
@@ -13,6 +11,13 @@ export default function (origin?: string) {
       'Access-Control-Allow-Methods',
       'GET, POST, PUT, PATCH, DELETE, OPTION'
     );
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    const origin = req.headers.origin || '';
+    console.log(origin);
+
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     next();
   };
 }
