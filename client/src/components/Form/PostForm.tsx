@@ -1,7 +1,8 @@
 import { IFormObject, IInputObject, ITextAreaObject } from '../../types';
-import { inputFactory } from '../../utils/inputFactory';
-import { textAreaFactory } from '../../utils/textAreaFactory';
-import { requiredRule } from '../../utils/validator';
+import { inputFactory } from '../../utility/inputFactory';
+import { selectFactory } from '../../utility/selectFactory';
+import { textAreaFactory } from '../../utility/textAreaFactory';
+import { requiredRule } from '../../utility/validator';
 
 export const postForm: IFormObject = {
   markdown: {
@@ -11,13 +12,16 @@ export const postForm: IFormObject = {
     }),
     validationRules: [requiredRule('markdown')],
   } as ITextAreaObject,
-  postTags: {
+  description: {
     ...inputFactory({
+      label: 'Description',
+      name: 'description',
+    }),
+  } as IInputObject,
+  postTags: {
+    ...selectFactory({
       label: 'Post Tags',
       name: 'postTags',
-      type: 'text',
-      placeholder: 'Enter Post Tags',
     }),
-    validationRules: [requiredRule('postTags')],
   } as IInputObject,
 };
