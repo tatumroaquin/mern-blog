@@ -5,6 +5,12 @@ import react from '@vitejs/plugin-react';
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, '../') };
   return defineConfig({
+    server: {
+      https: {
+        key: '../ssl/tblog-key.pem',
+        cert: '../ssl/tblog-crt.pem',
+      },
+    },
     plugins: [react()],
   });
 };

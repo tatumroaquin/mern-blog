@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import https from 'node:https';
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from './middlewares/cors.ts';
@@ -9,6 +11,7 @@ import authRoutes from './routes/auth.routes.ts';
 import userRoutes from './routes/user.routes.ts';
 import tokenRoutes from './routes/token.routes.ts';
 import postRoutes from './routes/post.routes.ts';
+import { sslCertificates as SSL } from './config.ts';
 
 dotenv.config({ path: '../.env' });
 
@@ -18,7 +21,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(morgan('tiny'));
 
 mongoose
@@ -33,7 +35,14 @@ app.use('/auth', authRoutes);
 app.use('/token', tokenRoutes);
 app.use('/post', postRoutes);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log('[express]: listening on port 8000');
+const options = {
+  cert: fs.readFileSync(SSL.publicKey),
+  key: fs.readFileSync(SSL.privateKey),
+};
+
+const httpsServer = https.createServer(options, app);
+const PORT = process.env.PORT || 3000;
+
+httpsServer.listen(PORT, () => {
+  console.log(`[express]: listening on ${PORT}`);
 });
