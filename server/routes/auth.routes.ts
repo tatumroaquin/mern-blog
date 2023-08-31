@@ -2,15 +2,15 @@ import { Router } from 'express';
 import {
   userSignUpValidator,
   userSignInValidator,
-} from '../middlewares/user.validator.ts';
-import { runValidation } from '../middlewares/run-validator.ts';
+} from '../middlewares/user.validator.js';
+import { runValidation } from '../middlewares/run-validator.js';
 import {
   userSignUpController,
   userSignInController,
   userLogOutController,
-} from '../controllers/auth.controller.ts';
-import { verifyAccessToken } from '../middlewares/verify.token.ts';
-import { checkRole } from '../middlewares/role.checker.ts';
+} from '../controllers/auth.controller.js';
+import { verifyAccessToken } from '../middlewares/verify.token.js';
+import { checkRole } from '../middlewares/role.checker.js';
 
 const router = Router();
 

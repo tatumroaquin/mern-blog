@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import slugify from 'slugify';
-import Post from '../models/Post.model.ts';
+import Post from '../models/Post.model.js';
 
 interface IUserRequest extends Request {
   user?: { id: string; roles: string[] };

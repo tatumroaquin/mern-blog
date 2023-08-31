@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
-import User from '../models/User.model.ts';
-import Token from '../models/Token.model.ts';
+import User from '../models/User.model.js';
+import Token from '../models/Token.model.js';
 
-import { generateTokens } from '../utility/generate.tokens.ts';
+import { generateTokens } from '../utility/generate.tokens.js';
 
 export async function userSignUpController(req: Request, res: Response) {
   const { firstName, lastName, userName, email, password } = req.body;

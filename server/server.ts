@@ -2,16 +2,16 @@ import fs from 'node:fs';
 import https from 'node:https';
 import dotenv from 'dotenv';
 import express from 'express';
-import cors from './middlewares/cors.ts';
+import cors from './middlewares/cors.js';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auth.routes.ts';
-import userRoutes from './routes/user.routes.ts';
-import tokenRoutes from './routes/token.routes.ts';
-import postRoutes from './routes/post.routes.ts';
-import { sslCertificates as SSL } from './config.ts';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import tokenRoutes from './routes/token.routes.js';
+import postRoutes from './routes/post.routes.js';
+import { sslCertificates as SSL } from './config.js';
 
 dotenv.config({ path: '../.env' });
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { allowedOrigins } from '../config.ts';
+import { allowedOrigins } from '../config.js';
 
 export default function () {
   return function (req: Request, res: Response, next: NextFunction) {

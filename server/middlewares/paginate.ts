@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { PipelineStage } from 'mongoose';
-import Post from '../models/Post.model.ts';
-import User from '../models/User.model.ts';
+import Post from '../models/Post.model.js';
+import User from '../models/User.model.js';
 
 interface Page {
   page: number;

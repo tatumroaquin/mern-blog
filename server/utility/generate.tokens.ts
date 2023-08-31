@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.model.ts';
+import User from '../models/User.model.js';
 
 export function generateTokens(user: InstanceType<typeof User> ) {
   const payload = { id: user._id, roles: user.roles };

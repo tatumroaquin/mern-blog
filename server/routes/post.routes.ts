@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import Post from '../models/Post.model.ts';
+import Post from '../models/Post.model.js';
 
-import { verifyAccessToken } from '../middlewares/verify.token.ts';
+import { verifyAccessToken } from '../middlewares/verify.token.js';
 import {
   createPostController,
   deletePostController,
@@ -9,13 +9,13 @@ import {
   getPostBySlugController,
   getPostsByUserIdController,
   updatePostController,
-} from '../controllers/post.controller.ts';
+} from '../controllers/post.controller.js';
 import {
   createPostValidator,
   getPostBySlugValidator,
   getPostByUserIdValidator,
-} from '../middlewares/post.validator.ts';
-import { paginate } from '../middlewares/paginate.ts';
+} from '../middlewares/post.validator.js';
+import { paginate } from '../middlewares/paginate.js';
 
 const router = Router();
 

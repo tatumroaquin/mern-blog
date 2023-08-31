@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import JWT, { JwtPayload } from 'jsonwebtoken';
-import User from '../models/User.model.ts';
-import Token from '../models/Token.model.ts';
+import User from '../models/User.model.js';
+import Token from '../models/Token.model.js';
 
 interface IUserRequest extends Request {
   accessTokenPayload?: JwtPayload | { id: string };

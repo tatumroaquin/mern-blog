@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
-import User from '../models/User.model.ts';
-import Token from '../models/Token.model.ts';
+import User from '../models/User.model.js';
+import Token from '../models/Token.model.js';
 
-import { generateTokens } from '../utility/generate.tokens.ts';
+import { generateTokens } from '../utility/generate.tokens.js';
 
 //https://dev.to/bahdcoder/the-ultimate-guide-to-jwt-server-side-auth-with-refresh-tokens-4jb3
 export async function refreshTokenController(req: Request, res: Response) {
