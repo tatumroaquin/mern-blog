@@ -129,3 +129,39 @@
     }
   }
 }
+
+@media only screen and (max-width: 510px) {
+  .navbar {
+    &__brand {
+      align-items: center;
+      gap: 1rem;
+      img {
+        margin-top: 0.5rem;
+        height: 3rem;
+      }
+      a {
+        text-decoration: none;
+        color: green;
+        font-size: 1rem;
+      }
+    }
+    &__hamburger {
+      height: 2rem;
+      width: 2.1rem;
+      padding: 0.3rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 333px) {
+  .navbar {
+    &__brand {
+      b {
+        display: none;
+        text-decoration: none;
+        color: green;
+        font-size: 1rem;
+      }
+    }
+  }
+}
