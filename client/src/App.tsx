@@ -7,6 +7,7 @@ import { SignUp } from './pages/SignUp';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { NewPost } from './pages/post/NewPost';
+import { EditPost } from './pages/post/EditPost';
 import { ProtectRoute } from './components/ProtectRoute';
 import { ViewUser } from './pages/ViewUser';
 import { PersistAuth } from './components/PersistAuth';
@@ -27,9 +28,7 @@ function App() {
           <Route path='contact' element={<Contact />} />
 
           <Route path='post'>
-            <Route path='view'>
-              <Route path=':slug' element={<ViewPost />} />
-            </Route>
+            <Route path='view/:slug' element={<ViewPost />} />
           </Route>
 
           <Route path='auth'>
@@ -42,7 +41,7 @@ function App() {
             element={<ProtectRoute allowedRoles={[ROLES.USER]} />}
           >
             <Route path='new' element={<NewPost />} />
-            <Route path='edit' element={<Home />} />
+            <Route path='edit/:slug' element={<EditPost />} />
           </Route>
 
           <Route
