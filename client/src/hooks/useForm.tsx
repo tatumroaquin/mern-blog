@@ -67,8 +67,8 @@ export function useForm(formObject: IFormObject) {
 
   function renderForm() {
     return Object.values(form).map(
-      (inputObject: IInputObject | ITextAreaObject) => {
-        const { type, name, value, valid, errorMessage, placeholder, renderInput } =
+      (inputObject: IInputObject | ITextAreaObject | ISelectObject ) => {
+        const { type, name, value, valid, errorMessage, placeholder, renderInput, options } =
           inputObject;
 
           let onChange: any = onInputChange;
@@ -84,7 +84,8 @@ export function useForm(formObject: IFormObject) {
           errorMessage,
           isValid: valid,
           placeholder,
-          onChange
+          onChange,
+          options
         });
       }
     );
