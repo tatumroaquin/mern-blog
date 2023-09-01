@@ -4,12 +4,12 @@ import { Button } from '../components/UI/Button';
 import { signInForm } from '../components/Form/SignInForm';
 import { useForm } from '../hooks/useForm';
 import { useAuth } from '../hooks/useAuth';
-import { useHttp } from '../hooks/useHttp';
+import { useHttpPrivate } from '../hooks/useHttpPrivate';
 
 import styles from './SignIn.module.scss';
 export const SignIn = () => {
   const { form, renderForm, isFormValid } = useForm(signInForm);
-  const { sendRequest } = useHttp();
+  const { sendRequest } = useHttpPrivate();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,7 +31,6 @@ export const SignIn = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-        withCredentials: true,
       });
 
       // const response = await axios.post(
