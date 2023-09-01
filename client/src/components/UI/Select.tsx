@@ -10,6 +10,7 @@ export const Select: FC<ISelect> = ({
   errorMessage,
   isValid,
   onChange,
+  options,
 }) => {
   return (
     <div className={styles['select__container']}>
@@ -21,6 +22,7 @@ export const Select: FC<ISelect> = ({
         name={name}
         placeholder={placeholder}
         onChange={onChange}
+        options={options}
         classNames={{ control: () => styles['select__field'] }}
       />
       {errorMessage && !isValid && (
