@@ -6,12 +6,15 @@ import { postForm } from '../../components/Form/PostForm';
 import { useForm } from '../../hooks/useForm';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useHttpPrivate } from '../../hooks/useHttpPrivate';
+import { jwtDecode } from '../../utility/jwtDecode';
+import { useAuth } from '../../hooks/useAuth';
 
 import styles from './NewPost.module.scss';
 
 export const NewPost = () => {
   const [markdown, setMarkdown] = useLocalStorage('markdown');
   const { isLoading, sendRequest } = useHttpPrivate();
+  const { auth } = useAuth();
 
   postForm.markdown.value = markdown;
   const { renderForm } = useForm(postForm);
@@ -38,10 +41,7 @@ export const NewPost = () => {
       postTags = [postTags.value];
     else postTags = [];
 
-    console.log('title', title);
-    console.log('markdown', markdown);
-    console.log('description', description);
-    console.log('tags', postTags);
+    const user = jwtDecode(auth?.accessToken || '');
 
     const abortController = new AbortController();
     const response = await sendRequest({
@@ -50,10 +50,15 @@ export const NewPost = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, description, markdown, tags: postTags }),
+      body: JSON.stringify({
+        userId: user.id,
+        title,
+        description,
+        markdown,
+        tags: postTags,
+      }),
       abortController,
     });
-    console.log(response);
   }
 
   function onChange(e: FormEvent<HTMLFormElement>) {
@@ -67,6 +72,7 @@ export const NewPost = () => {
       {isLoading && <Spinner />}
       {!isLoading && (
         <div className={styles['post-new']}>
+          <h1 className={styles['post-new__title']}>New Post</h1>
           <form
             onChange={onChange}
             onSubmit={onSubmit}
