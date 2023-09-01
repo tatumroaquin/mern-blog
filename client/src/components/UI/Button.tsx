@@ -5,15 +5,17 @@ export interface IButton {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   className?: string;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-export const Button = ({ type, disabled, className, children }: IButton) => {
+export const Button = ({ type, disabled, className, onClick, children }: IButton) => {
   return (
     <button
       className={clsx(styles['button'], { [`${className}`]: !!className })}
       type={type}
       disabled={disabled}
+      onClick={onClick}
     >
       {children}
     </button>
