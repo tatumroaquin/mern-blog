@@ -21,6 +21,7 @@ export const selectFactory = ({
       errorMessage,
       isValid,
       onChange,
+      options,
     }: IRenderSelect) => {
       return (
         <Select
@@ -31,6 +32,7 @@ export const selectFactory = ({
           errorMessage={errorMessage}
           isValid={isValid}
           onChange={onChange}
+          options={options}
         />
       );
     },
