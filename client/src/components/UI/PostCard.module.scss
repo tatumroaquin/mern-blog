@@ -1,0 +1,45 @@
+.post__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  &--title {
+    color: var(--majorelle-blue);
+  }
+
+  &--date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-style: italic;
+    b {
+      color: var(--goldenrod);
+    }
+  }
+  &--buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  &--edit {
+    padding: 0 0.8rem;
+  }
+  &--delete {
+    padding: 0 0.8rem;
+  }
+  &--tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'Hack';
+    font-size: 0.6rem;
+  }
+  &--tag {
+    background: var(--pale-green);
+    padding: 0 1rem;
+  }
+}
