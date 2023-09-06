@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 export const EditPost = () => {
   // when added to useEffect setMarkdown causes re-render cycles
   // because useCallback is not used
+  const [author, setAuthor] = useState<any>({});
   const [markdown, setMarkdown] = useLocalStorage('markdown');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState([]);
@@ -32,10 +33,10 @@ export const EditPost = () => {
       });
       if (response.post) {
         const { title, markdown } = response.post;
+        setAuthor(response.post.author);
         setMarkdown(`# ${title}\n\n${markdown}`);
         setDescription(response.post.description);
         setTags(response.post.tags);
-        console.log('Response tags', tags);
       }
     };
     fetchPost();
@@ -43,7 +44,7 @@ export const EditPost = () => {
 
   postForm.markdown.value = markdown;
   postForm.description.value = description;
-  postForm.postTags.options = tags.map(tag => ({value: tag, label: tag}))
+  postForm.postTags.options = tags.map((tag) => ({ value: tag, label: tag }));
   const { renderForm } = useForm(postForm);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -68,12 +69,9 @@ export const EditPost = () => {
       postTags = [postTags.value];
     else postTags = [];
 
-    console.log('title', title);
-    console.log('markdown', markdown);
-    console.log('description', description);
-    console.log('tags', postTags);
-
     const user = jwtDecode(auth?.accessToken || '');
+
+    if (!isPostedBySelf(author)) return;
 
     const abortController = new AbortController();
     const response = await sendRequest({
@@ -100,10 +98,17 @@ export const EditPost = () => {
     setMarkdown(value);
   }
 
+  function isPostedBySelf(author: any) {
+    return author.userName === auth?.username;
+  }
+
   return (
     <>
       {isLoading && <Spinner />}
-      {!isLoading && (
+      {!isLoading && !isPostedBySelf(author) && (
+        <h1>You can only edit your own posts</h1>
+      )}
+      {!isLoading && isPostedBySelf(author) && (
         <div className={styles['post-edit']}>
           <h1 className={styles['post-edit__title']}>Edit Post</h1>
           <form
