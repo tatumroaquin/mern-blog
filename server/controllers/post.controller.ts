@@ -7,11 +7,7 @@ interface IUserRequest extends Request {
 }
 
 export async function createPostController(req: IUserRequest, res: Response) {
-  const { title, description = '', markdown, tags = [] } = req.body;
-
-  console.log('TITLE', title);
-
-  const userId = req.user?.id;
+  const { userId, title, description = '', markdown, tags = [] } = req.body;
 
   const postExist = await Post.findOne({
     slug: slugify(title, { lower: true, trim: true, strict: true }),
@@ -83,15 +79,15 @@ export async function getAllPostsController(req: Request, res: Response) {
 
 export async function updatePostController(req: IUserRequest, res: Response) {
   const { postSlug } = req.params;
-  const { title, description, markdown, tags } = req.body;
+  const { userId, title, description, markdown, tags } = req.body;
+
   const post = await Post.findOne({ slug: postSlug });
 
   if (!post) return res.status(404).json({ error: 'Post not found' });
 
-  console.log(post.userId, req.user?.id);
 
   //https://stackoverflow.com/a/11638106
-  if (!post.userId.equals(req.user?.id))
+  if (!post.userId.equals(userId))
     return res.status(401).json({ error: 'You can only edit your own posts' });
 
   try {
