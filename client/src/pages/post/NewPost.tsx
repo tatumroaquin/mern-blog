@@ -44,7 +44,7 @@ export const NewPost = () => {
     const user = jwtDecode(auth?.accessToken || '');
 
     const abortController = new AbortController();
-    const response = await sendRequest({
+    await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/post/new`,
       method: 'POST',
       headers: {
