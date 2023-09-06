@@ -52,6 +52,11 @@ export const NavBar = () => {
           [`${styles['navbar__items--expanded']}`]: isExpanded,
         })}
       >
+        <li className={styles['navbar__item']} key='/posts'>
+          <NavLink className={handleNavLink} to='/posts'>
+            All Posts
+          </NavLink>
+        </li>
         {isSignedIn && (
           <li className={styles['navbar__item']} key='/post/new'>
             <NavLink className={handleNavLink} to='/post/new'>

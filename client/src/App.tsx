@@ -12,6 +12,7 @@ import { ProtectRoute } from './components/ProtectRoute';
 import { ViewUser } from './pages/ViewUser';
 import { PersistAuth } from './components/PersistAuth';
 import { SignOut } from './pages/SignOut';
+import { AllPosts } from './pages/AllPosts';
 
 function App() {
   const ROLES = {
@@ -26,6 +27,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path='about' element={<About />} />
           <Route path='contact' element={<Contact />} />
+
+            <Route path='posts' element={<AllPosts />} />
 
           <Route path='post'>
             <Route path='view/:slug' element={<ViewPost />} />
