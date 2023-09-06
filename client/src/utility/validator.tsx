@@ -46,3 +46,11 @@ export function passwordMatchesRule() {
     (inputValue, formObject) => inputValue === formObject.password.value
   );
 }
+
+export function newPasswordMatchesRule() {
+  return createRule(
+    'newPasswordMatches',
+    'passwords do not match',
+    (inputValue, formObject) => inputValue === formObject.newPassword.value
+  );
+}
