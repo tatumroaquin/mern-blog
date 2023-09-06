@@ -26,7 +26,7 @@ export async function getUserByIdController(req: IUserRequest, res: Response) {
 
   const user = await User.findOne(
     { _id: userId },
-    { email: false, passwordHash: false }
+    { passwordHash: false }
   );
 
   if (!user) return res.sendStatus(404);
@@ -39,22 +39,12 @@ export async function editUserController(req: Request, res: Response) {
     userName,
     firstName,
     lastName,
+    email,
     oldPassword,
     newPassword,
-    accessToken,
   } = req.body;
 
-  let payload: any;
-  try {
-    payload = JWT.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET!);
-  } catch (e: any) {
-    return res.json({ error: 'Invalid access token provided' });
-  }
-
-  if (payload.id !== userId)
-    return res.json({ error: 'User Id does not match token' });
-
-  const user = await User.findOne({ _id: payload.id });
+  const user = await User.findOne({ _id: userId });
 
   if (!user) return res.json({ error: 'User does not exist' });
 
@@ -67,6 +57,7 @@ export async function editUserController(req: Request, res: Response) {
     user.userName = userName;
     user.firstName = firstName;
     user.lastName = lastName;
+    user.email = email;
     user.password = newPassword;
     await user.save();
   } catch (e: any) {
