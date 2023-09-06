@@ -65,7 +65,7 @@ export const Home = () => {
       {!isLoading && posts && (
         <div className={styles['posts']}>
           {posts.map((post: any) => (
-            <PostCard 
+            <PostCard
               key={post.slug}
               isSignedIn={isSignedIn}
               isPostedBySelf={isPostedBySelf}

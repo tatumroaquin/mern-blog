@@ -14,6 +14,7 @@ export const SignUp = () => {
     e.preventDefault();
     console.log(isFormValid());
   }
+
   return (
     <div className={styles['signup']}>
       <h1>Sign Up</h1>

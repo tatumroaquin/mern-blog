@@ -31,12 +31,7 @@ export const PersistAuth = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  useEffect(() => {
-    console.log(`isLoading: ${isLoading}`);
-    console.log(`authContext: ${JSON.stringify(auth)}`);
-  }, [isLoading]);
+  });
 
   return (
     <>
