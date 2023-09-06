@@ -6,6 +6,7 @@ interface UsePagination {
   pageLimit?: number;
   dataLength: number;
 }
+export const DOTS = '...';
 
 export const usePagination = ({
   currentPage,
@@ -16,7 +17,6 @@ export const usePagination = ({
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(dataLength / pageLimit);
     const totalPagePills = 5 + siblingCount;
-    const DOTS = '...';
 
     function range(start: number, end: number) {
       const length = end - start + 1;

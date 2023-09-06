@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  padding: 1rem;
+
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--grape);
+    border-radius: 50%;
+    height: 32px;
+    min-width: 32px;
+
+    &:hover {
+      background: var(--goldenrod);
+    }
+
+    &.disabled {
+      pointer-events: none;
+    }
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    &::before {
+      position: relative;
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      display: inline-block;
+      border-left: 3px solid white;
+      border-top: 3px solid white;
+    }
+
+    &.left {
+      transform: rotate(-45deg) translate(15%, 15%)
+    }
+
+    &.right {
+      transform: rotate(135deg) translate(15%, 15%)
+    }
+  }
+
+  .selected {
+    background: var(--pale-green);
+  }
+}
