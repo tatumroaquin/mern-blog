@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface SendRequest {
   url: string;
@@ -59,9 +59,9 @@ export const useHttp = () => {
     []
   );
 
-  // useEffect(() => {
-  //   activeRequests.current.forEach((request) => request.abort());
-  // }, []);
+  useEffect(() => {
+    activeRequests.current.forEach((request) => request.abort());
+  }, []);
 
   return { isLoading, error, setError, sendRequest };
 };
