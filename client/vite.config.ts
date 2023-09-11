@@ -10,6 +10,15 @@ export default ({ mode }) => {
         key: '../ssl/tblog-key.pem',
         cert: '../ssl/tblog-crt.pem',
       },
+      proxy: {
+        '/api': {
+          target: 'https://localhost:3000',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
     plugins: [react()],
   });
