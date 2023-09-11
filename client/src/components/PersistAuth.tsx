@@ -31,7 +31,7 @@ export const PersistAuth = () => {
     return () => {
       isMounted = false;
     };
-  });
+  }, []);
 
   return (
     <>
