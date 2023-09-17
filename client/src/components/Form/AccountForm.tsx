@@ -43,36 +43,36 @@ export const accountForm: IFormObject = {
     }),
     validationRules: [requiredRule('email')],
   } as IInputObject,
-  username: {
+  userName: {
     ...inputFactory({
       label: 'Username',
-      name: 'username',
+      name: 'userName',
       type: 'text',
       placeholder: 'Enter Username',
     }),
     validationRules: [
-      requiredRule('username'),
-      minLengthRule('username', 5),
-      maxLengthRule('username', 25),
+      requiredRule('userName'),
+      minLengthRule('userName', 5),
+      maxLengthRule('userName', 25),
     ],
   } as IInputObject,
   oldPassword: {
     ...inputFactory({
-      label: 'Old Passowrd',
+      label: 'Current Password',
       name: 'oldPassword',
       type: 'password',
-      placeholder: 'Enter Old Password',
+      placeholder: 'Enter Current Password',
     }),
     validationRules: [requiredRule('password')],
   } as IInputObject,
   newPassword: {
     ...inputFactory({
-      label: 'New Passowrd',
+      label: 'New Password',
       name: 'newPassword',
       type: 'password',
       placeholder: 'Enter New Password',
     }),
-    validationRules: [requiredRule('password'), minLengthRule('password', 8)],
+    validationRules: [minLengthRule('newPassword', 8)],
   } as IInputObject,
   confirmPassword: {
     ...inputFactory({
