@@ -17,4 +17,9 @@
   &:active {
     background-color: var(--grape);
   }
+  &:disabled {
+    background-color: dimgrey;
+    color: linen;
+    opacity: 1;
+  }
 }
