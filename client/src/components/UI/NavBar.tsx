@@ -9,9 +9,13 @@ export const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { auth } = useAuth();
   const [isSignedIn, setIsSignedIn] = useState(Boolean(auth?.accessToken));
+  const [isAdmin, setIsAdmin] = useState(
+    Boolean(auth?.roles?.includes('admin'))
+  );
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
+    setIsAdmin(Boolean(auth?.roles?.includes('admin')));
   }, [auth]);
 
   function handleNavLink({ isActive }: { isActive: boolean }) {
@@ -68,6 +72,13 @@ export const NavBar = () => {
           <li className={styles['navbar__item']} key='/auth/signin'>
             <NavLink className={handleNavLink} to='/auth/signin'>
               Sign In
+            </NavLink>
+          </li>
+        )}
+        {isSignedIn && isAdmin && (
+          <li className={styles['navbar__item']} key='/admin'>
+            <NavLink className={handleNavLink} to='/admin'>
+              Admin
             </NavLink>
           </li>
         )}

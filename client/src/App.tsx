@@ -13,6 +13,7 @@ import { ViewUser } from './pages/ViewUser';
 import { PersistAuth } from './components/PersistAuth';
 import { SignOut } from './pages/SignOut';
 import { AllPosts } from './pages/AllPosts';
+import { AdminPanel } from './pages/AdminPanel';
 
 function App() {
   const ROLES = {
@@ -28,7 +29,7 @@ function App() {
           <Route path='about' element={<About />} />
           <Route path='contact' element={<Contact />} />
 
-            <Route path='posts' element={<AllPosts />} />
+          <Route path='posts' element={<AllPosts />} />
 
           <Route path='post'>
             <Route path='view/:slug' element={<ViewPost />} />
@@ -56,9 +57,16 @@ function App() {
 
           <Route
             path='user'
-            element={<ProtectRoute allowedRoles={[ROLES.ADMIN, ROLES.USER]} />}
+            element={<ProtectRoute allowedRoles={[ROLES.USER]} />}
           >
             <Route path='view' element={<ViewUser />} />
+          </Route>
+
+          <Route
+            path='admin'
+            element={<ProtectRoute allowedRoles={[ROLES.ADMIN]} />}
+          >
+            <Route index element={<AdminPanel />} />
           </Route>
         </Route>
       </Route>
