@@ -1,0 +1,24 @@
+.notfound {
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  &__heading {
+    font-size: 3rem;
+    color: var(--majorelle-blue);
+  }
+
+  &__404 {
+    font-size: 12rem;
+    color: var(--light-red);
+  }
+
+  &__description {
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--rich-black);
+  }
+  
+}
