@@ -1,23 +1,37 @@
 import { FC } from 'react';
-import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+
+import remarkGfm from 'remark-gfm';
+import remarkMermaid from 'remark-mermaidjs';
 import oneDark from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 
+import clsx from 'clsx';
 import styles from './MarkDown.module.scss';
 
 interface Markdown {
-  children: string;
+  markdown: string;
   className?: string;
 }
+const onMermaidError = (node: any, _: string): any => {
+  node.value = 'Error while parsing mermaidjs';
+  return node.value === 'mermaid' ? { type: 'html', value: '' } : node;
+};
 
-export const MarkDown: FC<Markdown> = ({ children, className }) => {
+export const MarkDown: FC<Markdown> = ({ markdown, className }) => {
   return (
-    <div className={clsx(styles['markdown'], { [`${className}`]: !!className })}>
+    <div
+      className={clsx(styles['markdown'], { [`${className}`]: !!className })}
+    >
       <ReactMarkdown
-        children={String(children)}
-        remarkPlugins={[remarkGfm]}
+        children={String(markdown)}
+        remarkPlugins={[
+          remarkGfm,
+          [
+            remarkMermaid,
+            { onError: 'fallback', errorFallback: onMermaidError },
+          ],
+        ]}
         components={{
           code({ inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');

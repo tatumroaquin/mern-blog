@@ -1,5 +1,11 @@
 .markdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   font-size: inherit;
+  width: 100%;
+  word-break: break-all;
+
   ol,
   ul {
     margin-left: 1rem;
@@ -7,5 +13,12 @@
     li {
       list-style-position: inside;
     }
+  }
+
+  img,
+  svg[role='graphics-document document'] {
+    margin: 0 auto;
+    display: block;
+    line-height: 1rem;
   }
 }
