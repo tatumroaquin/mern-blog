@@ -32,8 +32,8 @@ export const useHttpPrivate = () => {
       try {
         setIsLoading(true);
         // request intercept check if authorization header is initialised
-        if (!headers['Authorization']) {
-          headers['Authorization'] = `Bearer ${auth?.accessToken}`;
+        if (!headers['authorization']) {
+          headers['authorization'] = `Bearer ${auth?.accessToken}`;
         }
 
         const credentials = withCredentials ? 'include' : 'omit';
@@ -46,13 +46,12 @@ export const useHttpPrivate = () => {
           credentials,
         });
         let data = await response.json();
-        console.log(response.ok, response.status);
 
         // response intercept if unauthorised use token refresh and try again
         if (!response.ok && response.status === 401) {
           const newAccessToken = await refresh();
           console.log('newAccessToken', newAccessToken);
-          headers['Authorization'] = `Bearer ${newAccessToken}`;
+          headers['authorization'] = `Bearer ${newAccessToken}`;
           const newResponse = await fetch(url, {
             method,
             body,
