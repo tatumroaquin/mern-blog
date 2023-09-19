@@ -25,7 +25,7 @@ export interface ISelect {
   errorMessage: string;
   isValid: boolean;
   onChange: (newValue: MultiValue<typeof Option>) => void;
-  options?: Array<{ [string]: any }>;
+  defaultValue?: Array<{ [string]: any }>;
 }
 
 export interface IRenderElement {
@@ -47,7 +47,7 @@ export interface IRenderTextArea extends IRenderElement {
 
 export interface IRenderSelect extends IRenderElement {
   onChange: (items: MultiValue<typeof Option>) => void;
-  options?: Array<{ [string]: any }>;
+  defaultValue?: Array<{ [string]: any }>;
 }
 
 export interface IFactoryElement {
@@ -69,7 +69,7 @@ export interface ITextAreaFactory extends IFactoryElement {
 
 interface ISelectFactory extends IFactoryElement {
   label: string;
-  options?: Array<{ [string]: any }>;
+  defaultValue?: Array<{ [string]: any }>;
 }
 
 export interface IValidationRule {
@@ -87,7 +87,7 @@ export interface IFormObjectElement {
   touched: boolean;
   placeholder?: string;
   validationRules?: IValidationRule[]
-  options?: Array<{ [string]: any }>;
+  defaultValue?: Array<{ [string]: any }>;
 }
 
 export interface IInputObject extends IFormObjectElement {
