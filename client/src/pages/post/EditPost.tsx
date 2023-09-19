@@ -1,4 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card } from '../../components/UI/Card';
 import { MarkDown } from '../../components/UI/MarkDown';
 import { Button } from '../../components/UI/Button';
 import { Spinner } from '../../components/UI/Spinner';
@@ -13,9 +15,10 @@ import styles from './EditPost.module.scss';
 import { useParams } from 'react-router-dom';
 
 export const EditPost = () => {
-  // when added to useEffect setMarkdown causes re-render cycles
-  // because useCallback is not used
+  // when added to useEffect setMarkdown causes re-render cycles because useCallback is not used
+  const navigate = useNavigate();
   const [author, setAuthor] = useState<any>({});
+  const [isAdmin, setIsAdmin] = useState(false);
   const [markdown, setMarkdown] = useLocalStorage('markdown');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState([]);
@@ -23,6 +26,10 @@ export const EditPost = () => {
   const { isLoading, sendRequest } = useHttpPrivate();
   const { auth } = useAuth();
   const { slug } = useParams();
+
+  useEffect(() => {
+    setIsAdmin(Boolean(auth?.roles?.includes('admin')));
+  }, [auth?.roles]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -44,7 +51,10 @@ export const EditPost = () => {
 
   postForm.markdown.value = markdown;
   postForm.description.value = description;
-  postForm.postTags.options = tags.map((tag) => ({ value: tag, label: tag }));
+  postForm.postTags.defaultValue = tags.map((tag) => ({
+    value: tag,
+    label: tag,
+  }));
   const { renderForm } = useForm(postForm);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -90,6 +100,7 @@ export const EditPost = () => {
       abortController,
     });
     console.log(response);
+    navigate('/');
   }
 
   function onChange(e: FormEvent<HTMLFormElement>) {
@@ -105,24 +116,21 @@ export const EditPost = () => {
   return (
     <>
       {isLoading && <Spinner />}
-      {!isLoading && !isPostedBySelf(author) && (
+      {!isLoading && !isPostedBySelf(author) && !isAdmin && (
         <h1>You can only edit your own posts</h1>
       )}
-      {!isLoading && isPostedBySelf(author) && (
+      {((!isLoading && isPostedBySelf(author)) || isAdmin) && (
         <div className={styles['post-edit']}>
           <h1 className={styles['post-edit__title']}>Edit Post</h1>
-          <form
-            onSubmit={onSubmit}
-            onChange={onChange}
-            className={styles['post-edit__form']}
-          >
-            {renderForm()}
-            <Button>Submit</Button>
-          </form>
-          <MarkDown
-            className={styles['post-edit__markdown']}
-            children={markdown ?? ''}
-          />
+          <Card className={styles['post-edit__form']}>
+            <form onSubmit={onSubmit} onChange={onChange}>
+              {renderForm()}
+              <Button>Submit</Button>
+            </form>
+          </Card>
+          <Card className={styles['post-edit__markdown']}>
+            <MarkDown markdown={markdown ?? ''} />
+          </Card>
         </div>
       )}
     </>

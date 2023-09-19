@@ -1,4 +1,6 @@
 import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card } from '../../components/UI/Card';
 import { MarkDown } from '../../components/UI/MarkDown';
 import { Button } from '../../components/UI/Button';
 import { Spinner } from '../../components/UI/Spinner';
@@ -12,6 +14,7 @@ import { useAuth } from '../../hooks/useAuth';
 import styles from './NewPost.module.scss';
 
 export const NewPost = () => {
+  const navigate = useNavigate();
   const [markdown, setMarkdown] = useLocalStorage('markdown');
   const { isLoading, sendRequest } = useHttpPrivate();
   const { auth } = useAuth();
@@ -59,6 +62,7 @@ export const NewPost = () => {
       }),
       abortController,
     });
+    navigate('/');
   }
 
   function onChange(e: FormEvent<HTMLFormElement>) {
@@ -73,18 +77,15 @@ export const NewPost = () => {
       {!isLoading && (
         <div className={styles['post-new']}>
           <h1 className={styles['post-new__title']}>New Post</h1>
-          <form
-            onChange={onChange}
-            onSubmit={onSubmit}
-            className={styles['post-new__form']}
-          >
-            {renderForm()}
-            <Button>Submit</Button>
-          </form>
-          <MarkDown
-            className={styles['post-new__markdown']}
-            children={markdown ?? ''}
-          />
+          <Card className={styles['post-new__form']}>
+            <form onChange={onChange} onSubmit={onSubmit}>
+              {renderForm()}
+              <Button>Submit</Button>
+            </form>
+          </Card>
+          <Card className={styles['post-new__markdown']}>
+            <MarkDown markdown={markdown ?? ''} />
+          </Card>
         </div>
       )}
     </>

@@ -12,6 +12,7 @@ export const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const { isLoading, sendRequest } = useHttpPrivate();
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [dataLength, setDataLength] = useState(0);
@@ -20,7 +21,8 @@ export const AllPosts = () => {
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
-  }, [auth]);
+    setIsAdmin(Boolean(auth?.roles?.includes('admin')));
+  }, [auth, auth?.roles]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -81,6 +83,7 @@ export const AllPosts = () => {
             {posts.map((post: any) => (
               <PostCard
                 key={post.slug}
+                isAdmin={isAdmin}
                 isSignedIn={isSignedIn}
                 isPostedBySelf={isPostedBySelf}
                 handleDeletePost={handleDeletePost}

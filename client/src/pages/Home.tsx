@@ -10,11 +10,13 @@ export const Home = () => {
   const { isLoading, sendRequest } = useHttpPrivate();
 
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { auth } = useAuth();
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
-  }, [auth]);
+    setIsAdmin(Boolean(auth?.roles?.includes('admin')));
+  }, [auth, auth?.roles]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -24,9 +26,8 @@ export const Home = () => {
           url: `${import.meta.env.VITE_SERVER_URL}/post/all?page=1&limit=5`,
           abortController,
         });
-        if (response) {
+        if (response.result) {
           setPosts(response.result.data);
-          console.log(posts);
         }
       } catch (e: any) {
         console.log(e);
@@ -63,10 +64,11 @@ export const Home = () => {
       {isLoading && <Spinner />}
       {!isLoading && posts.length === 0 && <p>No posts found</p>}
       {!isLoading && posts && (
-        <div className={styles['posts']}>
+        <div className={styles['home__posts']}>
           {posts.map((post: any) => (
             <PostCard
               key={post.slug}
+              isAdmin={isAdmin}
               isSignedIn={isSignedIn}
               isPostedBySelf={isPostedBySelf}
               handleDeletePost={handleDeletePost}

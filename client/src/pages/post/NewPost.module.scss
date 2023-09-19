@@ -1,5 +1,5 @@
 .post-new {
-  min-height: 80vh;
+  min-height: 70vh;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
@@ -13,23 +13,24 @@
   }
 
   &__form {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    min-height: inherit;
     outline: none;
+    min-height: inherit;
     grid-row: 2;
     grid-column: 1;
+    form {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
     button {
       align-self: center;
     }
   }
 
   &__markdown {
-    font-size: inherit;
-    word-wrap: break-word;
-    border: 1px solid var(--rich-black);
-    min-height: inherit;
+    display: flex;
+    justify-content: flex-start;
     width: 100%;
     grid-row: 2;
     grid-column: 2;

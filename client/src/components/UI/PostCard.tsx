@@ -8,6 +8,7 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styles from './PostCard.module.scss';
 
 interface PostCard {
+  isAdmin: boolean;
   isSignedIn: boolean;
   isPostedBySelf: (username: string) => boolean;
   handleDeletePost: (slug: string) => Promise<any>;
@@ -15,6 +16,7 @@ interface PostCard {
 }
 
 export const PostCard: FC<PostCard> = ({
+  isAdmin,
   isSignedIn,
   isPostedBySelf,
   handleDeletePost,
@@ -47,7 +49,7 @@ export const PostCard: FC<PostCard> = ({
             </Link>
           </b>
         </div>
-        {isSignedIn && isPostedBySelf(post.author.userName) && (
+        {isSignedIn && (isPostedBySelf(post.author.userName) || isAdmin) && (
           <div className={styles['post__card--buttons']}>
             <Link to={`/post/edit/${post.slug}`}>
               <Button className={styles['post__card--edit']}>
