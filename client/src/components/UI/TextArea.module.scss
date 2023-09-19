@@ -1,10 +1,11 @@
 .ta {
   display: flex;
   flex-direction: column;
-  height: 100%;
   margin-bottom: 0.5rem;
+  flex-grow: 1;
   &__field {
     height: 100%;
+    resize: none;
   }
   &__error {
     color: red;
