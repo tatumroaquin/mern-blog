@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
 
   line-height: 1.5rem;
   margin: 2rem auto;
@@ -13,14 +12,13 @@
     font-size: 2rem;
     text-align: center;
   }
+
   &__data {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-}
-.pagination {
 }
 
 @media only screen and (max-width: 576px) {

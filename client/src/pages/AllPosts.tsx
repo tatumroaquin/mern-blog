@@ -76,7 +76,6 @@ export const AllPosts = () => {
             currentPage={currentPage}
             pageLimit={pageLimit}
             onPageChange={setCurrentPage}
-            className={styles['pagination']}
           />
           <div className={styles['all-posts__data']}>
             {posts.map((post: any) => (
@@ -94,7 +93,6 @@ export const AllPosts = () => {
             currentPage={currentPage}
             pageLimit={pageLimit}
             onPageChange={setCurrentPage}
-            className={styles['pagination']}
           />
         </>
       )}
