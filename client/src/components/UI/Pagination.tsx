@@ -9,7 +9,7 @@ interface Pagination {
   pageLimit: number;
   siblingCount?: number;
   onPageChange: (page: number) => void;
-  className: string;
+  className?: string;
 }
 
 export const Pagination: FC<Pagination> = ({
@@ -18,7 +18,7 @@ export const Pagination: FC<Pagination> = ({
   pageLimit,
   siblingCount,
   onPageChange,
-  className,
+  className = '',
 }) => {
   const paginationRange = usePagination({
     dataLength,
