@@ -43,17 +43,17 @@ export const signUpForm: IFormObject = {
     }),
     validationRules: [requiredRule('email')],
   } as IInputObject,
-  username: {
+  userName: {
     ...inputFactory({
       label: 'Username',
-      name: 'username',
+      name: 'userName',
       type: 'text',
       placeholder: 'Enter Username',
     }),
     validationRules: [
-      requiredRule('username'),
-      minLengthRule('username', 5),
-      maxLengthRule('username', 25),
+      requiredRule('userName'),
+      minLengthRule('userName', 5),
+      maxLengthRule('userName', 25),
     ],
   } as IInputObject,
   password: {
