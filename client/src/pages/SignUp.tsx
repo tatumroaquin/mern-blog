@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/UI/Button';
 import { Link } from 'react-router-dom';
 
@@ -6,13 +7,40 @@ import { signUpForm } from '../components/Form/SignUpForm';
 import { useForm } from '../hooks/useForm';
 
 import styles from './SignUp.module.scss';
+import { useHttp } from '../hooks/useHttp';
 
 export const SignUp = () => {
-  const { renderForm, isFormValid } = useForm(signUpForm);
+  const navigate = useNavigate();
+  const { renderForm } = useForm(signUpForm);
+  const { sendRequest } = useHttp();
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(isFormValid());
+
+    const { firstName, lastName, userName, email, password, confirmPassword } =
+      e.target as HTMLFormElement;
+
+    const body = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      userName: userName.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value,
+    };
+    const abortController = new AbortController();
+    const response = await sendRequest({
+      url: `${import.meta.env.VITE_SERVER_URL}/auth/signup`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+      abortController,
+      withCredentials: true
+    });
+    console.log('RESPONSE', response);
+    navigate('/');
   }
 
   return (
