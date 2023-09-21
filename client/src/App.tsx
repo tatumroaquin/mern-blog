@@ -15,6 +15,7 @@ import { SignOut } from './pages/SignOut';
 import { AllPosts } from './pages/AllPosts';
 import { AdminPanel } from './pages/AdminPanel';
 import { NotFound } from './pages/NotFound';
+import { Unauthorised } from './pages/Unauthorised';
 
 function App() {
   const ROLES = {
@@ -70,6 +71,7 @@ function App() {
             <Route index element={<AdminPanel />} />
           </Route>
           <Route path='*' element={<NotFound/>} />
+          <Route path='/unauthorised' element={<Unauthorised/>} />
         </Route>
       </Route>
     </Routes>
