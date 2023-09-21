@@ -1,47 +1,76 @@
 import { FC, FormEvent, useEffect } from 'react';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
-import { useAuth } from '../hooks/useAuth';
-import { jwtDecode } from '../utility/jwtDecode';
-
 import { Spinner } from '../components/UI/Spinner';
 import { Button } from '../components/UI/Button';
-import styles from './ViewUser.module.scss';
+import { useHttpPrivate } from '../hooks/useHttpPrivate';
 import { useForm } from '../hooks/useForm';
+import { useAuth } from '../hooks/useAuth';
+import { jwtDecode } from '../utility/jwtDecode';
 import { accountForm } from '../components/Form/AccountForm';
+import styles from './ViewUser.module.scss';
 
 export const ViewUser: FC = () => {
   const { isLoading, sendRequest } = useHttpPrivate();
   const { auth } = useAuth();
+  const { form, renderForm, isFormValid } = useForm(accountForm);
+  const user = jwtDecode(auth?.accessToken || '');
 
   useEffect(() => {
     const abortController = new AbortController();
-    if (!auth?.accessToken) {
-      console.log('User is not authenticated');
+    const fetchUser = async () => {
+      const data = await sendRequest({
+        url: `${import.meta.env.VITE_SERVER_URL}/user/view/${user.id}`,
+        abortController,
+      });
+
+      const fields = ['firstName', 'lastName', 'userName', 'email'];
+      for (const key of Object.keys(form)) {
+        if (fields.includes(key)) {
+          form[key].value = data[key];
+        }
+        form[key].valid = true;
+      }
+      form.oldPassword.valid = false;
+    };
+    fetchUser();
+  }, [auth?.accessToken, user.id, sendRequest]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    const target = e.target as HTMLFormElement;
+
+    if (target.newPassword?.value !== target.confirmPassword?.value) {
+      console.log('new and confirm passwords do not match');
       return;
     }
 
-    const user = jwtDecode(auth.accessToken);
-    const { id } = user;
-    console.log('AT Details', user);
+    const abortController = new AbortController();
+    const body: { [x: string]: string } = {};
+    const keys: string[] = [
+      'firstName',
+      'lastName',
+      'userName',
+      'email',
+      'oldPassword',
+      'newPassword',
+    ];
 
-    const fetchUser = async () => {
-      const data = await sendRequest({
-        url: `${import.meta.env.VITE_SERVER_URL}/user/${id}`,
-        abortController,
-      });
-      accountForm.firstName.value = data.firstName;
-      accountForm.lastName.value = data.firstName;
-      accountForm.username.value = data.userName;
-      accountForm.email.value = data.email;
-      console.log(data);
-    };
-    fetchUser();
-  }, [auth?.accessToken, sendRequest]);
+    for (const key of keys) {
+      body[key] = target[key].value;
+    }
+    body.userId = user.id;
 
-  const { renderForm } = useForm(accountForm);
+    const response = await sendRequest({
+      url: `${import.meta.env.VITE_SERVER_URL}/user/edit/${user.id}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+      abortController,
+    });
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+    console.log(response);
   }
 
   return (
@@ -53,7 +82,13 @@ export const ViewUser: FC = () => {
         {!isLoading && (
           <form className={styles['user-form__form']} onSubmit={handleSubmit}>
             {renderForm()}
-            <Button className={styles['user-form__button']}>Update</Button>
+            <Button
+              type='submit'
+              className={styles['user-form__button']}
+              disabled={!isFormValid()}
+            >
+              Update
+            </Button>
           </form>
         )}
       </article>
