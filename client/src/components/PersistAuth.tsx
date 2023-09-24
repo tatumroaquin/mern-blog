@@ -35,9 +35,8 @@ export const PersistAuth = () => {
 
   return (
     <>
-      {!persist && <Outlet />}
-      {persist && isLoading && <Spinner />}
-      {persist && !isLoading && <Outlet />}
+      {isLoading && <Spinner />}
+      {!isLoading && <Outlet />}
     </>
   );
 };
