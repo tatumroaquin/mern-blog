@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react';
+
+import { Spinner } from '../components/UI/Spinner';
+
 import { useAuth } from '../hooks/useAuth';
 import { useHttpPrivate } from '../hooks/useHttpPrivate';
-import { Spinner } from '../components/UI/Spinner';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export const SignOut: FC = () => {
