@@ -3,8 +3,11 @@ import {
   verifyAccessToken,
   verifyRefreshToken,
 } from '../middlewares/verify.token.js';
+import { paginate } from '../middlewares/paginate.js';
+import { checkRole } from '../middlewares/role.checker.js';
 import {
   getUserByIdController,
+  getAllUsersController,
   editUserController,
 } from '../controllers/user.controller.js';
 import { editUserValidator } from '../middlewares/user.validator.js';
@@ -13,7 +16,16 @@ import { verifyUserId } from '../middlewares/verify.userid.js';
 const router = Router();
 
 router.get(
-  '/:id',
+  '/all',
+  verifyAccessToken,
+  verifyRefreshToken,
+  paginate('users'),
+  checkRole('admin'),
+  getAllUsersController
+);
+
+router.get(
+  '/view/:id',
   verifyAccessToken,
   verifyRefreshToken,
   verifyUserId,
@@ -22,7 +34,9 @@ router.get(
 router.post(
   '/edit/:id',
   verifyAccessToken,
+  verifyRefreshToken,
   editUserValidator,
+  verifyUserId,
   editUserController
 );
 

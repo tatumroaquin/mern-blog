@@ -8,28 +8,23 @@ interface IUserRequest extends Request {
   refreshTokenPayload?: JwtPayload | { id: string };
 }
 
+export async function getAllUsersController(_: Request, res: Response) {
+  const { result } = res.locals;
+  res.json({ result });
+}
+
 export async function getUserByIdController(req: IUserRequest, res: Response) {
   const userId = req.params.id;
-  const RTPayload = req.refreshTokenPayload;
 
-  let token;
+  let user: any;
   try {
-    token = await Token.findOne({ userId });
+    user = await User.findOne({ _id: userId }, { passwordHash: false });
   } catch (e: any) {
-    return res.status(403).json({ error: e.message });
+    return res.status(500).json({ error: e.message });
   }
 
-  if (!token?.userId.equals(RTPayload?.id))
-    return res
-      .status(403)
-      .json({ error: "You cannot view other people's accounts" });
-
-  const user = await User.findOne(
-    { _id: userId },
-    { passwordHash: false }
-  );
-
   if (!user) return res.sendStatus(404);
+
   res.json(user);
 }
 
@@ -54,11 +49,13 @@ export async function editUserController(req: Request, res: Response) {
     });
 
   try {
+    if (newPassword) user.password = newPassword;
+
     user.userName = userName;
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
-    user.password = newPassword;
+
     await user.save();
   } catch (e: any) {
     return res.json({ error: e.message });
