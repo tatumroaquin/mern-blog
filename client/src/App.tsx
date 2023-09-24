@@ -1,18 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/UI/Layout';
 import { Home } from './pages/Home';
-import { ViewPost } from './pages/post/ViewPost';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
-import { NewPost } from './pages/post/NewPost';
-import { EditPost } from './pages/post/EditPost';
 import { ProtectRoute } from './components/ProtectRoute';
 import { ViewUser } from './pages/ViewUser';
 import { PersistAuth } from './components/PersistAuth';
 import { SignOut } from './pages/SignOut';
+import { ViewPost } from './pages/post/ViewPost';
 import { AllPosts } from './pages/AllPosts';
+import { SearchPost } from './pages/post/SearchPost';
+import { NewPost } from './pages/post/NewPost';
+import { EditPost } from './pages/post/EditPost';
 import { AdminPanel } from './pages/AdminPanel';
 import { NotFound } from './pages/NotFound';
 import { Unauthorised } from './pages/Unauthorised';
@@ -31,7 +32,10 @@ function App() {
           <Route path='about' element={<About />} />
           <Route path='contact' element={<Contact />} />
 
-          <Route path='posts' element={<AllPosts />} />
+          <Route path='post' >
+            <Route path='all' element={<AllPosts />}/>
+            <Route path='search' element={<SearchPost />}/>
+          </Route>
 
           <Route path='post'>
             <Route path='view/:slug' element={<ViewPost />} />

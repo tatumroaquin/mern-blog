@@ -5,6 +5,13 @@ import clsx from 'clsx';
 import { useAuth } from '../../hooks/useAuth';
 import styles from './NavBar.module.scss';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
+import {
+  faMagnifyingGlass,
+  faArrowRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
+
 export const NavBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { auth } = useAuth();
@@ -22,11 +29,11 @@ export const NavBar = () => {
     return isActive ? styles['navbar__link--active'] : styles['navbar__link'];
   }
 
-  function handleButton({ isActive }: { isActive: boolean }) {
-    return isActive
-      ? styles['navbar__button--active']
-      : styles['navbar__button'];
-  }
+  // function handleButton({ isActive }: { isActive: boolean }) {
+  //   return isActive
+  //     ? styles['navbar__button--active']
+  //     : styles['navbar__button'];
+  // }
 
   return (
     <nav className={styles['navbar']}>
@@ -56,8 +63,8 @@ export const NavBar = () => {
           [`${styles['navbar__items--expanded']}`]: isExpanded,
         })}
       >
-        <li className={styles['navbar__item']} key='/posts'>
-          <NavLink className={handleNavLink} to='/posts'>
+        <li className={styles['navbar__item']} key='/post/all'>
+          <NavLink className={handleNavLink} to='/post/all'>
             All Posts
           </NavLink>
         </li>
@@ -92,27 +99,27 @@ export const NavBar = () => {
             Contact
           </NavLink>
         </li>
+        <li className={styles['navbar__item']} key='/post/search'>
+          <NavLink className={handleNavLink} to='/post/search'>
+            {!isExpanded && <FontAwesomeIcon icon={faMagnifyingGlass} />}
+            {isExpanded && 'Search'}
+          </NavLink>
+        </li>
         {isSignedIn && (
           <li className={styles['navbar__item']} key='/user/view'>
             <NavLink className={handleNavLink} to='/user/view'>
-              {!isExpanded && (
-                <img
-                  className={styles['navbar__profile']}
-                  src='/account2.png'
-                  alt='user account icon'
-                />
-              )}
+              {!isExpanded && <FontAwesomeIcon icon={faCircleUser} size='lg' />}
               {isExpanded && 'Account'}
             </NavLink>
           </li>
         )}
         {isSignedIn && (
           <li className={styles['navbar__item']} key='/auth/logout'>
-            <Button>
-              <NavLink className={handleButton} to='/auth/logout'>
-                Logout
-              </NavLink>
-            </Button>
+            <NavLink to='/auth/logout'>
+              <Button className={styles['navbar__item--logout']}>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} />
+              </Button>
+            </NavLink>
           </li>
         )}
       </ul>

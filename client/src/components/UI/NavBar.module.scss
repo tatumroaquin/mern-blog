@@ -3,7 +3,8 @@
   min-height: 2rem;
   display: flex;
   align-items: center;
-  padding: 0 5%;
+  padding-left: 1vw;
+  padding-right: 1vw;
   justify-content: space-between;
   font-size: 1.5rem;
   width: 100%;
@@ -14,18 +15,15 @@
     justify-content: space-between;
     gap: 2rem;
   }
+
   &__item {
     list-style-type: none;
+    &--logout {
+      font-size: 1rem;
+    }
   }
+
   &__button {
-    text-decoration: none;
-    color: white;
-  }
-  &__button:hover {
-    text-decoration: none;
-    color: white;
-  }
-  &__button--active {
     text-decoration: none;
     color: white;
   }
