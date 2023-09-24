@@ -42,10 +42,14 @@ const postSchema: Schema = new Schema<PostSchema>({
   },
 });
 
-postSchema.pre('validate', function () {
+postSchema.pre('validate', function (next) {
   if (this.title) {
     this.slug = slugify(this.title, { lower: true, trim: true, strict: true });
   }
+  this.updatedAt = Date.now();
+  next();
 });
+
+postSchema.index({ '$**' : 'text' });
 
 export default model('Post', postSchema);

@@ -3,7 +3,8 @@ import slugify from 'slugify';
 import Post from '../models/Post.model.js';
 
 interface IUserRequest extends Request {
-  user?: { id: string; roles: string[] };
+  at_user?: { id: string; roles: string[] };
+  rt_user?: { id: string; roles: string[] };
 }
 
 export async function createPostController(req: IUserRequest, res: Response) {
@@ -43,12 +44,11 @@ export async function getPostBySlugController(req: Request, res: Response) {
         $unset: [
           'userId',
           'author.email',
-          'author.roles',
           'author.passwordHash',
         ],
       },
     ]);
-    if (!post) {
+    if (post.length === 0) {
       return res.status(404).json({ error: 'Post does not exist' });
     }
     return res.json({ success: 'Post retrieved', post: post[0] });
@@ -67,7 +67,12 @@ export async function getPostsByUserIdController(req: Request, res: Response) {
   res.json({ success: `Posts by ${userId} retrieved`, posts });
 }
 
-export async function getAllPostsController(req: Request, res: Response) {
+export async function searchPostsController(_: Request, res: Response) {
+  const { result } = res.locals;
+  res.json({ success: `Matching posts retrieved`, result });
+}
+
+export async function getAllPostsController(_: Request, res: Response) {
   const { result } = res.locals;
 
   try {
@@ -85,13 +90,17 @@ export async function updatePostController(req: IUserRequest, res: Response) {
 
   if (!post) return res.status(404).json({ error: 'Post not found' });
 
-
   //https://stackoverflow.com/a/11638106
-  if (!post.userId.equals(userId))
+  if (!post.userId.equals(userId) && !req?.at_user?.roles.includes('admin'))
     return res.status(401).json({ error: 'You can only edit your own posts' });
 
   try {
-    await post.updateOne({ title, description, markdown, tags });
+    post.title = title;
+    post.description = description;
+    post.markdown = markdown;
+    post.tags = tags;
+    // save triggers 'validate' hooks
+    await post.save();
   } catch (error: any) {
     return res.status(500).json({ error });
   }
@@ -104,7 +113,10 @@ export async function deletePostController(req: IUserRequest, res: Response) {
 
   if (!post) return res.status(404).json({ error: 'Post not found' });
 
-  if (post.userId.equals(req.user?.id))
+  if (
+    !post.userId.equals(req.rt_user?.id) &&
+    !req?.rt_user?.roles.includes('admin')
+  )
     return res
       .status(401)
       .json({ error: 'You can only delete your own posts' });
