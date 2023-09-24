@@ -4,13 +4,14 @@ import { ISelectFactory, IRenderSelect, ISelectObject } from '../types';
 export const selectFactory = ({
   label,
   name,
-  defaultValue = '',
   placeholder = '',
+  defaultValue = [],
 }: ISelectFactory): ISelectObject => {
   return {
     type: 'select',
     name,
-    value: defaultValue,
+    value: '',
+    defaultValue,
     valid: false,
     errorMessage: '',
     placeholder,
