@@ -16,8 +16,6 @@ const router = Router();
 
 router.post(
   '/signup',
-  verifyAccessToken,
-  checkRole('admin'),
   userSignUpValidator,
   runValidation,
   userSignUpController
