@@ -19,6 +19,7 @@ export const Select: FC<ISelect> = ({
       </label>
       <CreatableSelect
         isMulti={true}
+        id={name}
         name={name}
         placeholder={placeholder}
         onChange={onChange}

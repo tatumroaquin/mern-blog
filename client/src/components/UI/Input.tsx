@@ -18,6 +18,7 @@ export const Input = ({
       </label>
       <input
         className={styles['input__field']}
+        id={name}
         name={name}
         placeholder={placeholder}
         type={type}
