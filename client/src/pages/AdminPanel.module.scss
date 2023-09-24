@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin: 3rem auto;
-  width: 60rem;
+  width: 99vw;
 
   a {
     text-decoration: none;
@@ -18,7 +18,7 @@
     width: 100%;
     text-align: center;
     word-wrap: break-word;
-    table-layout: auto;
+    table-layout: fixed;
     border-collapse: collapse;
     th,
     td {
@@ -41,10 +41,5 @@
   &--delete {
     padding: 0 0.8rem;
     background-color: var(--light-red);
-  }
-}
-@media only screen and (max-width: 1085px) {
-  .admin {
-    width: 100vw;
   }
 }
