@@ -7,22 +7,30 @@ interface Page {
   page: number;
   limit: number;
 }
+//https://stackoverflow.com/a/48307554
 
-export const paginate = (modelName: string, reverse?: boolean) => {
+export const search = (modelName: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
+    const { q } = req.query;
+
+    if (!q) {
+      return res.json({ error: 'No query string provided' });
+    }
 
     let total = 0;
     switch (modelName) {
-      case 'posts':
-        total = (await Post.countDocuments()) || 0;
+      case 'posts': {
+        total = await Post.find({ $text: { $search: q as string } }).count();
         break;
-      case 'users':
-        total = (await User.countDocuments()) || 0;
+      }
+      case 'users': {
+        total = await Post.find({ $text: { $search: q as string } }).count();
         break;
+      }
     }
 
     const page = +req.query.page! || 1;
-    const limit = +req.query.limit! || total;
+    const limit = +req.query.limit! || total || 1;
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -42,14 +50,11 @@ export const paginate = (modelName: string, reverse?: boolean) => {
     }
 
     const pipeline: PipelineStage[] = [
+      { $match: { $text: { $search: q as string } } },
       { $skip: startIndex },
       { $limit: limit },
-      { $sort: { _id: -1 } },
+      { $sort: { $score: { $meta: 'textScore' } } },
     ];
-
-    if (reverse) {
-      pipeline.unshift(pipeline.pop() as PipelineStage);
-    }
 
     switch (modelName) {
       case 'posts': {
@@ -65,17 +70,14 @@ export const paginate = (modelName: string, reverse?: boolean) => {
           },
           { $unwind: '$author' },
           {
-            $unset: ['markdown', 'userId', 'author.email', 'author.roles', 'author.passwordHash'],
+            $unset: [
+              'markdown',
+              'userId',
+              'author.email',
+              'author.roles',
+              'author.passwordHash',
+            ],
           },
-        ]);
-        break;
-      }
-      case 'users': {
-        result.data = await User.aggregate([
-          ...pipeline,
-          {
-            $unset: ['passwordHash']
-          }
         ]);
         break;
       }
