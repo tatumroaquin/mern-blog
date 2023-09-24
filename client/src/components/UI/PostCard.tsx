@@ -1,17 +1,18 @@
 import { FC } from 'react';
-import { Card } from './Card';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+
+import { Card } from './Card';
+import { Button } from './Button';
+
 import styles from './PostCard.module.scss';
 
 interface PostCard {
   isAdmin: boolean;
   isSignedIn: boolean;
   isPostedBySelf: (username: string) => boolean;
-  handleDeletePost: (slug: string) => Promise<any>;
+  onDeletePost: (slug: string) => void;
   post: any;
 }
 
@@ -19,7 +20,7 @@ export const PostCard: FC<PostCard> = ({
   isAdmin,
   isSignedIn,
   isPostedBySelf,
-  handleDeletePost,
+  onDeletePost,
   post,
 }) => {
   return (
@@ -58,7 +59,7 @@ export const PostCard: FC<PostCard> = ({
             </Link>
             <Button
               className={styles['post__card--delete']}
-              onClick={async () => await handleDeletePost(post.slug)}
+              onClick={() => onDeletePost(post.slug)}
             >
               <FontAwesomeIcon icon={faTrashCan} />
             </Button>
