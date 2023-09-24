@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
+
 import { PostCard } from '../components/UI/PostCard';
 import { Spinner } from '../components/UI/Spinner';
 import { Pagination } from '../components/UI/Pagination';
+import { ConfirmModal } from '../components/UI/ConfirmModal';
+
 import { useAuth } from '../hooks/useAuth';
 import { useHttpPrivate } from '../hooks/useHttpPrivate';
 import styles from './AllPosts.module.scss';
 
-const pageLimit = 5;
+const pageLimit = 10;
 
 export const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const { isLoading, sendRequest } = useHttpPrivate();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [slug, setSlug] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [dataLength, setDataLength] = useState(0);
@@ -65,40 +70,63 @@ export const AllPosts = () => {
     }
   }
 
+  function onDeletePost(slug: string) {
+    setSlug(slug);
+    setShowModal(true);
+  }
+
+  async function onConfirm() {
+    setShowModal(false);
+    await handleDeletePost(slug);
+  }
+
+  function onCancel() {
+    setShowModal(false);
+  }
+
   return (
-    <article className={styles['all-posts']}>
-      <h1 className={styles['all-posts__title']}>All Posts</h1>
-      <br />
-      {isLoading && <Spinner />}
-      {!isLoading && posts.length === 0 && <p>No posts found</p>}
-      {!isLoading && posts && (
-        <>
-          <Pagination
-            dataLength={dataLength}
-            currentPage={currentPage}
-            pageLimit={pageLimit}
-            onPageChange={setCurrentPage}
-          />
-          <div className={styles['all-posts__data']}>
-            {posts.map((post: any) => (
-              <PostCard
-                key={post.slug}
-                isAdmin={isAdmin}
-                isSignedIn={isSignedIn}
-                isPostedBySelf={isPostedBySelf}
-                handleDeletePost={handleDeletePost}
-                post={post}
-              />
-            ))}
-          </div>
-          <Pagination
-            dataLength={dataLength}
-            currentPage={currentPage}
-            pageLimit={pageLimit}
-            onPageChange={setCurrentPage}
-          />
-        </>
-      )}
-    </article>
+    <>
+      <ConfirmModal
+        show={showModal}
+        header='Confirm delete action'
+        message="This action is permanent and cannot be reversed! Are you sure you want to delete this post?"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
+      <article className={styles['all-posts']}>
+        <h1 className={styles['all-posts__title']}>All Posts</h1>
+        <br />
+        {isLoading && <Spinner />}
+        {!isLoading && posts.length === 0 && <p>No posts found</p>}
+        {!isLoading && posts && (
+          <>
+            <Pagination
+              dataLength={dataLength}
+              currentPage={currentPage}
+              pageLimit={pageLimit}
+              onPageChange={setCurrentPage}
+            />
+            <div className={styles['all-posts__data']}>
+              {posts.map((post: any) => (
+                <PostCard
+                  key={post.slug}
+                  isAdmin={isAdmin}
+                  isSignedIn={isSignedIn}
+                  isPostedBySelf={isPostedBySelf}
+                  onDeletePost={onDeletePost}
+                  post={post}
+                />
+              ))}
+            </div>
+            <Pagination
+              dataLength={dataLength}
+              currentPage={currentPage}
+              pageLimit={pageLimit}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
+      </article>
+    </>
   );
 };
