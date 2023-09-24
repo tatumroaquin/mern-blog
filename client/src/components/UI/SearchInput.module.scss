@@ -1,0 +1,14 @@
+.searchinput {
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--rich-black);
+  background-color: var(--cultured);
+  padding: 0.5rem;
+  color: var(--rich-black);
+  outline: none;
+
+  &:focus {
+    border-color: var(--goldenrod);
+  }
+}
