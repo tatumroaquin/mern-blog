@@ -1,4 +1,5 @@
 import { FC, FormEvent, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './SearchPost.module.scss';
 
 import { SearchBar } from '../../components/UI/SearchBar';
@@ -20,28 +21,36 @@ export const SearchPost: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const { auth } = useAuth();
+  const location = useLocation();
+  const search = new URLSearchParams(location.search);
+  const query = search.get('q');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
     setIsAdmin(Boolean(auth?.roles?.includes('admin')));
   }, [auth, auth?.roles]);
 
+  useEffect(() => {
+    searchPosts();
+    async function searchPosts() {
+      const abortController = new AbortController();
+      const response = await sendRequest({
+        url: `${import.meta.env.VITE_SERVER_URL}/post/search?q=${query}`,
+        abortController,
+      });
+      if (response.result.data) {
+        setPosts(response.result.data);
+      }
+    }
+  }, [query, sendRequest]);
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const query = target.search.value;
-    const abortController = new AbortController();
-    const response = await sendRequest({
-      url: `${import.meta.env.VITE_SERVER_URL}/post/search?q=${query}`,
-      abortController,
-    });
-    if (response.result.data) {
-      setPosts(response.result.data);
-    }
-  }
-
-  function isPostedBySelf(username: string): boolean {
-    return auth?.username === username;
+    const searchQuery = target.search.value;
+    navigate(`/post/search?q=${searchQuery}`);
   }
 
   async function handleDeletePost(slug: string) {
@@ -72,6 +81,10 @@ export const SearchPost: FC = () => {
 
   function onCancel() {
     setShowModal(false);
+  }
+
+  function isPostedBySelf(username: string): boolean {
+    return auth?.username === username;
   }
 
   return (
