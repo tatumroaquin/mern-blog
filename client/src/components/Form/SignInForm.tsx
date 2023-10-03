@@ -19,7 +19,7 @@ export const signInForm: IFormObject = {
       name: 'password',
       type: 'password',
       placeholder: 'Enter Password',
-      defaultValue: 'Passw0rd12345',
+      defaultValue: 'P@ssw0rd12345',
     }),
     validationRules: [requiredRule('password')],
   } as IInputObject,
