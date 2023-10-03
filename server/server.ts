@@ -6,6 +6,8 @@ import cors from './middlewares/cors.js';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
 
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
@@ -17,13 +19,14 @@ dotenv.config({ path: '../.env' });
 
 const app = express();
 
-app.disable('x-powered-by');
+app.use(helmet());
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan('tiny'));
+app.use(mongoSanitize())
 
 mongoose
   .connect(process.env.MONGODB_URI!)
