@@ -14,6 +14,7 @@ import {
   createPostValidator,
   getPostBySlugValidator,
   getPostByUserIdValidator,
+  updatePostValidator,
 } from '../middlewares/post.validator.js';
 import {
   verifyAccessToken,
@@ -22,6 +23,7 @@ import {
 import { verifyUserId } from '../middlewares/verify.userid.js';
 import { paginate } from '../middlewares/paginate.js';
 import { search } from '../middlewares/search.js';
+import { runValidation } from '../middlewares/run-validator.js';
 
 const router = Router();
 
@@ -29,12 +31,19 @@ router.post(
   '/new',
   verifyAccessToken,
   createPostValidator,
+  runValidation,
   createPostController
 );
-router.get('/view/:postSlug', getPostBySlugValidator, getPostBySlugController);
+router.get(
+  '/view/:postSlug',
+  getPostBySlugValidator,
+  runValidation,
+  getPostBySlugController
+);
 router.get(
   '/uid/:userId',
   getPostByUserIdValidator,
+  runValidation,
   getPostsByUserIdController
 );
 router.get('/all', paginate('posts', true), getAllPostsController);
@@ -44,6 +53,8 @@ router.put(
   verifyAccessToken,
   verifyRefreshToken,
   verifyUserId,
+  updatePostValidator,
+  runValidation,
   updatePostController
 );
 router.delete(
