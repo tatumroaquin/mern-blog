@@ -6,6 +6,7 @@ import { MarkDown } from '../../components/UI/MarkDown';
 import { Button } from '../../components/UI/Button';
 import { Spinner } from '../../components/UI/Spinner';
 import { ConfirmModal } from '../../components/UI/ConfirmModal';
+import { ErrorModal } from '../../components/UI/ErrorModal';
 
 import { postForm } from '../../components/Form/PostForm';
 import { useForm } from '../../hooks/useForm';
@@ -26,7 +27,7 @@ export const EditPost = () => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState<string[]>([]);
 
-  const { isLoading, sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
   const { auth } = useAuth();
   const { slug } = useParams();
   const { form, renderForm } = useForm(postForm);
@@ -78,6 +79,8 @@ export const EditPost = () => {
   }
 
   async function handleConfirm() {
+    setShowConfirm(false);
+
     let { markdown, description, postTags } =
       formRef.current as HTMLFormElement;
 
@@ -102,7 +105,7 @@ export const EditPost = () => {
     const user = jwtDecode(auth?.accessToken || '');
 
     const abortController = new AbortController();
-    await sendRequest({
+    const response = await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/post/edit/${slug}`,
       method: 'PUT',
       headers: {
@@ -117,8 +120,8 @@ export const EditPost = () => {
       }),
       abortController,
     });
-    setShowConfirm(false);
-    navigate('/post/all');
+    if (!response.error) navigate('/post/all');
+    console.log('RES', response);
   }
 
   function handleCancel() {
@@ -133,6 +136,12 @@ export const EditPost = () => {
         message='This action cannot be reversed, are you sure you want to edit this post?'
         onConfirm={handleConfirm}
         onCancel={handleCancel}
+      />
+      <ErrorModal
+        show={!!error}
+        header='An error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
       />
       {isLoading && <Spinner />}
       {/* // [ loadState and (self or admin) ] do not change the logical order or else tags won't appear properly */}

@@ -1,18 +1,19 @@
 import { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from './SignUp.module.scss';
+
 import { Button } from '../components/UI/Button';
-import { Link } from 'react-router-dom';
+import { ErrorModal } from '../components/UI/ErrorModal';
+
+import { useForm } from '../hooks/useForm';
+import { useHttp } from '../hooks/useHttp';
 
 import { signUpForm } from '../components/Form/SignUpForm';
-import { useForm } from '../hooks/useForm';
-
-import styles from './SignUp.module.scss';
-import { useHttp } from '../hooks/useHttp';
 
 export const SignUp = () => {
   const navigate = useNavigate();
   const { renderForm } = useForm(signUpForm);
-  const { sendRequest } = useHttp();
+  const { sendRequest, error, setError } = useHttp();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -37,22 +38,30 @@ export const SignUp = () => {
       },
       body: JSON.stringify(body),
       abortController,
-      withCredentials: true
+      withCredentials: true,
     });
-    console.log('RESPONSE', response);
-    navigate('/');
+    if (!response.error) navigate('/auth/signin');
+    console.log('RES', response);
   }
 
   return (
-    <div className={styles['signup']}>
-      <h1>Sign Up</h1>
-      <form className={styles['signup__form']} onSubmit={handleSubmit}>
-        {renderForm()}
-        <Button className={styles['signup__button']}>Sign Up</Button>
-        <p className={styles['signin__link']}>
-          Already have an account? <Link to='/auth/signin'>Sign In</Link>
-        </p>
-      </form>
-    </div>
+    <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
+      />
+      <div className={styles['signup']}>
+        <h1>Sign Up</h1>
+        <form className={styles['signup__form']} onSubmit={handleSubmit}>
+          {renderForm()}
+          <Button className={styles['signup__button']}>Sign Up</Button>
+          <p className={styles['signin__link']}>
+            Already have an account? <Link to='/auth/signin'>Sign In</Link>
+          </p>
+        </form>
+      </div>
+    </>
   );
 };

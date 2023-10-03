@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { PostCard } from '../components/UI/PostCard';
 import { Spinner } from '../components/UI/Spinner';
 import { ConfirmModal } from '../components/UI/ConfirmModal';
+import { ErrorModal } from '../components/UI/ErrorModal';
 
 import { useAuth } from '../hooks/useAuth';
 import { useHttpPrivate } from '../hooks/useHttpPrivate';
@@ -11,7 +12,7 @@ import styles from './Home.module.scss';
 
 export const Home = () => {
   const [posts, setPosts] = useState([]);
-  const { isLoading, sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -47,8 +48,6 @@ export const Home = () => {
     return auth?.username === username;
   }
 
-
-
   async function handleDeletePost(slug: string) {
     try {
       const abortController = new AbortController();
@@ -82,6 +81,12 @@ export const Home = () => {
 
   return (
     <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
+      />
       <ConfirmModal
         show={showModal}
         header='Confirm delete action'

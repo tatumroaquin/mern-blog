@@ -4,6 +4,7 @@ import { Card } from '../../components/UI/Card';
 import { MarkDown } from '../../components/UI/MarkDown';
 import { Button } from '../../components/UI/Button';
 import { Spinner } from '../../components/UI/Spinner';
+import { ErrorModal } from '../../components/UI/ErrorModal';
 import { postForm } from '../../components/Form/PostForm';
 import { useForm } from '../../hooks/useForm';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -16,7 +17,7 @@ import styles from './NewPost.module.scss';
 export const NewPost = () => {
   const navigate = useNavigate();
   const [markdown, setMarkdown] = useLocalStorage('markdown');
-  const { isLoading, sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
   const { auth } = useAuth();
 
   postForm.markdown.value = markdown;
@@ -47,7 +48,7 @@ export const NewPost = () => {
     const user = jwtDecode(auth?.accessToken || '');
 
     const abortController = new AbortController();
-    await sendRequest({
+    const response = await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/post/new`,
       method: 'POST',
       headers: {
@@ -62,7 +63,7 @@ export const NewPost = () => {
       }),
       abortController,
     });
-    navigate('/');
+    if (!response.error) navigate('/');
   }
 
   function onChange(e: FormEvent<HTMLFormElement>) {
@@ -73,6 +74,12 @@ export const NewPost = () => {
 
   return (
     <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
+      />
       {isLoading && <Spinner />}
       {!isLoading && (
         <div className={styles['post-new']}>
