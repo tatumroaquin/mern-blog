@@ -62,6 +62,8 @@ export const useHttpPrivate = () => {
           data = await newResponse.json();
         }
 
+        if (data.error) setError(data.error);
+
         return data;
       } catch (e: any) {
         console.log(e);

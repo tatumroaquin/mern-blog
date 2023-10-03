@@ -48,6 +48,9 @@ export const useHttp = () => {
             data.error || 'Request failed, something went wrong!'
           );
         }
+
+        if (data.error) setError(data.error);
+
         return data;
       } catch (e: any) {
         setError(e.message);
