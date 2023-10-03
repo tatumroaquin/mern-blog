@@ -1,5 +1,5 @@
 import { FC, FormEvent, useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import styles from './SearchPost.module.scss';
 
 import { SearchBar } from '../../components/UI/SearchBar';
@@ -21,11 +21,8 @@ export const SearchPost: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const { auth } = useAuth();
-  const location = useLocation();
-  const search = new URLSearchParams(location.search);
-  const query = search.get('q');
-
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('q');
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
@@ -49,8 +46,8 @@ export const SearchPost: FC = () => {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const searchQuery = target.search.value;
-    navigate(`/post/search?q=${searchQuery}`);
+    const searchValue = target.search.value;
+    setSearchParams({ q: searchValue });
   }
 
   async function handleDeletePost(slug: string) {
