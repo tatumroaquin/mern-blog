@@ -19,8 +19,8 @@ export async function createPostController(req: IUserRequest, res: Response) {
 
   try {
     await new Post({ userId, title, description, markdown, tags }).save();
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
   }
   res.json({ success: 'Post has been created' });
 }
@@ -41,11 +41,7 @@ export async function getPostBySlugController(req: Request, res: Response) {
       },
       { $unwind: '$author' },
       {
-        $unset: [
-          'userId',
-          'author.email',
-          'author.passwordHash',
-        ],
+        $unset: ['userId', 'author.email', 'author.passwordHash'],
       },
     ]);
     if (post.length === 0) {
@@ -101,8 +97,8 @@ export async function updatePostController(req: IUserRequest, res: Response) {
     post.tags = tags;
     // save triggers 'validate' hooks
     await post.save();
-  } catch (error: any) {
-    return res.status(500).json({ error });
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
   }
   res.json({ success: 'Post has been updated' });
 }
@@ -123,8 +119,8 @@ export async function deletePostController(req: IUserRequest, res: Response) {
 
   try {
     await post.deleteOne();
-  } catch (error: any) {
-    return res.status(500).json({ error });
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
   }
   res.json({ success: 'Post has been deleted' });
 }

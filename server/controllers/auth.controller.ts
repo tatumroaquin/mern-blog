@@ -32,12 +32,11 @@ export async function userSignInController(req: Request, res: Response) {
 
   if (!user) {
     res.status(401);
-    return res.json({ error: 'That user does NOT exist' });
+    return res.json({ error: 'Email or password is incorrect' });
   }
 
   if (!user.authenticate(password)) {
-    res.status(401);
-    return res.json({ error: 'Username or password is incorrect' });
+    return res.status(401).json({ error: 'Email or password is incorrect' });
   }
 
   const { accessToken, refreshToken } = generateTokens(user);
@@ -96,7 +95,7 @@ export async function userLogOutController(req: Request, res: Response) {
       // has refreshtoken in db, delete record and clear cookie
       try {
         refreshToken.deleteOne();
-        return res.json({ success: 'User has been logged out' });
+        return res.json({ success: `${user.userName} has been logged out` });
       } catch (error: any) {
         return res.json({ error: error.message });
       }
