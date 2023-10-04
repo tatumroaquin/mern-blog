@@ -1,8 +1,6 @@
 export const allowedOrigins = [
   'https://localhost:5173',
   'https://192.168.0.32:5173',
-  'http://localhost:5173',
-  'http://192.168.0.32:5173',
 ];
 export const sslCertificates = {
   publicKey: '../ssl/tblog-crt.pem',
