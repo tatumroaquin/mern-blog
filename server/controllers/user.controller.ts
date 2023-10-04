@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import JWT, { JwtPayload } from 'jsonwebtoken';
 import User from '../models/User.model.js';
+import Post from '../models/Post.model.js';
 import Token from '../models/Token.model.js';
 
 interface IUserRequest extends Request {
@@ -62,4 +63,29 @@ export async function editUserController(req: Request, res: Response) {
   }
 
   res.json({ success: 'User details has been updated' });
+}
+
+export async function deleteUserController(req: Request, res: Response) {
+  const userId = req.params.id;
+  let user: any;
+  try {
+    user = await User.findOne({ _id: userId });
+    if (!user)
+      return res
+        .status(422)
+        .json({ error: 'Delete failed! User does NOT exist' });
+
+    if (user.roles.includes('admin'))
+      return res
+        .status(401)
+        .json({ error: 'Delete failed! administrators can NOT be deleted!' });
+
+    await User.deleteOne({ _id: userId });
+    await Post.deleteMany({ userId });
+    res.json({
+      success: `The account "${user.userName}" and all its posts has been deleted`,
+    });
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
 }

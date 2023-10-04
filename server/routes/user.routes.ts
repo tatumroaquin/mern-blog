@@ -9,6 +9,7 @@ import {
   getUserByIdController,
   getAllUsersController,
   editUserController,
+  deleteUserController,
 } from '../controllers/user.controller.js';
 import { editUserValidator } from '../middlewares/user.validator.js';
 import { verifyUserId } from '../middlewares/verify.userid.js';
@@ -31,6 +32,7 @@ router.get(
   verifyUserId,
   getUserByIdController
 );
+
 router.post(
   '/edit/:id',
   verifyAccessToken,
@@ -39,5 +41,13 @@ router.post(
   verifyUserId,
   editUserController
 );
+
+router.delete(
+  '/delete/:id',
+  verifyAccessToken,
+  verifyRefreshToken,
+  verifyUserId,
+  deleteUserController
+)
 
 export default router;
