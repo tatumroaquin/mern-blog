@@ -10,7 +10,6 @@ interface Page {
 
 export const paginate = (modelName: string, reverse?: boolean) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-
     let total = 0;
     switch (modelName) {
       case 'posts':
@@ -34,7 +33,7 @@ export const paginate = (modelName: string, reverse?: boolean) => {
       total: number;
     } = { total };
 
-    if (startIndex > 1) {
+    if (startIndex > limit - 1) {
       result.prev = { page: page - 1, limit };
     }
     if (endIndex < total) {
@@ -65,7 +64,13 @@ export const paginate = (modelName: string, reverse?: boolean) => {
           },
           { $unwind: '$author' },
           {
-            $unset: ['markdown', 'userId', 'author.email', 'author.roles', 'author.passwordHash'],
+            $unset: [
+              'markdown',
+              'userId',
+              'author.email',
+              'author.roles',
+              'author.passwordHash',
+            ],
           },
         ]);
         break;
@@ -74,8 +79,8 @@ export const paginate = (modelName: string, reverse?: boolean) => {
         result.data = await User.aggregate([
           ...pipeline,
           {
-            $unset: ['passwordHash']
-          }
+            $unset: ['passwordHash'],
+          },
         ]);
         break;
       }
