@@ -9,8 +9,6 @@ import {
   userSignInController,
   userLogOutController,
 } from '../controllers/auth.controller.js';
-import { verifyAccessToken } from '../middlewares/verify.token.js';
-import { checkRole } from '../middlewares/role.checker.js';
 
 const router = Router();
 
