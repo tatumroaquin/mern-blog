@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import https from 'node:https';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from './middlewares/cors.js';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
@@ -26,7 +26,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan('tiny'));
-app.use(mongoSanitize())
+app.use(mongoSanitize());
+
+app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
+  if (err) {
+    return res.status(500).json({ error: err.message });
+  }
+
+  next();
+});
 
 mongoose
   .connect(process.env.MONGODB_URI!)
