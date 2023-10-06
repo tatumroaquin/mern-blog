@@ -1,0 +1,12 @@
+{
+  "name": "mern-blog",
+  "version": "1.0.0",
+  "description": "A blogging platform made with the MERN stack",
+  "scripts": {
+    "build": "pnpm --stream -r run build",
+    "start": "pnpm --stream -r start",
+    "dev": "pnpm --stream -r run dev"
+  },
+  "author": "Tatum Roaquin",
+  "license": "GPL-3.0-or-later"
+}
