@@ -14,7 +14,9 @@ import {
   createPostValidator,
   getPostBySlugValidator,
   getPostByUserIdValidator,
+  getAllPostsValidator,
   updatePostValidator,
+  searchPostsValidator,
 } from '../middlewares/post.validator.js';
 import {
   verifyAccessToken,
@@ -46,8 +48,20 @@ router.get(
   runValidation,
   getPostsByUserIdController
 );
-router.get('/all', paginate('posts', true), getAllPostsController);
-router.get('/search', search('posts'), searchPostsController);
+router.get(
+  '/all',
+  getAllPostsValidator,
+  runValidation,
+  paginate('posts', true),
+  getAllPostsController
+);
+router.get(
+  '/search',
+  searchPostsValidator,
+  runValidation,
+  search('posts'),
+  searchPostsController
+);
 router.put(
   '/edit/:postSlug',
   verifyAccessToken,
