@@ -6,13 +6,14 @@ import { SearchBar } from '../../components/UI/SearchBar';
 import { Spinner } from '../../components/UI/Spinner';
 import { PostCard } from '../../components/UI/PostCard';
 import { ConfirmModal } from '../../components/UI/ConfirmModal';
+import { ErrorModal } from '../../components/UI/ErrorModal';
 
 import { useHttpPrivate } from '../../hooks/useHttpPrivate';
 import { useAuth } from '../../hooks/useAuth';
 
 export const SearchPost: FC = () => {
   const [posts, setPosts] = useState<any>([]);
-  const { isLoading, sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError} = useHttpPrivate();
 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -40,6 +41,7 @@ export const SearchPost: FC = () => {
       if (response.result.data) {
         setPosts(response.result.data);
       }
+      console.log(response);
     }
   }, [query, sendRequest]);
 
@@ -86,6 +88,12 @@ export const SearchPost: FC = () => {
 
   return (
     <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
+      />
       <ConfirmModal
         show={showModal}
         header='Confirm delete action'
