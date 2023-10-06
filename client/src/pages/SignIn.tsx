@@ -1,15 +1,19 @@
 import { FormEvent, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import styles from './SignIn.module.scss';
+
 import { Button } from '../components/UI/Button';
+import { Spinner } from '../components/UI/Spinner';
+import { ErrorModal } from '../components/UI/ErrorModal';
 import { signInForm } from '../components/Form/SignInForm';
+
 import { useForm } from '../hooks/useForm';
 import { useAuth } from '../hooks/useAuth';
 import { useHttpPrivate } from '../hooks/useHttpPrivate';
 
-import styles from './SignIn.module.scss';
 export const SignIn = () => {
   const { form, renderForm, isFormValid } = useForm(signInForm);
-  const { sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,17 +37,10 @@ export const SignIn = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      // const response = await axios.post(
-      //   `${import.meta.env.VITE_SERVER_URL}/auth/signin`,
-      //   JSON.stringify({ email, password }),
-      //   {
-      //     headers: { 'Content-Type': 'application/json' },
-      //     withCredentials: true,
-      //   }
-      // );
-
-      setAuth(authToken);
-      navigate(fromLocation, { replace: true });
+      if (!authToken.error) {
+        setAuth(authToken);
+        navigate(fromLocation, { replace: true });
+      }
     } catch (e: any) {
       console.log(e.message);
     }
@@ -54,24 +51,35 @@ export const SignIn = () => {
   }, [persist]);
 
   return (
-    <div className={styles['signin']}>
-      <h1>Sign In</h1>
-      <form className={styles['signin__form']} onSubmit={handleSubmit}>
-        {renderForm()}
-        <Button className={styles['signin__button']}>Sign In</Button>
-        <div className={styles['signin__persist']}>
-          <input
-            type='checkbox'
-            name='persist'
-            checked={persist}
-            onChange={() => setPersist((prevState) => !prevState)}
-          />
-          <label htmlFor='persist'>Remember this device?</label>
+    <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred!'
+        error={error}
+        onCancel={() => setError('')}
+      />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <div className={styles['signin']}>
+          <h1>Sign In</h1>
+          <form className={styles['signin__form']} onSubmit={handleSubmit}>
+            {renderForm()}
+            <Button className={styles['signin__button']}>Sign In</Button>
+            <div className={styles['signin__persist']}>
+              <input
+                type='checkbox'
+                name='persist'
+                checked={persist}
+                onChange={() => setPersist((prevState) => !prevState)}
+              />
+              <label htmlFor='persist'>Remember this device?</label>
+            </div>
+            <Link className={styles['signup__link']} to='/auth/signup'>
+              Create an Account
+            </Link>
+          </form>
         </div>
-        <Link className={styles['signup__link']} to='/auth/signup'>
-          Create an Account
-        </Link>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
