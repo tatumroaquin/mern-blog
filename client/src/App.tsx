@@ -17,6 +17,7 @@ import { EditPost } from './pages/post/EditPost';
 import { AdminPanel } from './pages/AdminPanel';
 import { NotFound } from './pages/NotFound';
 import { Unauthorised } from './pages/Unauthorised';
+import { VerifyUser } from './pages/VerifyUser';
 
 function App() {
   const ROLES = {
@@ -32,9 +33,9 @@ function App() {
           <Route path='about' element={<About />} />
           <Route path='contact' element={<Contact />} />
 
-          <Route path='post' >
-            <Route path='all' element={<AllPosts />}/>
-            <Route path='search' element={<SearchPost />}/>
+          <Route path='post'>
+            <Route path='all' element={<AllPosts />} />
+            <Route path='search' element={<SearchPost />} />
           </Route>
 
           <Route path='post'>
@@ -42,8 +43,13 @@ function App() {
           </Route>
 
           <Route path='auth'>
+            <Route path='signup' element={<SignUp />} />
             <Route path='signin' element={<SignIn />} />
             <Route path='logout' element={<SignOut />} />
+            <Route
+              path='verify/:userId/:verifyToken'
+              element={<VerifyUser />}
+            />
           </Route>
 
           <Route
@@ -52,13 +58,6 @@ function App() {
           >
             <Route path='new' element={<NewPost />} />
             <Route path='edit/:slug' element={<EditPost />} />
-          </Route>
-
-          <Route
-            path='auth'
-            // element={<ProtectRoute allowedRoles={[ROLES.USER]} />}
-          >
-            <Route path='signup' element={<SignUp />} />
           </Route>
 
           <Route
@@ -74,8 +73,8 @@ function App() {
           >
             <Route index element={<AdminPanel />} />
           </Route>
-          <Route path='*' element={<NotFound/>} />
-          <Route path='/unauthorised' element={<Unauthorised/>} />
+          <Route path='*' element={<NotFound />} />
+          <Route path='/unauthorised' element={<Unauthorised />} />
         </Route>
       </Route>
     </Routes>
