@@ -1,4 +1,4 @@
-import { check } from 'express-validator';
+import { check, param } from 'express-validator';
 
 export const userSignUpValidator = [
   check('firstName')
@@ -121,4 +121,17 @@ export const editUserValidator = [
     .isLength({ max: 32 })
     .withMessage('Passwords can not exceed 32 characters')
     .escape(),
+];
+
+export const verifyUserValidator = [
+  param('userId')
+    .exists()
+    .withMessage('User Id is missing from the verification link.')
+    .isHexadecimal()
+    .withMessage('User Id is not a valid hex string.'),
+  param('verifyToken')
+    .exists()
+    .withMessage('Verification token is missing from the activation link.')
+    .isHexadecimal()
+    .withMessage('Verification token is not a valid hex string.'),
 ];
