@@ -1,14 +1,16 @@
 import { check, header, query } from 'express-validator';
 
+// how to escape blacklisted characters (e.g. blacklist('\\#\\{\\}'))
+// https://github.com/validatorjs/validator.js/issues/321#issue-45226608
+
 export const createPostValidator = [
   header('authorization')
     .contains('Bearer')
     .withMessage('Access token not found'),
   check('title')
     .trim()
-    .escape()
     .notEmpty()
-    .withMessage('Post title missing')
+    .withMessage('Post title is missing')
     .isAscii()
     .withMessage('Post title contains invalid characters'),
   check('markdown')
@@ -16,7 +18,13 @@ export const createPostValidator = [
     .withMessage('Your post has no content')
     .isString()
     .withMessage('Markdown must be a string'),
-  check('description').optional().escape(),
+  check('description')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('Post description is missing')
+    .isAscii()
+    .withMessage('Post description contains invalid characters'),
 ];
 
 export const getPostBySlugValidator = [
@@ -57,16 +65,23 @@ export const updatePostValidator = [
     .isHexadecimal()
     .withMessage('User ID is not a valid hexadecimal string'),
   check('title')
-    .escape()
-    .blacklist('`;\'"(){}/')
+    .trim()
     .notEmpty()
-    .withMessage('Please specify a post title'),
+    .withMessage('Post title is missing')
+    .isAscii()
+    .withMessage('Post title contains invalid characters'),
   check('markdown')
     .notEmpty()
     .withMessage('Your post has no content')
     .isString()
     .withMessage('Markdown must be a string'),
-  check('description').optional().escape(),
+  check('description')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('Post description is missing')
+    .isAscii()
+    .withMessage('Post description contains invalid characters'),
 ];
 
 export const deletePostValidator = [
