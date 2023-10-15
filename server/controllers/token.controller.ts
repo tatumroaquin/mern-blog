@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import User from '../models/User.model.js';
-import Token from '../models/Token.model.js';
+import RefreshToken from '../models/RefreshToken.model.js';
 
 import { generateTokens } from '../utility/generate.tokens.js';
 
@@ -13,7 +13,7 @@ export async function refreshTokenController(req: Request, res: Response) {
   try {
     payload = JWT.verify(jwt, process.env.JWT_REFRESH_TOKEN_SECRET!);
   } catch (e: any) {
-    await Token.deleteOne({ content: jwt });
+    await RefreshToken.deleteOne({ content: jwt });
     res.clearCookie('jwt', {
       httpOnly: true,
       secure: true,
@@ -22,14 +22,14 @@ export async function refreshTokenController(req: Request, res: Response) {
     return res.status(403).json({ error: 'Invalid refresh token' });
   }
 
-  const tokenExists = await Token.exists({ userId: payload.id });
+  const tokenExists = await RefreshToken.exists({ userId: payload.id });
 
   // token is NOT in database, reuse attempt, delete all refresh tokens
   if (!tokenExists) {
     const hackedUser = await User.findOne({ _id: payload.id });
 
     try {
-      await Token.deleteMany({ userId: hackedUser?._id });
+      await RefreshToken.deleteMany({ userId: hackedUser?._id });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
