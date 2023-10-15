@@ -1,12 +1,12 @@
 import { Schema, model } from 'mongoose';
 
-interface TokenSchema {
+interface RefreshTokenSchema {
   userId: Schema.Types.ObjectId;
   content: string;
   createdAt: Date;
 }
 
-const tokenSchema: Schema = new Schema<TokenSchema>({
+const refreshTokenSchema: Schema = new Schema<RefreshTokenSchema>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -19,8 +19,9 @@ const tokenSchema: Schema = new Schema<TokenSchema>({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 24 * Math.pow(60, 2)
+    // expires: 24 * Math.pow(60, 2)
+    expires: process.env.JWT_RT_EXPIRY ?? '1d',
   },
 });
 
-export default model('Token', tokenSchema);
+export default model('RefreshToken', refreshTokenSchema);
