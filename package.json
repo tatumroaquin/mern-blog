@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "A blogging platform made with the MERN stack",
   "scripts": {
+    "clean": "pnpm --stream -r run clean",
     "build": "pnpm --stream -r run build",
+
     "start": "pnpm --stream -r start",
-    "dev": "pnpm --stream -r run dev"
+    "start:server": "pnpm -F @mern-blog/server start",
+    "start:client": "pnpm -F @mern-blog/client start",
+
+    "dev": "pnpm --stream -r run dev",
+    "dev:server": "pnpm -F @mern-blog/server dev",
+    "dev:client": "pnpm -F @mern-blog/client dev"
   },
   "author": "Tatum Roaquin",
   "license": "GPL-3.0-or-later"
