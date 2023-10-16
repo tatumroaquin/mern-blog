@@ -10,10 +10,9 @@ import { useHttpPrivate } from '../hooks/useHttpPrivate';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export const SignOut: FC = () => {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const [_, setMarkdown] = useLocalStorage('markdown');
   const { isLoading, sendRequest, error, setError } = useHttpPrivate();
-  const [username] = useState(auth?.username);
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
