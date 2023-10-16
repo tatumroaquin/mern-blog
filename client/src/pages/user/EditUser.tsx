@@ -6,9 +6,9 @@ import { useForm } from '@hooks/useForm';
 import { useAuth } from '@hooks/useAuth';
 import { jwtDecode } from '@util/jwtDecode';
 import { accountForm } from '@form/AccountForm';
-import styles from './ViewUser.module.scss';
+import styles from './EditUser.module.scss';
 
-export const ViewUser: FC = () => {
+export const EditUser: FC = () => {
   const { isLoading, sendRequest } = useHttpPrivate();
   const { auth } = useAuth();
   const { form, renderForm, isFormValid } = useForm(accountForm);

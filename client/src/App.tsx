@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@ui/Layout';
 import { Home } from '@pages/Home';
-import { SignIn } from '@pages/SignIn';
-import { SignUp } from '@pages/SignUp';
+import { SignIn } from '@pages/auth/SignIn';
+import { SignUp } from '@pages/auth/SignUp';
 import { About } from '@pages/About';
 import { Contact } from '@pages/Contact';
 import { ProtectRoute } from '@components/ProtectRoute';
-import { ViewUser } from '@pages/ViewUser';
+import { EditUser } from '@pages/user/EditUser';
 import { PersistAuth } from '@components/PersistAuth';
-import { SignOut } from '@pages/SignOut';
+import { SignOut } from '@pages/auth/SignOut';
 import { ViewPost } from '@pages/post/ViewPost';
 import { AllPosts } from '@pages/AllPosts';
 import { SearchPost } from '@pages/post/SearchPost';
@@ -16,8 +16,9 @@ import { NewPost } from '@pages/post/NewPost';
 import { EditPost } from '@pages/post/EditPost';
 import { AdminPanel } from '@pages/AdminPanel';
 import { NotFound } from '@pages/NotFound';
-import { Unauthorised } from '@pages/Unauthorised';
-import { VerifyUser } from '@pages/VerifyUser';
+import { Unauthorised } from '@pages/auth/Unauthorised';
+import { VerifyUser } from '@pages/auth/VerifyUser';
+import { ListPosts } from '@pages/ListPosts';
 
 function App() {
   const ROLES = {
@@ -58,13 +59,14 @@ function App() {
           >
             <Route path='new' element={<NewPost />} />
             <Route path='edit/:slug' element={<EditPost />} />
+            <Route path='uid/:userId' element={<ListPosts />} />
           </Route>
 
           <Route
             path='user'
             element={<ProtectRoute allowedRoles={[ROLES.USER]} />}
           >
-            <Route path='view' element={<ViewUser />} />
+            <Route path='edit' element={<EditUser />} />
           </Route>
 
           <Route

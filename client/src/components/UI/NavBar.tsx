@@ -126,8 +126,8 @@ export const NavBar = () => {
           </NavLink>
         </li>
         {isSignedIn && (
-          <li className={styles['navbar__item']} key='/user/view'>
-            <NavLink className={handleNavLink} to='/user/view'>
+          <li className={styles['navbar__item']} key='/user/edit'>
+            <NavLink className={handleNavLink} to='/user/edit'>
               {!isExpanded && <FontAwesomeIcon icon={faCircleUser} size='lg' />}
               {isExpanded && 'Account'}
             </NavLink>
