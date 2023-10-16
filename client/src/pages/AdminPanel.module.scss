@@ -43,3 +43,11 @@
     background-color: var(--light-red);
   }
 }
+
+@media only screen and (max-width: 510px) {
+  .admin {
+    &__heading {
+      font-size: 1.2rem;
+    }
+  }
+}

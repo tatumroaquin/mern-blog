@@ -36,3 +36,28 @@
     grid-column: 2;
   }
 }
+
+@media only screen and (max-width: 910px) {
+  .post-new {
+    &__title {
+      font-size: 1.5rem;
+    }
+    &__form {
+      grid-row: 3;
+      grid-column: span 2;
+    }
+    &__markdown {
+      grid-row: 2;
+      grid-column: span 2;
+    }
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .post-new {
+    width: 100vw;
+    &__title {
+      font-size: 1.2rem;
+    }
+  }
+}

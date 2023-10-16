@@ -22,7 +22,22 @@
 }
 
 @media only screen and (max-width: 576px) {
-  .all-post {
+  .all-posts {
+    margin: 0;
     width: 100vw;
+    padding: 1rem;
+    &__title {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .all-posts {
+    margin: 0;
+    width: 100vw;
+    &__title {
+      font-size: 1.2rem;
+    }
   }
 }

@@ -3,4 +3,24 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  &__button {
+    padding: 0.4rem 1rem;
+  }
+}
+
+@media only screen and (max-width: 848px) {
+  .searchbar {
+    gap: 0.5rem;
+    // &__button {
+    //   padding: 0.4rem 1rem;
+    // }
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .searchbar {
+    &__button {
+      padding: 0.3rem 1rem;
+    }
+  }
 }

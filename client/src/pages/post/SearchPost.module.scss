@@ -21,3 +21,19 @@
     gap: 1rem;
   }
 }
+
+@media only screen and (max-width: 848px) {
+  .searchpost {
+    width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .searchpost {
+    &__title {
+      font-size: 1.2rem;
+    }
+  }
+}
+

@@ -12,3 +12,9 @@
     border-color: var(--goldenrod);
   }
 }
+
+@media only screen and (max-width: 510px) {
+  .searchinput {
+    font-size: 0.7rem;
+  }
+}

@@ -1,12 +1,18 @@
 .contact {
-  margin: 3rem auto;
+  margin: 1rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+
   a {
     text-decoration: none;
   }
+
+  &__heading {
+    font-size: 2rem;
+  }
+
   &__socials {
     &--card {
       flex-direction: row;
@@ -14,6 +20,7 @@
       font-family: 'Hack';
       gap: 1rem;
     }
+
     &--link {
       display: flex;
       align-items: center;
@@ -22,8 +29,45 @@
       font-weight: bold;
       text-decoration: none;
     }
+
     &--shadow {
       filter: drop-shadow(0 0 1px var(--rich-black));
+    }
+  }
+}
+
+
+@media only screen and (max-width: 848px) {
+  .contact {
+    padding: 0 1rem;
+    &__socials {
+      &--card {
+        flex-direction: column;
+        font-size: 0.9rem;
+      }
+    }
+    &__text {
+      align-self: flex-start;
+    }
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .contact {
+    padding: 0 1rem;
+    &__heading {
+      font-size: 1.2rem;
+    }
+    &__socials {
+      &--card {
+        font-size: 0.7rem;
+      }
+      &--link {
+        font-size: 0.7rem;
+      }
+    }
+    &__text {
+      font-size: 0.7rem;
     }
   }
 }

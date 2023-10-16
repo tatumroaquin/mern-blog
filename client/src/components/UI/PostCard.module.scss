@@ -50,3 +50,33 @@
     padding: 0 1rem;
   }
 }
+
+@media only screen and (max-width: 510px) {
+  .post__card {
+    gap: 0.1rem;
+
+    &--title {
+      font-size: 1.1rem;
+      color: var(--majorelle-blue);
+    }
+
+    &--date {
+      font-size: 0.7rem;
+    }
+    &--description {
+      font-size: 0.7rem;
+    }
+
+    &--tags {
+      font-size: 0.4rem;
+      line-height: 1rem;
+    }
+
+    &--tag {
+      line-height: 0.5rem;
+      border-width: 1px;
+      padding: 0.1rem 0.3rem;
+      border-radius: 0.2rem;
+    }
+  }
+}
