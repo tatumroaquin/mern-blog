@@ -4,12 +4,12 @@ import styles from './Contact.module.scss';
 export const Contact = () => {
   return (
     <div className={styles['contact']}>
-      <h1>Contact</h1>
+      <h1 className={styles['contact__heading']}>Contact</h1>
 
-      <p>You can contact me via email <a href="mailto:blog@tatumroaquin.dev">blog@tatumroaquin.dev</a> or one of my socials below</p>
-      <p>For the nerds who like privacy here is my <a href="/tatums-pubkey.asc">PGP Public Key</a></p>
+      <p className={styles['contact__text']}>You can contact me via email <a href="mailto:blog@tatumroaquin.dev">blog@tatumroaquin.dev</a> or one of my socials below</p>
+      <p className={styles['contact__text']}>For the nerds who like privacy here is my <a href="/tatums-pubkey.asc">PGP Public Key</a></p>
 
-      <h2>Socials</h2>
+      <h2 className={styles['contact__heading']}>Socials</h2>
       <Card className={styles['contact__socials--card']}>
         <a
           className={styles['contact__socials--link']}
