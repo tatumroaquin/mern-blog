@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { ITextArea } from '../../types';
-import styles from './TextArea.module.scss';
+import { ITextArea } from '@types';
+import styles from '@ui/TextArea.module.scss';
 
 export const TextArea = ({
   name,

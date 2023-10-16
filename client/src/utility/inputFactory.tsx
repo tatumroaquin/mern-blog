@@ -1,6 +1,6 @@
 import { IInputFactory, IInputObject, IRenderInput } from '../types';
 
-import { Input } from '../components/UI/Input';
+import { Input } from '@ui/Input';
 
 export const inputFactory = ({
   label,

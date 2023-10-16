@@ -1,20 +1,20 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Card } from '../../components/UI/Card';
-import { MarkDown } from '../../components/UI/MarkDown';
-import { Button } from '../../components/UI/Button';
-import { Spinner } from '../../components/UI/Spinner';
-import { ConfirmModal } from '../../components/UI/ConfirmModal';
-import { ErrorModal } from '../../components/UI/ErrorModal';
+import { Card } from '@ui/Card';
+import { MarkDown } from '@ui/MarkDown';
+import { Button } from '@ui/Button';
+import { Spinner } from '@ui/Spinner';
+import { ConfirmModal } from '@ui/ConfirmModal';
+import { ErrorModal } from '@ui/ErrorModal';
 
-import { postForm } from '../../components/Form/PostForm';
-import { useForm } from '../../hooks/useForm';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useHttpPrivate } from '../../hooks/useHttpPrivate';
-import { useAuth } from '../../hooks/useAuth';
+import { postForm } from '@form/PostForm';
+import { useForm } from '@hooks/useForm';
+import { useLocalStorage } from '@hooks/useLocalStorage';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { useAuth } from '@hooks/useAuth';
 
-import { jwtDecode } from '../../utility/jwtDecode';
+import { jwtDecode } from '@util/jwtDecode';
 
 import styles from './EditPost.module.scss';
 

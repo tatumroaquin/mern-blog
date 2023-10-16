@@ -2,14 +2,14 @@ import { FC, FormEvent, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styles from './SearchPost.module.scss';
 
-import { SearchBar } from '../../components/UI/SearchBar';
-import { Spinner } from '../../components/UI/Spinner';
-import { PostCard } from '../../components/UI/PostCard';
-import { ConfirmModal } from '../../components/UI/ConfirmModal';
-import { ErrorModal } from '../../components/UI/ErrorModal';
+import { SearchBar } from '@ui/SearchBar';
+import { Spinner } from '@ui/Spinner';
+import { PostCard } from '@ui/PostCard';
+import { ConfirmModal } from '@ui/ConfirmModal';
+import { ErrorModal } from '@ui/ErrorModal';
 
-import { useHttpPrivate } from '../../hooks/useHttpPrivate';
-import { useAuth } from '../../hooks/useAuth';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { useAuth } from '@hooks/useAuth';
 
 export const SearchPost: FC = () => {
   const [posts, setPosts] = useState<any>([]);

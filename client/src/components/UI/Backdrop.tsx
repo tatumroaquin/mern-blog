@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { createPortal } from 'react-dom';
 
-import styles from './Backdrop.module.scss';
+import styles from '@ui/Backdrop.module.scss';
 
 interface Backdrop {
   onCancel: () => void;

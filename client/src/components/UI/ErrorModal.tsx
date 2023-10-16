@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { Modal } from './Modal';
-import { Button } from './Button';
+import { Modal } from '@ui/Modal';
+import { Button } from '@ui/Button';
 
 interface ErrorModal {
   show: boolean;

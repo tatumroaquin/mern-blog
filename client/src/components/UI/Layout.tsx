@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
-import { NavBar } from './NavBar';
+import { NavBar } from '@ui/NavBar';
 
 interface Layout {
   children?: ReactNode;

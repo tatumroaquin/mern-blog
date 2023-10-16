@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useTokenRefresh } from '../hooks/useTokenRefresh';
-import { useAuth } from '../hooks/useAuth';
-import { Spinner } from './UI/Spinner';
+import { useTokenRefresh } from '@hooks/useTokenRefresh';
+import { useAuth } from '@hooks/useAuth';
+import { Spinner } from '@ui/Spinner';
 
 export const PersistAuth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);

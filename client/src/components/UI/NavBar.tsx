@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom';
 import { Button } from './Button';
 import { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
-import { useAuth } from '../../hooks/useAuth';
-import styles from './NavBar.module.scss';
+import { useAuth } from '@hooks/useAuth';
+import styles from '@ui/NavBar.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';

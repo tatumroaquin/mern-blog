@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Spinner } from '../components/UI/Spinner';
-import { AlertModal } from '../components/UI/AlertModal';
-import { ErrorModal } from '../components/UI/ErrorModal';
+import { Spinner } from '@ui/Spinner';
+import { AlertModal } from '@ui/AlertModal';
+import { ErrorModal } from '@ui/ErrorModal';
 
-import { useAuth } from '../hooks/useAuth';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useAuth } from '@hooks/useAuth';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
 export const SignOut: FC = () => {
   const { setAuth } = useAuth();

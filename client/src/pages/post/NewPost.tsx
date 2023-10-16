@@ -1,16 +1,16 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '../../components/UI/Card';
-import { MarkDown } from '../../components/UI/MarkDown';
-import { Button } from '../../components/UI/Button';
-import { Spinner } from '../../components/UI/Spinner';
-import { ErrorModal } from '../../components/UI/ErrorModal';
-import { postForm } from '../../components/Form/PostForm';
-import { useForm } from '../../hooks/useForm';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useHttpPrivate } from '../../hooks/useHttpPrivate';
-import { jwtDecode } from '../../utility/jwtDecode';
-import { useAuth } from '../../hooks/useAuth';
+import { Card } from '@ui/Card';
+import { MarkDown } from '@ui/MarkDown';
+import { Button } from '@ui/Button';
+import { Spinner } from '@ui/Spinner';
+import { ErrorModal } from '@ui/ErrorModal';
+import { postForm } from '@form/PostForm';
+import { useForm } from '@hooks/useForm';
+import { useLocalStorage } from '@hooks/useLocalStorage';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { jwtDecode } from '@util/jwtDecode';
+import { useAuth } from '@hooks/useAuth';
 
 import styles from './NewPost.module.scss';
 

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import { PostCard } from '../components/UI/PostCard';
-import { Spinner } from '../components/UI/Spinner';
-import { ConfirmModal } from '../components/UI/ConfirmModal';
-import { ErrorModal } from '../components/UI/ErrorModal';
+import { PostCard } from '@ui/PostCard';
+import { Spinner } from '@ui/Spinner';
+import { ConfirmModal } from '@ui/ConfirmModal';
+import { ErrorModal } from '@ui/ErrorModal';
 
-import { useAuth } from '../hooks/useAuth';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
+import { useAuth } from '@hooks/useAuth';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
 
 import styles from './Home.module.scss';
 

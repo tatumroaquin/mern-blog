@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import clsx from 'clsx';
-import styles from './Card.module.scss';
+import styles from '@ui/Card.module.scss';
 
 interface Card {
   children: ReactNode;

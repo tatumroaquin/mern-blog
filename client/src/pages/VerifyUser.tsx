@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useHttp } from '../hooks/useHttp';
+import { useHttp } from '@hooks/useHttp';
 
-import { Spinner } from '../components/UI/Spinner';
-import { AlertModal } from '../components/UI/AlertModal';
-import { ErrorModal } from '../components/UI/ErrorModal';
+import { Spinner } from '@ui/Spinner';
+import { AlertModal } from '@ui/AlertModal';
+import { ErrorModal } from '@ui/ErrorModal';
 
 export const VerifyUser: FC = () => {
   const { isLoading, sendRequest, error, setError } = useHttp();

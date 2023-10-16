@@ -2,14 +2,14 @@ import { FormEvent, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SignIn.module.scss';
 
-import { Button } from '../components/UI/Button';
-import { Spinner } from '../components/UI/Spinner';
-import { ErrorModal } from '../components/UI/ErrorModal';
-import { signInForm } from '../components/Form/SignInForm';
+import { Button } from '@ui/Button';
+import { Spinner } from '@ui/Spinner';
+import { ErrorModal } from '@ui/ErrorModal';
+import { signInForm } from '@form/SignInForm';
 
-import { useForm } from '../hooks/useForm';
-import { useAuth } from '../hooks/useAuth';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
+import { useForm } from '@hooks/useForm';
+import { useAuth } from '@hooks/useAuth';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
 
 export const SignIn = () => {
   const { form, renderForm, isFormValid } = useForm(signInForm);

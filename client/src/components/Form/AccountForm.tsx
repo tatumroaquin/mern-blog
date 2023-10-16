@@ -1,11 +1,11 @@
-import { IFormObject, IInputObject } from '../../types';
-import { inputFactory } from '../../utility/inputFactory';
+import { IFormObject, IInputObject } from '@types';
+import { inputFactory } from '@util/inputFactory';
 import {
   requiredRule,
   minLengthRule,
   maxLengthRule,
   newPasswordMatchesRule,
-} from '../../utility/validator';
+} from '@util/validator';
 
 export const accountForm: IFormObject = {
   firstName: {

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
-import { Card } from './Card';
-import { Button } from './Button';
+import { Card } from '@ui/Card';
+import { Button } from '@ui/Button';
 
-import styles from './PostCard.module.scss';
+import styles from '@ui/PostCard.module.scss';
 
 interface PostCard {
   isAdmin: boolean;

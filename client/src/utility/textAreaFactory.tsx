@@ -1,6 +1,6 @@
 import { ITextAreaFactory, ITextAreaObject, IRenderTextArea } from '../types';
 
-import { TextArea } from '../components/UI/TextArea';
+import { TextArea } from '@ui/TextArea';
 
 export const textAreaFactory = ({
   name,

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import { PostCard } from '../components/UI/PostCard';
-import { Spinner } from '../components/UI/Spinner';
-import { Pagination } from '../components/UI/Pagination';
-import { ConfirmModal } from '../components/UI/ConfirmModal';
+import { PostCard } from '@ui/PostCard';
+import { Spinner } from '@ui/Spinner';
+import { Pagination } from '@ui/Pagination';
+import { ConfirmModal } from '@ui/ConfirmModal';
 
-import { useAuth } from '../hooks/useAuth';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
+import { useAuth } from '@hooks/useAuth';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
 import styles from './AllPosts.module.scss';
 
 const pageLimit = 10;

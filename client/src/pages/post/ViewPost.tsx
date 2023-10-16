@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
-import { useHttp } from '../../hooks/useHttp';
-import { MarkDown } from '../../components/UI/MarkDown';
-import { Button } from '../../components/UI/Button';
-import { Spinner } from '../../components/UI/Spinner';
-import { Card } from '../../components/UI/Card';
+import { useHttp } from '@hooks/useHttp';
+import { MarkDown } from '@ui/MarkDown';
+import { Button } from '@ui/Button';
+import { Spinner } from '@ui/Spinner';
+import { Card } from '@ui/Card';
 
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '@hooks/useAuth';
 
 export const ViewPost: FC = () => {
   const navigate = useNavigate();

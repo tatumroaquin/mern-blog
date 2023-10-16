@@ -1,11 +1,11 @@
 import { FC, FormEvent, useEffect } from 'react';
-import { Spinner } from '../components/UI/Spinner';
-import { Button } from '../components/UI/Button';
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
-import { useForm } from '../hooks/useForm';
-import { useAuth } from '../hooks/useAuth';
-import { jwtDecode } from '../utility/jwtDecode';
-import { accountForm } from '../components/Form/AccountForm';
+import { Spinner } from '@ui/Spinner';
+import { Button } from '@ui/Button';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { useForm } from '@hooks/useForm';
+import { useAuth } from '@hooks/useAuth';
+import { jwtDecode } from '@util/jwtDecode';
+import { accountForm } from '@form/AccountForm';
 import styles from './ViewUser.module.scss';
 
 export const ViewUser: FC = () => {

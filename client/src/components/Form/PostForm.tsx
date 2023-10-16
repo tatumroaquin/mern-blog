@@ -3,11 +3,11 @@ import {
   IInputObject,
   ITextAreaObject,
   ISelectObject,
-} from '../../types';
-import { inputFactory } from '../../utility/inputFactory';
-import { selectFactory } from '../../utility/selectFactory';
-import { textAreaFactory } from '../../utility/textAreaFactory';
-import { requiredRule } from '../../utility/validator';
+} from '@types';
+import { inputFactory } from '@util/inputFactory';
+import { selectFactory } from '@util/selectFactory';
+import { textAreaFactory } from '@util/textAreaFactory';
+import { requiredRule } from '@util/validator';
 
 export const postForm: IFormObject = {
   markdown: {

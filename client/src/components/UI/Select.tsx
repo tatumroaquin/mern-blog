@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { ISelect } from '../../types';
-import styles from './Select.module.scss';
+import { ISelect } from '@types';
+import styles from '@ui/Select.module.scss';
 
 export const Select: FC<ISelect> = ({
   name,

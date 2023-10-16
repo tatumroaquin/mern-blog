@@ -2,13 +2,13 @@ import { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './SignUp.module.scss';
 
-import { Button } from '../components/UI/Button';
-import { ErrorModal } from '../components/UI/ErrorModal';
+import { Button } from '@ui/Button';
+import { ErrorModal } from '@ui/ErrorModal';
 
-import { useForm } from '../hooks/useForm';
-import { useHttp } from '../hooks/useHttp';
+import { useForm } from '@hooks/useForm';
+import { useHttp } from '@hooks/useHttp';
 
-import { signUpForm } from '../components/Form/SignUpForm';
+import { signUpForm } from '@form/SignUpForm';
 
 export const SignUp = () => {
   const navigate = useNavigate();

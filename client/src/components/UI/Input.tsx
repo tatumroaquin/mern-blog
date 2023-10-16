@@ -1,5 +1,5 @@
-import { IInput } from '../../types';
-import styles from './Input.module.scss';
+import { IInput } from '@types';
+import styles from '@ui/Input.module.scss';
 
 export const Input = ({
   label,

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import styles from './Button.module.scss';
+import styles from '@ui/Button.module.scss';
 
 export interface IButton {
   type?: 'button' | 'submit' | 'reset';

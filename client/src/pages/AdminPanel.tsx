@@ -4,14 +4,14 @@ import styles from './AdminPanel.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
-import { Spinner } from '../components/UI/Spinner';
-import { Button } from '../components/UI/Button';
-import { Card } from '../components/UI/Card';
-import { ErrorModal } from '../components/UI/ErrorModal';
-import { AlertModal } from '../components/UI/AlertModal';
-import { ConfirmModal } from '../components/UI/ConfirmModal';
+import { Spinner } from '@ui/Spinner';
+import { Button } from '@ui/Button';
+import { Card } from '@ui/Card';
+import { ErrorModal } from '@ui/ErrorModal';
+import { AlertModal } from '@ui/AlertModal';
+import { ConfirmModal } from '@ui/ConfirmModal';
 
-import { useHttpPrivate } from '../hooks/useHttpPrivate';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
 
 export const AdminPanel: FC = () => {
   const { isLoading, sendRequest, error, setError } = useHttpPrivate();

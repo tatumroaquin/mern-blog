@@ -7,7 +7,7 @@ import remarkMermaid from 'remark-mermaidjs';
 import oneDark from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 
 import clsx from 'clsx';
-import styles from './MarkDown.module.scss';
+import styles from '@ui/MarkDown.module.scss';
 
 interface Markdown {
   markdown: string;

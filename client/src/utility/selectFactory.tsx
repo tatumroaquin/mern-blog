@@ -1,5 +1,5 @@
-import { Select } from '../components/UI/Select';
-import { ISelectFactory, IRenderSelect, ISelectObject } from '../types';
+import { Select } from '@ui/Select';
+import { ISelectFactory, IRenderSelect, ISelectObject } from '@types';
 
 export const selectFactory = ({
   label,

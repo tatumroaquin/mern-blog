@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styles from './SearchInput.module.scss';
+import styles from '@ui/SearchInput.module.scss';
 
 interface SearchInput {
   name: string;

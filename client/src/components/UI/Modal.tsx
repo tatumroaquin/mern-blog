@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import ReactDOM from 'react-dom';
-import { Card } from './Card';
-import { Backdrop } from './Backdrop';
-import styles from './Modal.module.scss';
+import { Card } from '@ui/Card';
+import { Backdrop } from '@ui/Backdrop';
+import styles from '@ui/Modal.module.scss';
 
 interface Overlay {
   header: string;

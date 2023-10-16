@@ -1,5 +1,5 @@
 import { useState, useCallback, FormEvent } from 'react';
-import { IInputObject, ITextAreaObject, IFormObject, ISelectObject } from '../types';
+import { IInputObject, ITextAreaObject, IFormObject, ISelectObject } from '@types';
 import { MultiValue, ActionMeta } from 'react-select';
 
 export function useForm(formObject: IFormObject) {

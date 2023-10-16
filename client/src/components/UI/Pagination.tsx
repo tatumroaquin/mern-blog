@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { usePagination, DOTS } from '../../hooks/usePagination';
+import { usePagination, DOTS } from '@hooks/usePagination';
 import clsx from 'clsx';
-import styles from './Pagination.module.scss';
+import styles from '@ui/Pagination.module.scss';
 
 interface Pagination {
   dataLength: number;
