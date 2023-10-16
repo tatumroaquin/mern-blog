@@ -1,3 +1,6 @@
+import { ChangeEventHandler, FormEvent } from 'react';
+import { MultiValue } from 'react-select';
+
 export interface IInputElement {
   className?: string;
   defaultValue?: string;
@@ -15,7 +18,13 @@ export interface IInput extends IInputElement {
 }
 
 export interface ITextArea extends IInputElement {
-  onChange: (e: FormEvent<HTMLInputElement>) => void;
+  // onChange: (e: FormEvent<HTMLInputElement>) => void;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>
+}
+
+export interface IOptionType {
+  label: string;
+  value: string;
 }
 
 export interface ISelect {
@@ -24,8 +33,10 @@ export interface ISelect {
   placeholder?: string;
   errorMessage: string;
   isValid: boolean;
-  onChange: (newValue: MultiValue<typeof Option>) => void;
-  defaultValue?: Array<{ [string]: any }>;
+  // onChange: (newValue: MultiValue<typeof Option>) => void;
+  onChange: (items: MultiValue<IOptionType> ) => void;
+  // defaultValue?: Array<{ [x: string]: any }>;
+  defaultValue?: MultiValue<IOptionType>;
 }
 
 export interface IRenderElement {
@@ -36,7 +47,7 @@ export interface IRenderElement {
   isValid: boolean;
 }
 
-export interface IRenderInput  extends IRenderElement {
+export interface IRenderInput extends IRenderElement {
   onChange: (e: FormEvent<HTMLInputElement>) => void;
   value?: string | string[];
 }
@@ -46,18 +57,19 @@ export interface IRenderTextArea extends IRenderElement {
 }
 
 export interface IRenderSelect extends IRenderElement {
-  onChange: (items: MultiValue<typeof Option>) => void;
-  defaultValue?: Array<{ [string]: any }>;
+  // onChange: (items: MultiValue<typeof Option>) => void;
+  onChange: (items: MultiValue<IOptionType>) => void;
+  // defaultValue?: Array<{ [x: string]: any }>;
+  defaultValue?: MultiValue<IOptionType>;
 }
 
 export interface IFactoryElement {
   type?: string;
   name: string;
   value?: string | string[];
-  defaultValue?: string;
+  defaultValue?: string | any;
   placeholder?: string;
 }
-
 
 export interface IInputFactory extends IFactoryElement {
   label: string;
@@ -67,9 +79,10 @@ export interface ITextAreaFactory extends IFactoryElement {
   defaultValue?: string;
 }
 
-interface ISelectFactory extends IFactoryElement {
+export interface ISelectFactory extends IFactoryElement {
   label: string;
-  defaultValue?: Array<{ [string]: any }>;
+  // defaultValue?: Array<{ [x: string]: any }>;
+  defaultValue?: MultiValue<IOptionType>;
 }
 
 export interface IValidationRule {
@@ -86,8 +99,9 @@ export interface IFormObjectElement {
   errorMessage: string;
   touched: boolean;
   placeholder?: string;
-  validationRules?: IValidationRule[]
-  defaultValue?: Array<{ [string]: any }>;
+  validationRules?: IValidationRule[];
+  // defaultValue?: Array<{ [x: string]: any }>;
+  defaultValue?: MultiValue<IOptionType>;
 }
 
 export interface IInputObject extends IFormObjectElement {
