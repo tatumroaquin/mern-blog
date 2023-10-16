@@ -1,18 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from './ViewPost.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import { useHttp } from '../../hooks/useHttp';
-import { useParams } from 'react-router-dom';
 import { MarkDown } from '../../components/UI/MarkDown';
 import { Button } from '../../components/UI/Button';
 import { Spinner } from '../../components/UI/Spinner';
+import { Card } from '../../components/UI/Card';
 
-import styles from './ViewPost.module.scss';
 import { useAuth } from '../../hooks/useAuth';
 
 export const ViewPost: FC = () => {
@@ -73,11 +73,11 @@ export const ViewPost: FC = () => {
     <>
       {isLoading && !Object.keys(post).length && <Spinner />}
       {!isLoading && !!Object.keys(post).length && (
-        <div className={styles['post-new']}>
-          <h1 className={styles['post-new__title']}>{post.title}</h1>
+        <div className={styles['post-view']}>
+          <h1 className={styles['post-view__title']}>{post.title}</h1>
           <hr />
-          <div className={styles['post-new__metadata']}>
-            <div className={styles['post-new__info']}>
+          <div className={styles['post-view__metadata']}>
+            <div className={styles['post-view__info']}>
               <small>
                 Created{' '}
                 <b>{new Date(post.createdAt).toLocaleDateString('en-AU')}</b> |
@@ -91,13 +91,14 @@ export const ViewPost: FC = () => {
             </div>
             {isSignedIn &&
               (isPostedBySelf(post.author.userName) || isAdmin) && (
-                <div className={styles['post-new__buttons']}>
+                <div className={styles['post-view__buttons']}>
                   <Link to={`/post/edit/${post.slug}`}>
-                    <Button>
+                    <Button className={styles['post-view__button']}>
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </Button>
                   </Link>
                   <Button
+                    className={styles['post-view__button']}
                     onClick={async () => await handleDeletePost(post.slug)}
                   >
                     <FontAwesomeIcon icon={faTrashCan} />
@@ -105,8 +106,14 @@ export const ViewPost: FC = () => {
                 </div>
               )}
           </div>
-
           <hr />
+          <div className={styles['post-view__tags']}>
+            {post.tags.map((tag: string) => (
+              <Card key={tag} className={styles['post-view__tag']}>
+                {tag}
+              </Card>
+            ))}
+          </div>
           <MarkDown markdown={post.markdown} />
         </div>
       )}
