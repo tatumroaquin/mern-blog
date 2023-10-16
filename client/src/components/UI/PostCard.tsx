@@ -42,8 +42,7 @@ export const PostCard: FC<PostCard> = ({
       </small>
       <small className={styles['post__card--date']}>
         <div>
-          Created{' '}
-          <b> {new Date(post.createdAt).toLocaleDateString('en-AU')} </b> by{' '}
+          <b> {new Date(post.createdAt).toLocaleDateString('en-AU')} </b>
           <b>
             <Link to={`/user/view/${post.author._id}`}>
               {post.author.firstName} {post.author.lastName}
