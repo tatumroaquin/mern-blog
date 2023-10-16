@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { dependencies } from './package.json';
+import path from 'node:path';
 
 // https://sambitsahoo.com/blog/vite-code-splitting-that-works.html
 function renderChunks(deps: Record<string, string>) {
@@ -16,6 +17,16 @@ export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, '../') };
   return defineConfig({
     plugins: [react()],
+    resolve: {
+      alias: {
+        '@components': path.resolve(__dirname, './src/components'),
+        '@form': path.resolve(__dirname, './src/components/Form'),
+        '@ui': path.resolve(__dirname, './src/components/UI'),
+        '@hooks': path.resolve(__dirname, './src/hooks'),
+        '@pages': path.resolve(__dirname, './src/pages'),
+        '@util': path.resolve(__dirname, './src/utility'),
+      }
+    },
     server: {
       https: {
         key: '../ssl/tblog-key.pem',
