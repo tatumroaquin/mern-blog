@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { Button } from './Button';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '../../hooks/useAuth';
 import styles from './NavBar.module.scss';
@@ -19,11 +19,29 @@ export const NavBar = () => {
   const [isAdmin, setIsAdmin] = useState(
     Boolean(auth?.roles?.includes('admin'))
   );
+  const navbarRef = useRef<HTMLUListElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsSignedIn(Boolean(auth?.accessToken));
     setIsAdmin(Boolean(auth?.roles?.includes('admin')));
   }, [auth]);
+
+  useEffect(() => {
+    function outsideClickHandler(e: any) {
+      if (
+        !hamburgerRef.current?.contains(e.target) &&
+        !navbarRef.current?.contains(e.target)
+      ) {
+        setIsExpanded(false);
+      }
+    }
+    document.addEventListener('mousedown', outsideClickHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', outsideClickHandler);
+    };
+  });
 
   function handleNavLink({ isActive }: { isActive: boolean }) {
     return isActive ? styles['navbar__link--active'] : styles['navbar__link'];
@@ -34,6 +52,10 @@ export const NavBar = () => {
   //     ? styles['navbar__button--active']
   //     : styles['navbar__button'];
   // }
+
+  function handleExpand() {
+    setIsExpanded((prev: boolean) => !prev);
+  }
 
   return (
     <nav className={styles['navbar']}>
@@ -48,12 +70,8 @@ export const NavBar = () => {
 
       <button
         className={styles['navbar__hamburger']}
-        onFocus={() => setIsExpanded(true)}
-        onBlur={(e) => {
-          //https://github.com/facebook/react/issues/4210
-          (e.relatedTarget as HTMLElement)?.click();
-          setIsExpanded(false);
-        }}
+        onClick={handleExpand}
+        ref={hamburgerRef}
       >
         <span></span>
       </button>
@@ -62,6 +80,8 @@ export const NavBar = () => {
         className={clsx(`${styles['navbar__items']}`, {
           [`${styles['navbar__items--expanded']}`]: isExpanded,
         })}
+        onClick={handleExpand}
+        ref={navbarRef}
       >
         <li className={styles['navbar__item']} key='/post/all'>
           <NavLink className={handleNavLink} to='/post/all'>
