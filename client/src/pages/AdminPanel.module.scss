@@ -14,11 +14,14 @@
     margin-bottom: 1rem;
   }
 
-  &__table {
+  &__container {
     width: 100%;
+  }
+
+  &__table {
     text-align: center;
     word-wrap: break-word;
-    table-layout: fixed;
+    table-layout: auto;
     border-collapse: collapse;
     th,
     td {

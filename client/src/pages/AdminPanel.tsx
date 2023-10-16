@@ -30,6 +30,7 @@ export const AdminPanel: FC = () => {
         abortController,
       });
       if (response.result) {
+        console.log(response.result);
         setUsers(response.result.data);
       }
     }
@@ -93,11 +94,12 @@ export const AdminPanel: FC = () => {
         <h1 className={styles['admin__heading']}>Admin Panel</h1>
         {isLoading && <Spinner />}
         {!isLoading && (
-          <Card>
+          <Card className={styles['admin__container']}>
             <table className={styles['admin__table']}>
               <thead>
                 <tr>
                   <th>UID</th>
+                  <th>Verified</th>
                   <th>Roles</th>
                   <th>Username</th>
                   <th>Email</th>
@@ -109,17 +111,20 @@ export const AdminPanel: FC = () => {
                   users.map((u: any) => (
                     <tr key={u._id}>
                       <td>{u._id}</td>
+                      <td>{String(u.verified)}</td>
                       <td>{u.roles.join(',')}</td>
                       <td>{u.userName}</td>
                       <td>{u.email}</td>
                       <td>
                         <div className={styles['admin--buttons']}>
-                          <Button
-                            className={styles['admin--delete']}
-                            onClick={() => onDeleteUser(u._id)}
-                          >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                          </Button>
+                          {!u.roles.includes('admin') && (
+                            <Button
+                              className={styles['admin--delete']}
+                              onClick={() => onDeleteUser(u._id)}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
