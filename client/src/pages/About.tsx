@@ -6,7 +6,7 @@ export const About = () => {
       <div className={styles['about']}>
         <h1 className={styles['about__heading']}>About</h1>
         <div className={styles['about__description']}>
-          <p>
+          <p className={styles['about__description--text']}>
             My name is <b>Tatum Roaquin</b>, I am a Bachelor of Science in IT
             graduate from the University of Technology Sydney. I built this blog
             using the <a href='https://www.mongodb.com/mern-stack'>MERN</a>{' '}
