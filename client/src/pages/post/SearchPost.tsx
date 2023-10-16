@@ -13,7 +13,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 export const SearchPost: FC = () => {
   const [posts, setPosts] = useState<any>([]);
-  const { isLoading, sendRequest, error, setError} = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -31,8 +31,9 @@ export const SearchPost: FC = () => {
   }, [auth, auth?.roles]);
 
   useEffect(() => {
-    searchPosts();
+    let ignore = false;
     async function searchPosts() {
+      if (ignore) return;
       const abortController = new AbortController();
       const response = await sendRequest({
         url: `${import.meta.env.VITE_SERVER_URL}/post/search?q=${query}`,
@@ -43,6 +44,8 @@ export const SearchPost: FC = () => {
       }
       console.log(response);
     }
+    searchPosts();
+    return () => { ignore = true; };
   }, [query, sendRequest]);
 
   async function onSubmit(e: FormEvent) {
