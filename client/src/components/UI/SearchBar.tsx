@@ -14,7 +14,7 @@ export const SearchBar: FC<SearchBar> = ({ onSubmit }) => {
   return (
     <form onSubmit={onSubmit} className={styles['searchbar']}>
       <SearchInput type='search' name='search' placeholder='Search Posts' />
-      <Button>
+      <Button className={styles['searchbar__button']}>
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </Button>
     </form>
