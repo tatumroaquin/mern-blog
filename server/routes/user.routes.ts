@@ -3,7 +3,6 @@ import {
   verifyAccessToken,
   verifyRefreshToken,
 } from '../middlewares/verify.token.js';
-import { paginate } from '../middlewares/paginate.js';
 import { checkRole } from '../middlewares/role.checker.js';
 import {
   getUserByIdController,
@@ -13,6 +12,7 @@ import {
 } from '../controllers/user.controller.js';
 import { editUserValidator } from '../middlewares/user.validator.js';
 import { verifyUserId } from '../middlewares/verify.userid.js';
+import { usersAllPaginate } from '../middlewares/usersAll.paginate.js';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.get(
   '/all',
   verifyAccessToken,
   verifyRefreshToken,
-  paginate('users'),
+  usersAllPaginate(),
   checkRole('admin'),
   getAllUsersController
 );

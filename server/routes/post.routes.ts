@@ -22,10 +22,10 @@ import {
   verifyRefreshToken,
 } from '../middlewares/verify.token.js';
 import { verifyUserId } from '../middlewares/verify.userid.js';
-import { paginate } from '../middlewares/paginate.js';
 import { postsByUidPaginate } from '../middlewares/postsByUid.paginate.js';
-import { search } from '../middlewares/search.js';
+import { postsSearchPaginate } from '../middlewares/postsSearch.paginate.js';
 import { runValidation } from '../middlewares/run-validator.js';
+import { postsAllPaginate } from '../middlewares/postsAll.paginate.js';
 
 const router = Router();
 
@@ -53,14 +53,14 @@ router.get(
   '/all',
   getAllPostsValidator,
   runValidation,
-  paginate('posts', true),
+  postsAllPaginate(),
   getAllPostsController
 );
 router.get(
   '/search',
   searchPostsValidator,
   runValidation,
-  search('posts'),
+  postsSearchPaginate(),
   searchPostsController
 );
 router.put(
