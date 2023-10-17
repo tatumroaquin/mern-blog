@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import Post from '../models/Post.model.js';
 
 import {
   createPostController,
@@ -24,6 +23,7 @@ import {
 } from '../middlewares/verify.token.js';
 import { verifyUserId } from '../middlewares/verify.userid.js';
 import { paginate } from '../middlewares/paginate.js';
+import { postsByUidPaginate } from '../middlewares/postsByUid.paginate.js';
 import { search } from '../middlewares/search.js';
 import { runValidation } from '../middlewares/run-validator.js';
 
@@ -46,6 +46,7 @@ router.get(
   '/uid/:userId',
   getPostByUserIdValidator,
   runValidation,
+  postsByUidPaginate(),
   getPostsByUserIdController
 );
 router.get(

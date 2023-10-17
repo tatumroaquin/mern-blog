@@ -37,7 +37,6 @@ export const getPostBySlugValidator = [
 
 export const getPostByUserIdValidator = [
   check('userId')
-    .escape()
     .notEmpty()
     .withMessage('You must specify a User ID')
     .isHexadecimal()
@@ -59,7 +58,7 @@ export const updatePostValidator = [
   header('authorization')
     .contains('Bearer')
     .withMessage('Access token not found'),
-  check('userId')
+  check('author')
     .notEmpty()
     .withMessage('User IDs must be linked with posts')
     .isHexadecimal()

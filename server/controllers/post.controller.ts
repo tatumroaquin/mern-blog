@@ -8,7 +8,7 @@ interface IUserRequest extends Request {
 }
 
 export async function createPostController(req: IUserRequest, res: Response) {
-  const { userId, title, description = '', markdown, tags = [] } = req.body;
+  const { author, title, description = '', markdown, tags = [] } = req.body;
 
   const postExist = await Post.findOne({
     slug: slugify(title, { lower: true, trim: true, strict: true }),
@@ -18,7 +18,7 @@ export async function createPostController(req: IUserRequest, res: Response) {
     return res.json({ error: 'Post with that title already exist' });
 
   try {
-    await new Post({ userId, title, description, markdown, tags }).save();
+    await new Post({ author, title, description, markdown, tags }).save();
   } catch (e: any) {
     return res.status(500).json({ error: e.message });
   }
@@ -28,39 +28,31 @@ export async function createPostController(req: IUserRequest, res: Response) {
 export async function getPostBySlugController(req: Request, res: Response) {
   const { postSlug } = req.params;
   try {
-    // const post = await Post.findOne({ slug: postSlug });
-    const post = await Post.aggregate([
-      { $match: { slug: postSlug } },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'author',
-        },
-      },
-      { $unwind: '$author' },
-      {
-        $unset: ['userId', 'author.email', 'author.passwordHash'],
-      },
-    ]);
-    if (post.length === 0) {
+    const post = await Post.findOne({ slug: postSlug }).populate(
+      'author',
+      '-passwordHash'
+    );
+
+    if (post?.length === 0) {
       return res.status(404).json({ error: 'Post does not exist' });
     }
-    return res.json({ success: 'Post retrieved', post: post[0] });
-  } catch (e: any) {
-    return res.json({ error: e.message });
+    return res.json({ success: 'Post retrieved', post });
+  } catch (e: unknown) {
+    if (e instanceof Error) return res.json({ error: e.message });
   }
 }
 
-export async function getPostsByUserIdController(req: Request, res: Response) {
-  const { userId } = req.body;
-  const posts = await Post.find({ userId });
+export async function getPostsByUserIdController(_: Request, res: Response) {
+  const { result } = res.locals;
 
-  if (!posts)
-    return res.status(404).json({ error: `Post by ${userId} not found` });
+  if (!result)
+    return res.status(404).json({ error: 'User does not have any posts' });
 
-  res.json({ success: `Posts by ${userId} retrieved`, posts });
+  try {
+    return res.json({ success: ` retrieved`, result });
+  } catch (e: unknown) {
+    if (e instanceof Error) return res.status(500).json({ error: e.message });
+  }
 }
 
 export async function searchPostsController(_: Request, res: Response) {
@@ -80,14 +72,14 @@ export async function getAllPostsController(_: Request, res: Response) {
 
 export async function updatePostController(req: IUserRequest, res: Response) {
   const { postSlug } = req.params;
-  const { userId, title, description, markdown, tags } = req.body;
+  const { author, title, description, markdown, tags } = req.body;
 
   const post = await Post.findOne({ slug: postSlug });
 
   if (!post) return res.status(404).json({ error: 'Post not found' });
 
   //https://stackoverflow.com/a/11638106
-  if (!post.userId.equals(userId) && !req?.at_user?.roles.includes('admin'))
+  if (!post.author.equals(author) && !req?.at_user?.roles.includes('admin'))
     return res.status(401).json({ error: 'You can only edit your own posts' });
 
   try {
@@ -110,7 +102,7 @@ export async function deletePostController(req: IUserRequest, res: Response) {
   if (!post) return res.status(404).json({ error: 'Post not found' });
 
   if (
-    !post.userId.equals(req.rt_user?.id) &&
+    !post.author.equals(req.rt_user?.id) &&
     !req?.rt_user?.roles.includes('admin')
   )
     return res
