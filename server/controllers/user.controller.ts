@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import User from '../models/User.model.js';
 import Post from '../models/Post.model.js';
+import RefreshToken from '../models/RefreshToken.model.js';
 
 interface IUserRequest extends Request {
   accessTokenPayload?: JwtPayload | { id: string };
@@ -80,11 +81,12 @@ export async function deleteUserController(req: Request, res: Response) {
         .json({ error: 'Delete failed! administrators can NOT be deleted!' });
 
     await User.deleteOne({ _id: userId });
-    await Post.deleteMany({ userId });
-    res.json({
-      success: `The account "${user.userName}" and all its posts has been deleted`,
+    await Post.deleteMany({ author: userId });
+    await RefreshToken.deleteMany({ userId });
+    return res.json({
+      success: `The account '${user.userName}' and all its posts has been deleted`,
     });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (e: unknown) {
+    if (e instanceof Error) return res.status(500).json({ error: e.message });
   }
 }
