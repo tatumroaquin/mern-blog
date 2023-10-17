@@ -6,7 +6,7 @@ import RefreshToken from '../models/RefreshToken.model.js';
 import VerifyToken from '../models/VerifyToken.model.js';
 
 import { generateTokens } from '../utility/generate.tokens.js';
-import { sendEmail } from '../utility/sendEmail.js';
+// import { sendEmail } from '../utility/sendEmail.js';
 
 export async function userSignUpController(req: Request, res: Response) {
   const { firstName, lastName, userName, email, password } = req.body;
@@ -29,17 +29,23 @@ export async function userSignUpController(req: Request, res: Response) {
     verifyToken.userId = user._id;
     await verifyToken.save();
 
-    const emailData = {
-      toAddress: email as string,
-      subject: 'Account Verification',
-      firstName: firstName as string,
-      userId: user._id as string,
-      verifyToken: verifyToken.content as string,
-    };
-    sendEmail(emailData);
-  } catch (error: any) {
-    console.log(error.message);
-    return res.json({ error: 'User sign up failed, please try again later' });
+    // const emailData = {
+    //   toAddress: email as string,
+    //   subject: 'Account Verification',
+    //   firstName: firstName as string,
+    //   userId: user._id as string,
+    //   verifyToken: verifyToken.content as string,
+    // };
+    // sendEmail(emailData);
+    console.log(
+      'V_TOKEN',
+      `${process.env.CLIENT_URL}/auth/verify/${user._id}/${verifyToken.content}`
+    );
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      // return res.json({ error: 'User sign up failed, please try again later' });
+      return res.json({ error: e.message });
+    }
   }
   res.json({ success: 'User has been created' });
 }
@@ -58,11 +64,9 @@ export async function userSignInController(req: Request, res: Response) {
   }
 
   if (!user.verified) {
-    return res
-      .status(403)
-      .json({
-        error: `${user.userName} you must verify your account to sign in.`,
-      });
+    return res.status(403).json({
+      error: `${user.userName} you must verify your account to sign in.`,
+    });
   }
 
   const { accessToken, refreshToken } = generateTokens(user);
@@ -97,10 +101,11 @@ export async function userLogOutController(req: Request, res: Response) {
     jwt,
     process.env.JWT_REFRESH_TOKEN_SECRET!,
     async (error: JWT.VerifyErrors | null, decoded: any) => {
-      if (error) return res.json({ error: error.message });
+      if (error) return res.status(403).json({ error: error.message });
 
-      const user = await User.findOne({ _id: decoded.id });
+      // const user = await User.findOne({ _id: decoded.id });
       const refreshToken = await RefreshToken.findOne({ content: jwt });
+
       res.clearCookie('jwt', {
         httpOnly: true,
         secure: true,
@@ -108,11 +113,11 @@ export async function userLogOutController(req: Request, res: Response) {
       });
 
       // no user with that refreshtoken
-      if (!user) {
-        return res
-          .status(204)
-          .json({ error: 'Refresh token user does not exists' });
-      }
+      // if (!user) {
+      //   return res
+      //     .status(204)
+      //     .json({ error: 'Refresh token user does not exists' });
+      // }
 
       if (!refreshToken) {
         return res.status(204).json({ error: 'Refresh token does not exist' });
@@ -121,9 +126,11 @@ export async function userLogOutController(req: Request, res: Response) {
       // has refreshtoken in db, delete record and clear cookie
       try {
         refreshToken.deleteOne();
-        return res.json({ success: `${user.userName} has been logged out` });
-      } catch (error: any) {
-        return res.json({ error: error.message });
+        return res.json({ success: `You have been logged out` });
+      } catch (e: unknown) {
+        console.log('SO',e);
+        if (e instanceof Error)
+          return res.status(500).json({ error: e.message });
       }
     }
   );
