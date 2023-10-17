@@ -45,6 +45,9 @@ export const useHttpPrivate = () => {
           signal: abortController.signal,
           credentials,
         });
+
+        if (!response) return;
+
         let data = await response.json();
 
         // response intercept if unauthorised use token refresh and try again
@@ -65,8 +68,8 @@ export const useHttpPrivate = () => {
         if (data.error) setError(data.error);
 
         return data;
-      } catch (e: any) {
-        console.log(e);
+      } catch (e: unknown) {
+        if (e instanceof Error) setError(e.message);
       } finally {
         setIsLoading(false);
       }

@@ -37,6 +37,8 @@ export const useHttp = () => {
           credentials: withCredentials ? 'include' : 'omit',
         });
 
+        if (!response) return;
+
         const data: any = await response.json();
 
         activeRequests.current = activeRequests.current.filter(
@@ -52,9 +54,10 @@ export const useHttp = () => {
         if (data.error) setError(data.error);
 
         return data;
-      } catch (e: any) {
-        setError(e.message);
-        console.log(e.message);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        }
       } finally {
         setIsLoading(false);
       }
