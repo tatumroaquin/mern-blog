@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import slugify from 'slugify';
 
 interface PostSchema {
-  userId: Schema.Types.ObjectId;
+  author: Types.ObjectId;
   title: string;
   description?: string;
   markdown: string;
@@ -13,9 +13,10 @@ interface PostSchema {
 }
 
 const postSchema: Schema = new Schema<PostSchema>({
-  userId: {
+  author: {
     type: Schema.Types.ObjectId,
-    required: true,
+    ref: 'User',
+    required: true
   },
   title: {
     type: String,
@@ -50,6 +51,6 @@ postSchema.pre('validate', function (next) {
   next();
 });
 
-postSchema.index({ '$**' : 'text' });
+postSchema.index({ '$**': 'text' });
 
 export default model('Post', postSchema);

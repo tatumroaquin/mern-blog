@@ -19,7 +19,6 @@ const refreshTokenSchema: Schema = new Schema<RefreshTokenSchema>({
   createdAt: {
     type: Date,
     default: Date.now,
-    // expires: 24 * Math.pow(60, 2)
     expires: process.env.JWT_RT_EXPIRY ?? '1d',
   },
 });
