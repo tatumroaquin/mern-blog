@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 import remarkGfm from 'remark-gfm';
 import remarkMermaid from 'remark-mermaidjs';
@@ -35,14 +35,14 @@ export const MarkDown: FC<Markdown> = ({ markdown, className }) => {
         components={{
           code({ inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
-            return !inline && match ? (
+             return !inline && match ? (
               <SyntaxHighlighter
                 children={String(children).replace(/\n$/, '')}
                 style={oneDark}
                 language={match[1]}
                 PreTag='div'
               />
-            ) : (
+             ) : (
               <code {...props} className={className}>
                 {children}
               </code>
