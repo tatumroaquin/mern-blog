@@ -44,7 +44,7 @@ export const PostCard: FC<PostCard> = ({
         <div>
           <b> {new Date(post.createdAt).toLocaleDateString('en-AU')} </b>
           <b>
-            <Link to={`/user/view/${post.author._id}`}>
+            <Link to={`/post/uid/${post.author._id}`}>
               {post.author.firstName} {post.author.lastName}
             </Link>
           </b>
