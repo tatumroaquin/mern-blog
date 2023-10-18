@@ -19,13 +19,15 @@ export const SignOut: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let ignore = false;
     const logout = async () => {
+      if (ignore) return;
       const abortController = new AbortController();
       const response = await sendRequest({
         url: `${import.meta.env.VITE_SERVER_URL}/auth/logout`,
         abortController,
       });
-      if (response.success) {
+      if (response?.success) {
         setAlertMessage(response.success);
         setShowAlert(true);
       }
@@ -33,6 +35,9 @@ export const SignOut: FC = () => {
     logout();
     setAuth({});
     setMarkdown('');
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   function handleOk() {

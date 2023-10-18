@@ -27,21 +27,22 @@ export const Home = () => {
   }, [auth, auth?.roles]);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    let ignore = false;
     const fetchPosts = async () => {
-      try {
-        const response = await sendRequest({
-          url: `${import.meta.env.VITE_SERVER_URL}/post/all?page=1&limit=5`,
-          abortController,
-        });
-        if (response.result) {
-          setPosts(response.result.data);
-        }
-      } catch (e: any) {
-        console.log(e);
+      if (ignore) return;
+      const abortController = new AbortController();
+      const response = await sendRequest({
+        url: `${import.meta.env.VITE_SERVER_URL}/post/all?page=1&limit=5`,
+        abortController,
+      });
+      if (response.result) {
+        setPosts(response.result.data);
       }
     };
     fetchPosts();
+    return () => {
+      ignore = true;
+    };
   }, [sendRequest]);
 
   function isPostedBySelf(username: string): boolean {

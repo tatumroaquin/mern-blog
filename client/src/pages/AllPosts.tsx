@@ -30,24 +30,25 @@ export const AllPosts = () => {
   }, [auth, auth?.roles]);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    let ignore = false;
     const fetchPosts = async () => {
-      try {
-        const response = await sendRequest({
-          url: `${
-            import.meta.env.VITE_SERVER_URL
-          }/post/all?page=${currentPage}&limit=${pageLimit}`,
-          abortController,
-        });
-        if (response) {
-          setPosts(response.result.data);
-          setDataLength(response.result.total);
-        }
-      } catch (e: any) {
-        console.log(e);
+      if (ignore) return;
+      const abortController = new AbortController();
+      const response = await sendRequest({
+        url: `${
+          import.meta.env.VITE_SERVER_URL
+        }/post/all?page=${currentPage}&limit=${pageLimit}`,
+        abortController,
+      });
+      if (response) {
+        setPosts(response.result.data);
+        setDataLength(response.result.total);
       }
     };
     fetchPosts();
+    return () => {
+      ignore = true;
+    };
   }, [currentPage, sendRequest]);
 
   function isPostedBySelf(username: string): boolean {
@@ -65,8 +66,8 @@ export const AllPosts = () => {
       setPosts((currPosts) => {
         return currPosts.filter((post: any) => post.slug !== slug);
       });
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) console.error(e.message);
     }
   }
 
@@ -89,7 +90,7 @@ export const AllPosts = () => {
       <ConfirmModal
         show={showModal}
         header='Confirm delete action'
-        message="This action is permanent and cannot be reversed! Are you sure you want to delete this post?"
+        message='This action is permanent and cannot be reversed! Are you sure you want to delete this post?'
         onConfirm={onConfirm}
         onCancel={onCancel}
       />
