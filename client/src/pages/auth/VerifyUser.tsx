@@ -27,7 +27,7 @@ export const VerifyUser: FC = () => {
         }/auth/verify/${userId}/${verifyToken}`,
         abortController,
       });
-      if (response.success) {
+      if (response?.success) {
         setAlertMessage(response.success);
         setShowAlert(true);
       }
