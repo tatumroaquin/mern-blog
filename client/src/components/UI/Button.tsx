@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import clsx from 'clsx';
 import styles from '@ui/Button.module.scss';
 
@@ -5,7 +6,7 @@ export interface IButton {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
 }
 
