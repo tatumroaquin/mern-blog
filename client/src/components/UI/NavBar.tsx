@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import { Button } from './Button';
 import { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '@hooks/useAuth';
@@ -80,7 +79,6 @@ export const NavBar = () => {
         className={clsx(`${styles['navbar__items']}`, {
           [`${styles['navbar__items--expanded']}`]: isExpanded,
         })}
-        onClick={handleExpand}
         ref={navbarRef}
       >
         <li className={styles['navbar__item']} key='/post/all'>
@@ -135,10 +133,11 @@ export const NavBar = () => {
         )}
         {isSignedIn && (
           <li className={styles['navbar__item']} key='/auth/logout'>
-            <NavLink to='/auth/logout'>
-              <Button className={styles['navbar__item--logout']}>
+            <NavLink className={handleNavLink} to='/auth/logout'>
+              {!isExpanded && (
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
-              </Button>
+              )}
+              {isExpanded && 'Logout'}
             </NavLink>
           </li>
         )}
