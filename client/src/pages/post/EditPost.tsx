@@ -112,7 +112,7 @@ export const EditPost = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: user.id,
+        author: user.id,
         title,
         description,
         markdown,
@@ -120,7 +120,7 @@ export const EditPost = () => {
       }),
       abortController,
     });
-    if (!response.error) navigate('/post/all');
+    if (!response?.error) navigate('/post/all');
     console.log('RES', response);
   }
 
