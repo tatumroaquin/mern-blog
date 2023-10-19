@@ -1,4 +1,6 @@
-import { FC, FormEvent, useEffect } from 'react';
+import { FC, FormEvent, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Spinner } from '@ui/Spinner';
 import { Button } from '@ui/Button';
 import { useHttpPrivate } from '@hooks/useHttpPrivate';
@@ -8,15 +10,25 @@ import { jwtDecode } from '@util/jwtDecode';
 import { accountForm } from '@form/AccountForm';
 import styles from './EditUser.module.scss';
 
+import { ConfirmModal } from '@components/UI/ConfirmModal';
+import { ErrorModal } from '@components/UI/ErrorModal';
+import { AlertModal } from '@components/UI/AlertModal';
+
 export const EditUser: FC = () => {
-  const { isLoading, sendRequest } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
   const { auth } = useAuth();
   const { form, renderForm, isFormValid } = useForm(accountForm);
   const user = jwtDecode(auth?.accessToken || '');
 
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const navigate = useNavigate();
+
   useEffect(() => {
+    let ignore = false;
     const abortController = new AbortController();
     const fetchUser = async () => {
+      if (ignore) return;
       const data = await sendRequest({
         url: `${import.meta.env.VITE_SERVER_URL}/user/view/${user.id}`,
         abortController,
@@ -32,6 +44,9 @@ export const EditUser: FC = () => {
       form.oldPassword.valid = false;
     };
     fetchUser();
+    return () => {
+      ignore = true;
+    };
   }, [auth?.accessToken, user.id, sendRequest]);
 
   async function handleSubmit(e: FormEvent) {
@@ -40,7 +55,7 @@ export const EditUser: FC = () => {
     const target = e.target as HTMLFormElement;
 
     if (target.newPassword?.value !== target.confirmPassword?.value) {
-      console.log('new and confirm passwords do not match');
+      setError('New password and confirm password fields do not match');
       return;
     }
 
@@ -73,8 +88,47 @@ export const EditUser: FC = () => {
     console.log(response);
   }
 
+  async function handleDeleteAccount() {
+    const abortController = new AbortController();
+    const userId = jwtDecode(auth?.accessToken ?? '').id;
+    const response = await sendRequest({
+      url: `${import.meta.env.VITE_SERVER_URL}/user/delete/${userId}`,
+      method: 'DELETE',
+      abortController,
+    });
+    console.log('EDIT', response);
+    if (response?.success) navigate('/auth/logout');
+  }
+
+  function handleConfirmCancel() {
+    setShowConfirm(false);
+  }
+
+  function onDelete() {
+    setShowConfirm(true);
+  }
+
   return (
     <>
+      <ErrorModal
+        show={!!error}
+        header='Error has occurred'
+        error={error}
+        onCancel={() => setError('')}
+      />
+      <AlertModal
+        show={!!alertMessage}
+        header='Alert'
+        message={alertMessage}
+        onCancel={() => setAlertMessage('')}
+      />
+      <ConfirmModal
+        show={showConfirm}
+        header='Confirm account deletion'
+        message='This is a destructive action, once you delete your account, it can never be restored. Are you sure you want to continue?'
+        onConfirm={handleDeleteAccount}
+        onCancel={handleConfirmCancel}
+      />
       <article className={styles['user-form']}>
         <h1 className={styles['user-form__title']}>Account Details</h1>
         <br />
@@ -87,7 +141,15 @@ export const EditUser: FC = () => {
               className={styles['user-form__button']}
               disabled={!isFormValid()}
             >
-              Update
+              Save Details
+            </Button>
+            <Button
+              type='button'
+              className={styles['user-form__button']}
+              disabled={!isFormValid()}
+              onClick={onDelete}
+            >
+              Delete Account
             </Button>
           </form>
         )}
