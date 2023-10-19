@@ -55,7 +55,7 @@ export const NewPost = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: user.id,
+        author: user.id,
         title,
         description,
         markdown,
@@ -63,14 +63,13 @@ export const NewPost = () => {
       }),
       abortController,
     });
-    if (!response.error) navigate('/');
+    if (!response?.error) navigate('/');
   }
-
-  function onChange(e: FormEvent<HTMLFormElement>) {
-    const { name, value } = e.target as HTMLFormElement;
+  const onRenderMarkdown = (e: FormEvent<HTMLFormElement>) => {
+    const { name, value } = e.target as HTMLTextAreaElement;
     if (name !== 'markdown') return;
     setMarkdown(value);
-  }
+  };
 
   return (
     <>
@@ -85,7 +84,10 @@ export const NewPost = () => {
         <div className={styles['post-new']}>
           <h1 className={styles['post-new__title']}>New Post</h1>
           <Card className={styles['post-new__form']}>
-            <form onChange={onChange} onSubmit={onSubmit}>
+            <form
+              onSubmit={onSubmit}
+              onBlur={onRenderMarkdown}
+            >
               {renderForm()}
               <Button>Submit</Button>
             </form>
