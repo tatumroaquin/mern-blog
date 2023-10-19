@@ -24,8 +24,6 @@ export const EditPost = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   // when added to useEffect setMarkdown causes re-render cycles because useCallback is not used
   const [markdown, setMarkdown] = useLocalStorage('markdown');
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
 
   const { isLoading, sendRequest, error, setError } = useHttpPrivate();
   const { auth } = useAuth();
@@ -46,32 +44,30 @@ export const EditPost = () => {
         abortController,
       });
       if (response.post) {
-        const { title, markdown } = response.post;
-        setAuthor(response.post.author);
-        setMarkdown(`# ${title}\n\n${markdown}`);
-        setDescription(response.post.description);
-        setTags(response.post.tags);
+        const { title, description, markdown, author, tags } = response.post;
+        setAuthor(author);
+        setMarkdown(markdown);
+        form.markdown.value = `# ${title}\n\n${markdown}`;
+        form.description.value = description;
+        form.postTags.defaultValue = tags.map((tag: string) => ({
+          label: tag,
+          value: tag,
+        }));
       }
     };
     fetchPost();
-  }, [slug, sendRequest]);
-
-  form.markdown.value = markdown;
-  form.description.value = description;
-  form.postTags.defaultValue = tags.map((tag) => ({
-    label: tag,
-    value: tag,
-  }));
+  }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setShowConfirm(true);
   }
 
-  function onChange(e: FormEvent<HTMLFormElement>) {
+  function onRenderMarkdown(e: FormEvent<HTMLFormElement>) {
     const { name, value } = e.target as HTMLFormElement;
-    if (name === 'markdown') setMarkdown(value);
-    if (name === 'description') setDescription(value);
+    if (name !== 'markdown') return;
+
+    setMarkdown(value);
   }
 
   function isPostedBySelf(author: any) {
@@ -121,7 +117,6 @@ export const EditPost = () => {
       abortController,
     });
     if (!response?.error) navigate('/post/all');
-    console.log('RES', response);
   }
 
   function handleCancel() {
@@ -149,7 +144,7 @@ export const EditPost = () => {
         <div className={styles['post-edit']}>
           <h1 className={styles['post-edit__title']}>Edit Post</h1>
           <Card className={styles['post-edit__form']}>
-            <form ref={formRef} onSubmit={onSubmit} onChange={onChange}>
+            <form ref={formRef} onSubmit={onSubmit} onBlur={onRenderMarkdown}>
               {renderForm()}
               <Button>Submit</Button>
             </form>
