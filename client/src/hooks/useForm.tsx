@@ -1,5 +1,10 @@
 import { useState, useCallback, FormEvent } from 'react';
-import { IInputObject, ITextAreaObject, IFormObject, ISelectObject } from '@types';
+import {
+  IInputObject,
+  ITextAreaObject,
+  IFormObject,
+  ISelectObject,
+} from '@types';
 import { MultiValue, ActionMeta } from 'react-select';
 
 export function useForm(formObject: IFormObject) {
@@ -23,7 +28,9 @@ export function useForm(formObject: IFormObject) {
 
   const onInputChange = useCallback(
     (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { name, value } = (e.target as HTMLInputElement | HTMLTextAreaElement);
+      const { name, value } = e.target as
+        | HTMLInputElement
+        | HTMLTextAreaElement;
 
       const inputObject = { ...form[name] };
 
@@ -37,20 +44,22 @@ export function useForm(formObject: IFormObject) {
 
       inputObject.touched = true;
 
-      setForm((currentForm) => ({ ...currentForm, [name]: inputObject }));
+      setForm((currentForm) => ({ ...currentForm, [name!]: inputObject }));
     },
     [form, isInputValid]
   );
 
   const onSelectChange = useCallback(
-    (items: MultiValue<{value: string}>, action: ActionMeta<{name: string}>) => {
-
+    (
+      items: MultiValue<{ value: string }>,
+      action: ActionMeta<{ name: string }>
+    ) => {
       let { name } = action;
       if (!name || name.length === 0) name = 'tags';
 
       const inputObject = { ...form[name] };
 
-      inputObject.value = items.map(item => item.value);
+      inputObject.value = items.map((item) => item.value);
 
       const isValidInput = isInputValid(inputObject);
 
@@ -63,21 +72,29 @@ export function useForm(formObject: IFormObject) {
       setForm((currentForm) => ({ ...currentForm, [name!]: inputObject }));
     },
     [form, isInputValid]
-  )
+  );
 
   function renderForm() {
     return Object.values(form).map(
-      (inputObject: IInputObject | ITextAreaObject | ISelectObject ) => {
-        const { type, name, value, valid, errorMessage, placeholder, renderInput, defaultValue } =
-          inputObject;
+      (inputObject: IInputObject | ITextAreaObject | ISelectObject) => {
+        const {
+          type,
+          name,
+          value,
+          valid,
+          errorMessage,
+          placeholder,
+          renderInput,
+          defaultValue,
+        } = inputObject;
 
-          let onChange: any = onInputChange;
+        let onChange: any = onInputChange;
 
-          if (type && type.includes('select')) {
-            onChange = onSelectChange;
-          }
-          //TODO: add 'type' field in IInputObject, ITextAreaObject, and ISelectObject
-          // use 'type' to determine the whether to use onInputChange or onSelectChange
+        if (type && type.includes('select')) {
+          onChange = onSelectChange;
+        }
+        //TODO: add 'type' field in IInputObject, ITextAreaObject, and ISelectObject
+        // use 'type' to determine the whether to use onInputChange or onSelectChange
         return renderInput({
           key: name,
           value,
@@ -85,7 +102,7 @@ export function useForm(formObject: IFormObject) {
           isValid: valid,
           placeholder,
           onChange,
-          defaultValue
+          defaultValue,
         });
       }
     );
