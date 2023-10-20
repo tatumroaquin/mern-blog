@@ -25,6 +25,11 @@ export const createPostValidator = [
     .withMessage('Post description is missing')
     .isAscii()
     .withMessage('Post description contains invalid characters'),
+  check('recaptcha')
+    .notEmpty()
+    .withMessage('Recaptcha verification required')
+    .isString()
+    .withMessage('Recaptcha token must be a string'),
 ];
 
 export const getPostBySlugValidator = [
@@ -81,6 +86,11 @@ export const updatePostValidator = [
     .withMessage('Post description is missing')
     .isAscii()
     .withMessage('Post description contains invalid characters'),
+  check('recaptcha')
+    .notEmpty()
+    .withMessage('Recaptcha verification required')
+    .isString()
+    .withMessage('Recaptcha token must be a string'),
 ];
 
 export const deletePostValidator = [

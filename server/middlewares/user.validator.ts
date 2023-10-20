@@ -44,6 +44,11 @@ export const userSignUpValidator = [
     )
     .isLength({ max: 32 })
     .escape(),
+  check('recaptcha')
+    .notEmpty()
+    .withMessage('Recaptcha verification required')
+    .isString()
+    .withMessage('Recaptcha token must be a string'),
 ];
 
 export const userSignInValidator = [
@@ -64,6 +69,11 @@ export const userSignInValidator = [
     .isString()
     .withMessage('Passwords must be a string')
     .escape(),
+  check('recaptcha')
+    .notEmpty()
+    .withMessage('Recaptcha verification required')
+    .isString()
+    .withMessage('Recaptcha token must be a string'),
 ];
 
 export const editUserValidator = [
@@ -121,6 +131,11 @@ export const editUserValidator = [
     .isLength({ max: 32 })
     .withMessage('Passwords can not exceed 32 characters')
     .escape(),
+  check('recaptcha')
+    .notEmpty()
+    .withMessage('Recaptcha verification required')
+    .isString()
+    .withMessage('Recaptcha token must be a string'),
 ];
 
 export const verifyUserValidator = [
