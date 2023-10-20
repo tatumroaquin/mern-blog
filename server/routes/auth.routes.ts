@@ -11,6 +11,11 @@ import {
   userLogOutController,
   userVerifyController,
 } from '../controllers/auth.controller.js';
+import {
+  verifyAccessToken,
+  verifyRTLogout,
+} from '../middlewares/verify.token.js';
+import { checkRecaptcha } from '../middlewares/verify.recaptcha.js';
 
 const router = Router();
 
@@ -18,12 +23,14 @@ router.post(
   '/signup',
   userSignUpValidator,
   runValidation,
+  checkRecaptcha,
   userSignUpController
 );
 router.post(
   '/signin',
   userSignInValidator,
   runValidation,
+  checkRecaptcha,
   userSignInController
 );
 router.get(
@@ -32,6 +39,11 @@ router.get(
   runValidation,
   userVerifyController
 );
-router.get('/logout', userLogOutController);
+router.get(
+  '/logout',
+  verifyAccessToken,
+  verifyRTLogout,
+  userLogOutController
+);
 
 export default router;

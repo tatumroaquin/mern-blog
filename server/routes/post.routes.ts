@@ -26,6 +26,7 @@ import { postsByUidPaginate } from '../middlewares/postsByUid.paginate.js';
 import { postsSearchPaginate } from '../middlewares/postsSearch.paginate.js';
 import { runValidation } from '../middlewares/run-validator.js';
 import { postsAllPaginate } from '../middlewares/postsAll.paginate.js';
+import { checkRecaptcha } from '../middlewares/verify.recaptcha.js';
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.post(
   verifyAccessToken,
   createPostValidator,
   runValidation,
+  checkRecaptcha,
   createPostController
 );
 router.get(
@@ -70,6 +72,7 @@ router.put(
   verifyUserId,
   updatePostValidator,
   runValidation,
+  checkRecaptcha,
   updatePostController
 );
 router.delete(

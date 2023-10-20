@@ -13,6 +13,7 @@ import {
 import { editUserValidator } from '../middlewares/user.validator.js';
 import { verifyUserId } from '../middlewares/verify.userid.js';
 import { usersAllPaginate } from '../middlewares/usersAll.paginate.js';
+import { checkRecaptcha } from '../middlewares/verify.recaptcha.js';
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router.post(
   verifyRefreshToken,
   editUserValidator,
   verifyUserId,
+  checkRecaptcha,
   editUserController
 );
 
@@ -47,7 +49,8 @@ router.delete(
   verifyAccessToken,
   verifyRefreshToken,
   verifyUserId,
+  checkRecaptcha,
   deleteUserController
-)
+);
 
 export default router;
