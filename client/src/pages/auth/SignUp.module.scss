@@ -13,6 +13,11 @@
     display: flex;
     flex-direction: column;
   }
+  &__recaptcha {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+  }
 }
 .signin__link {
   color: var(--american-purple);

@@ -1,5 +1,5 @@
 .post-new {
-  min-height: 70vh;
+  min-height: 75vh;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
@@ -25,6 +25,11 @@
     }
     button {
       align-self: center;
+    }
+    &--recaptcha {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 1rem;
     }
   }
 

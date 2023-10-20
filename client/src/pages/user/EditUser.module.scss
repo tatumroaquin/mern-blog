@@ -1,4 +1,4 @@
-.user-form {
+.edit-user {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,11 +28,16 @@
   &__form {
     display: flex;
     flex-direction: column;
+
+    &--recaptcha {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 
 @media only screen and (max-width: 510px) {
-  .user-form {
+  .edit-user {
     width: 100vw;
     &__title {
       font-size: 1.5rem;
