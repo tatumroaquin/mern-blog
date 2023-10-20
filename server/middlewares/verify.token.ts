@@ -50,3 +50,21 @@ export function verifyRefreshToken(
     return res.status(401).json({ error: 'Invalid refresh token' });
   }
 }
+
+export function verifyRTLogout(
+  req: IUserRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const { jwt } = req.cookies;
+
+  if (!jwt) return res.status(401).json({ error: 'No JWT Cookie Passed' });
+
+  try {
+    JWT.verify(jwt, process.env.JWT_REFRESH_TOKEN_SECRET!);
+    res.locals.jwt = jwt;
+    next();
+  } catch (e: any) {
+    return res.status(401).json({ error: 'Invalid refresh token' });
+  }
+}
