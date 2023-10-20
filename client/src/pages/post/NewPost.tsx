@@ -1,5 +1,6 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Card } from '@ui/Card';
 import { MarkDown } from '@ui/MarkDown';
 import { Button } from '@ui/Button';
@@ -23,8 +24,13 @@ export const NewPost = () => {
   postForm.markdown.value = markdown;
   const { renderForm } = useForm(postForm);
 
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptcha, setRecaptcha] = useState('');
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    recaptchaRef.current?.reset();
+
     let { markdown, description, postTags } = e.target as HTMLFormElement;
 
     const lines = markdown.value.split('\n');
@@ -60,6 +66,7 @@ export const NewPost = () => {
         description,
         markdown,
         tags: postTags,
+        recaptcha,
       }),
       abortController,
     });
@@ -70,6 +77,10 @@ export const NewPost = () => {
     if (name !== 'markdown') return;
     setMarkdown(value);
   };
+
+  function onRecaptchaChange(token: string | null) {
+    setRecaptcha(token ?? '');
+  }
 
   return (
     <>
@@ -84,11 +95,14 @@ export const NewPost = () => {
         <div className={styles['post-new']}>
           <h1 className={styles['post-new__title']}>New Post</h1>
           <Card className={styles['post-new__form']}>
-            <form
-              onSubmit={onSubmit}
-              onBlur={onRenderMarkdown}
-            >
+            <form onSubmit={onSubmit} onBlur={onRenderMarkdown}>
               {renderForm()}
+              <ReCAPTCHA
+                className={styles['post-new__form--recaptcha']}
+                ref={recaptchaRef}
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                onChange={onRecaptchaChange}
+              />
               <Button>Submit</Button>
             </form>
           </Card>

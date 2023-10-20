@@ -1,5 +1,6 @@
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './SignIn.module.scss';
 
 import { Button } from '@ui/Button';
@@ -19,32 +20,36 @@ export const SignIn = () => {
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname || '/';
 
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptcha, setRecaptcha] = useState('');
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    recaptchaRef.current?.reset();
 
     if (!isFormValid) return;
 
-    try {
-      const email = form.email.value;
-      const password = form.password.value;
+    const email = form.email.value;
+    const password = form.password.value;
 
-      const abortController = new AbortController();
-      const authToken = await sendRequest({
-        url: `${import.meta.env.VITE_SERVER_URL}/auth/signin`,
-        abortController,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    const abortController = new AbortController();
+    const authToken = await sendRequest({
+      url: `${import.meta.env.VITE_SERVER_URL}/auth/signin`,
+      abortController,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, recaptcha }),
+    });
 
-      if (!authToken.error) {
-        setAuth(authToken);
-        navigate(fromLocation, { replace: true });
-      }
-    } catch (e: any) {
-      console.log(e.message);
+    if (!authToken.error) {
+      setAuth(authToken);
+      navigate(fromLocation, { replace: true });
     }
   }
+
+  const onRecaptchaChange = (token: string | null) => {
+    setRecaptcha(token ?? '');
+  };
 
   useEffect(() => {
     localStorage.setItem('persist', String(persist));
@@ -64,6 +69,12 @@ export const SignIn = () => {
           <h1>Sign In</h1>
           <form className={styles['signin__form']} onSubmit={handleSubmit}>
             {renderForm()}
+            <ReCAPTCHA
+              className={styles['signin__recaptcha']}
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
             <Button className={styles['signin__button']}>Sign In</Button>
             <div className={styles['signin__persist']}>
               <input

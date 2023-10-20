@@ -20,9 +20,9 @@ export const SignOut: FC = () => {
 
   useEffect(() => {
     let ignore = false;
+    const abortController = new AbortController();
     const logout = async () => {
       if (ignore) return;
-      const abortController = new AbortController();
       const response = await sendRequest({
         url: `${import.meta.env.VITE_SERVER_URL}/auth/logout`,
         abortController,
@@ -37,8 +37,9 @@ export const SignOut: FC = () => {
     setMarkdown('');
     return () => {
       ignore = true;
+      abortController.abort();
     };
-  }, []);
+  }, [sendRequest]);
 
   function handleOk() {
     setShowAlert(false);

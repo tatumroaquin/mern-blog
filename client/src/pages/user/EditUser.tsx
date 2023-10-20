@@ -1,5 +1,6 @@
-import { FC, FormEvent, useState, useEffect } from 'react';
+import { FC, FormEvent, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Spinner } from '@ui/Spinner';
 import { Button } from '@ui/Button';
@@ -23,6 +24,9 @@ export const EditUser: FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
+
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptcha, setRecaptcha] = useState('');
 
   useEffect(() => {
     let ignore = false;
@@ -94,9 +98,9 @@ export const EditUser: FC = () => {
     const response = await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/user/delete/${userId}`,
       method: 'DELETE',
+      body: JSON.stringify({ recaptcha }),
       abortController,
     });
-    console.log('EDIT', response);
     if (response?.success) navigate('/auth/logout');
   }
 
@@ -106,6 +110,10 @@ export const EditUser: FC = () => {
 
   function onDelete() {
     setShowConfirm(true);
+  }
+
+  function onRecaptchaChange(token: string | null) {
+    setRecaptcha(token ?? '');
   }
 
   return (
@@ -129,23 +137,30 @@ export const EditUser: FC = () => {
         onConfirm={handleDeleteAccount}
         onCancel={handleConfirmCancel}
       />
-      <article className={styles['user-form']}>
-        <h1 className={styles['user-form__title']}>Account Details</h1>
+      <article className={styles['edit-user']}>
+        <h1 className={styles['edit-user__title']}>Account Details</h1>
         <br />
         {isLoading && <Spinner />}
         {!isLoading && (
-          <form className={styles['user-form__form']} onSubmit={handleSubmit}>
+          <form className={styles['edit-user__form']} onSubmit={handleSubmit}>
             {renderForm()}
+            <ReCAPTCHA
+              className={styles['edit-user__form--recaptcha']}
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
+
             <Button
               type='submit'
-              className={styles['user-form__button']}
+              className={styles['edit-user__button']}
               disabled={!isFormValid()}
             >
               Save Details
             </Button>
             <Button
               type='button'
-              className={styles['user-form__button']}
+              className={styles['edit-user__button']}
               disabled={!isFormValid()}
               onClick={onDelete}
             >

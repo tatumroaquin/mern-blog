@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Card } from '@ui/Card';
 import { MarkDown } from '@ui/MarkDown';
@@ -32,6 +33,9 @@ export const EditPost = () => {
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
 
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptcha, setRecaptcha] = useState('');
+
   useEffect(() => {
     setIsAdmin(Boolean(auth?.roles?.includes('admin')));
   }, [auth?.roles]);
@@ -60,6 +64,7 @@ export const EditPost = () => {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    recaptchaRef.current?.reset();
     setShowConfirm(true);
   }
 
@@ -113,6 +118,7 @@ export const EditPost = () => {
         description,
         markdown,
         tags: postTags,
+        recaptcha,
       }),
       abortController,
     });
@@ -121,6 +127,10 @@ export const EditPost = () => {
 
   function handleCancel() {
     setShowConfirm(false);
+  }
+
+  function onRecaptchaChange(token: string | null) {
+    setRecaptcha(token ?? '');
   }
 
   return (
@@ -146,6 +156,12 @@ export const EditPost = () => {
           <Card className={styles['post-edit__form']}>
             <form ref={formRef} onSubmit={onSubmit} onBlur={onRenderMarkdown}>
               {renderForm()}
+              <ReCAPTCHA
+                className={styles['post-edit__form--recaptcha']}
+                ref={recaptchaRef}
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                onChange={onRecaptchaChange}
+              />
               <Button>Submit</Button>
             </form>
           </Card>
