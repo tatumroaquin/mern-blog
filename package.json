@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "pnpm --stream -r run clean",
     "build": "pnpm --stream -r run build",
+    "deps": "pnpm --stream -r install",
 
     "start": "pnpm --stream -r start",
     "start:server": "pnpm -F @mern-blog/server start",
