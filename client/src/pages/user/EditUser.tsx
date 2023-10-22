@@ -78,6 +78,7 @@ export const EditUser: FC = () => {
       body[key] = target[key].value;
     }
     body.userId = user.id;
+    body.recaptcha = recaptcha;
 
     await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/user/edit/${user.id}`,
