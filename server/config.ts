@@ -9,7 +9,7 @@ export const allowedOrigins = [
 
 ];
 export const sslCertificates = {
-  publicKey: '../ssl/tblog-crt.pem',
-  privateKey: '../ssl/tblog-key.pem',
+  publicKey: '../ssl/fullchain.pem',
+  privateKey: '../ssl/privkey.pem',
   caPublicKey: '../ssl/chain.pem',
 };
