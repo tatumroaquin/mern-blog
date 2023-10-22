@@ -15,6 +15,9 @@ jobs:
         deployment-group: ['mern-blog']
         repository: ['tatumroaquin/mern-blog']
     steps:
+      - name: Git checkout project
+        uses: actions/checkout@v3
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
