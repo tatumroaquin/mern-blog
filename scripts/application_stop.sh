@@ -12,5 +12,5 @@ export DOTENV_KEY
 
 cd "/home/ubuntu/mern-blog" || return
 
-# Restart mern-blog app in pm2
-pm2 delete mern-blog
+# Stop and delete mern-blog process
+pm2 delete all
