@@ -52,17 +52,16 @@ export const Home = () => {
   async function handleDeletePost(slug: string) {
     try {
       const abortController = new AbortController();
-      const response = await sendRequest({
+      await sendRequest({
         url: `${import.meta.env.VITE_SERVER_URL}/post/delete/${slug}`,
         abortController,
         method: 'DELETE',
       });
-      console.log(response);
       setPosts((currPosts) => {
         return currPosts.filter((post: any) => post.slug !== slug);
       });
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) console.log(e.message);
     }
   }
 

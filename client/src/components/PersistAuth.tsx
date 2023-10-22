@@ -14,8 +14,8 @@ export const PersistAuth = () => {
     const refreshToken = async () => {
       try {
         await refresh();
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e: unknown) {
+        if (e instanceof Error) console.log(e.message);
       } finally {
         isMounted && setIsLoading(false);
       }

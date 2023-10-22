@@ -79,7 +79,7 @@ export const EditUser: FC = () => {
     }
     body.userId = user.id;
 
-    const response = await sendRequest({
+    await sendRequest({
       url: `${import.meta.env.VITE_SERVER_URL}/user/edit/${user.id}`,
       method: 'POST',
       headers: {
@@ -88,8 +88,6 @@ export const EditUser: FC = () => {
       body: JSON.stringify(body),
       abortController,
     });
-
-    console.log(response);
   }
 
   async function handleDeleteAccount() {

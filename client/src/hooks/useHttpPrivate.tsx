@@ -53,7 +53,6 @@ export const useHttpPrivate = () => {
         // response intercept if unauthorised use token refresh and try again
         if (!response.ok && response.status === 401) {
           const newAccessToken = await refresh();
-          console.log('newAccessToken', newAccessToken);
           headers['authorization'] = `Bearer ${newAccessToken}`;
           const newResponse = await fetch(url, {
             method,

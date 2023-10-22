@@ -50,8 +50,8 @@ export const AdminPanel: FC = () => {
           return currUsers.filter((user: any) => user._id !== id);
         });
       }
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) console.log(e);
     }
   }
 

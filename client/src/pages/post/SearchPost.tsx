@@ -42,7 +42,6 @@ export const SearchPost: FC = () => {
       if (response.result.data) {
         setPosts(response.result.data);
       }
-      console.log(response);
     }
     searchPosts();
     return () => { ignore = true; };

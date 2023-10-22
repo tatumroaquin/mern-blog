@@ -78,8 +78,8 @@ export const ListPosts = () => {
       setPosts((currPosts) => {
         return currPosts.filter((post: any) => post.slug !== slug);
       });
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) console.log(e.message);
     }
   }
 

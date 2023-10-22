@@ -40,7 +40,6 @@ export const ViewPost: FC = () => {
         abortController,
       });
       if (response) {
-        console.log(response);
         setPost(response.post);
       }
     };
@@ -64,8 +63,8 @@ export const ViewPost: FC = () => {
         withCredentials: true,
       });
       navigate('/post/all', { replace: true });
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (e instanceof Error) console.log(e.message);
     }
   }
 
