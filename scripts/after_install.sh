@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Install dependencies in server and client
-
-sudo -i -u ubuntu bash << EOF
+PNPM_HOME=/home/ubuntu/.local/share/pnpm
+export PATH=$PATH:$PNPM_HOME
 pnpm run deps
-EOF
