@@ -1,0 +1,55 @@
+name: CI/CD MERN Blog
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1
+      - name: Set CI `DOTENV_KEY`
+        env:
+          DOTENV_KEY: ${{ secrets.DOTENV_KEY }}
+      # Step 2
+      - name: Checkout project
+        uses: actions/checkout@v3
+      # Step 3
+      - name: Build `server` and `client`
+        uses: pnpm/action-setup@v2
+        with: 
+          version: 8
+      # Step 4
+      - name: Use Node.js to cache pnpm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      # Step 5
+      - name: Install project dependencies
+        run: pnpm deps
+      # Step 6
+      - name: Build project source code
+        run: pnpm build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      # Step 1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      # Step 2
+      - name: CodeDeploy Create Deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name mern-blog \
+            --deployment-group-name mern-blog \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
