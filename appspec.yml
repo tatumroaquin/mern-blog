@@ -3,6 +3,7 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/mern-blog
+hooks:
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 300
