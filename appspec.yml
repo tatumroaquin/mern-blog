@@ -3,10 +3,18 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/mern-blog
+    overwrite: true
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
 hooks:
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 600
+      runas: ubuntu
   ApplicationStart:
     - location: scripts/application_start.sh
       timeout: 600
+      runas: ubuntu
