@@ -10,11 +10,11 @@ import { signInForm } from '@form/SignInForm';
 
 import { useForm } from '@hooks/useForm';
 import { useAuth } from '@hooks/useAuth';
-import { useHttpPrivate } from '@hooks/useHttpPrivate';
+import { useHttp } from '@hooks/useHttp';
 
 export const SignIn = () => {
   const { form, renderForm, isFormValid } = useForm(signInForm);
-  const { isLoading, sendRequest, error, setError } = useHttpPrivate();
+  const { isLoading, sendRequest, error, setError } = useHttp();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,6 +39,7 @@ export const SignIn = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, recaptcha }),
+      withCredentials: true
     });
 
     if (!authToken.error) {
