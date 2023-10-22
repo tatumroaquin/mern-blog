@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Install dependencies in server and client
+PNPM="/home/ubuntu/.local/share/pnpm/pnpm"
 
-source /home/ubuntu/.bashrc
-source /home/ubuntu/.profile
-
-pnpm run deps
+$PNPM run deps
