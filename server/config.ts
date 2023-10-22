@@ -7,6 +7,8 @@ export const allowedOrigins = [
   'https://192.168.0.32:4173',
   'https://192.168.0.33:4173',
 
+  'http://blog.tatumroaquin.dev',
+  'https://blog.tatumroaquin.dev',
 ];
 export const sslCertificates = {
   publicKey: '../ssl/fullchain.pem',
