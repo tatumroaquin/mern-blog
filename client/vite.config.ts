@@ -30,8 +30,8 @@ export default ({ mode }) => {
     },
     server: {
       https: {
-        key: '../ssl/tblog-key.pem',
-        cert: '../ssl/tblog-crt.pem',
+        key: '../ssl/privkey.pem',
+        cert: '../ssl/fullchain.pem',
       },
       proxy: {
         '/api': {
