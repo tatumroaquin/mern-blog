@@ -7,7 +7,10 @@ case ":$PATH:" in
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-DOTENV_KEY="$(aws ssm get-parameter --with-decryption --name '/mern-blog/secrets/DOTENV_KEY' --query 'Parameter.Value')"
+DOTENV_KEY=$(aws ssm get-parameter \
+  --with-decryption \
+  --name '/mern-blog/secrets/DOTENV_KEY' \
+  --query 'Parameter.Value' | tr -d \")
 export DOTENV_KEY
 
 cd "/home/ubuntu/mern-blog" || return
