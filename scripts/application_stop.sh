@@ -7,7 +7,5 @@ case ":$PATH:" in
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-cd "/home/ubuntu/mern-blog" || return
-
 # Stop and delete mern-blog process
 pm2 delete all
