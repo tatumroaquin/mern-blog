@@ -35,7 +35,7 @@ export const Home = () => {
         url: `${import.meta.env.VITE_SERVER_URL}/post/all?page=1&limit=5`,
         abortController,
       });
-      if (response.result) {
+      if (response?.result) {
         setPosts(response.result.data);
       }
     };
