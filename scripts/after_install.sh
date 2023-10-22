@@ -11,4 +11,8 @@ esac
 cd "/home/ubuntu/mern-blog" || return
 
 # Install dependencies in server and client
-pnpm run deps
+pnpm deps
+pnpm rebuild
+
+# Build and transpile server code
+pnpm build:server
