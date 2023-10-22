@@ -12,7 +12,7 @@ cd "/home/ubuntu/mern-blog" || return
 
 # Install dependencies in server and client
 pnpm deps
-pnpm rebuild
+pnpm -F @mern-blog/server rebuild
 
 # Build and transpile server code
 pnpm build:server
