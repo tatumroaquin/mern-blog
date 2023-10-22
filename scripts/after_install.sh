@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Install dependencies in server and client
-PNPM_HOME=/home/ubuntu/.local/share/pnpm
-export PATH=$PATH:$PNPM_HOME
+
+source /home/ubuntu/.bashrc
+source /home/ubuntu/.profile
+
 pnpm run deps
