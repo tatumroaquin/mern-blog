@@ -14,4 +14,4 @@ cd "/home/ubuntu/mern-blog" || return
 
 # Start mern-blog app in pm2
 # pm2 start 'pnpm start:server' --name 'mern-blog'
-pm2 start 'pnpm dev:server' --name 'mern-blog'
+pm2 start 'pnpm start:server' --name 'mern-blog'
