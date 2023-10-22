@@ -1,7 +1,14 @@
 #!/bin/bash
 
-# Install dependencies in server and client
+# Add PNPM to the current PATH
+export PNPM_HOME="/home/ubuntu/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 
+# Navigate to the project directory
 cd "/home/ubuntu/mern-blog" || return
-PNPM="/home/ubuntu/.local/share/pnpm/pnpm"
-$PNPM run deps
+
+# Install dependencies in server and client
+pnpm run deps
