@@ -16,6 +16,7 @@ import {
   verifyRTLogout,
 } from '../middlewares/verify.token.js';
 import { checkRecaptcha } from '../middlewares/verify.recaptcha.js';
+import { checkRole } from '../middlewares/role.checker.js';
 
 const router = Router();
 
@@ -23,6 +24,8 @@ router.post(
   '/signup',
   userSignUpValidator,
   runValidation,
+  verifyAccessToken,
+  checkRole('admin'),
   checkRecaptcha,
   userSignUpController
 );

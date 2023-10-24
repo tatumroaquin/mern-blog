@@ -1,6 +1,9 @@
-import { check, param } from 'express-validator';
+import { check, param, header } from 'express-validator';
 
 export const userSignUpValidator = [
+  header('authorization')
+    .contains('Bearer')
+    .withMessage('Only authenticated users can create accounts'),
   check('firstName')
     .trim()
     .isAlpha()

@@ -46,8 +46,9 @@ export function verifyRefreshToken(
       process.env.JWT_REFRESH_TOKEN_SECRET!
     );
     next();
-  } catch (e: any) {
-    return res.status(401).json({ error: 'Invalid refresh token' });
+  } catch (e: unknown) {
+    if (e instanceof Error)
+      return res.status(401).json({ error: 'Invalid refresh token' });
   }
 }
 
@@ -64,7 +65,8 @@ export function verifyRTLogout(
     JWT.verify(jwt, process.env.JWT_REFRESH_TOKEN_SECRET!);
     res.locals.jwt = jwt;
     next();
-  } catch (e: any) {
-    return res.status(401).json({ error: 'Invalid refresh token' });
+  } catch (e: unknown) {
+    if (e instanceof Error)
+      return res.status(401).json({ error: 'Invalid refresh token' });
   }
 }
