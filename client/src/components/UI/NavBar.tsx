@@ -107,6 +107,13 @@ export const NavBar = () => {
             </NavLink>
           </li>
         )}
+        {isSignedIn && isAdmin && (
+          <li className={styles['navbar__item']} key='/auth/signup'>
+            <NavLink className={handleNavLink} to='/auth/signup'>
+              Sign Up
+            </NavLink>
+          </li>
+        )}
         <li className={styles['navbar__item']} key='/about'>
           <NavLink className={handleNavLink} to='/about'>
             About

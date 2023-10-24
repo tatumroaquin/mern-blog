@@ -10,6 +10,7 @@ export const ProtectRoute = ({ allowedRoles }: { allowedRoles: string[] }) => {
   );
 
   const isSignedIn = Boolean(auth?.username);
+  const isAdminRoute = allowedRoles.includes('admin')
 
   return (
     <>
@@ -21,6 +22,10 @@ export const ProtectRoute = ({ allowedRoles }: { allowedRoles: string[] }) => {
 
       {!isAllowedRole && !isSignedIn && (
         <Navigate to='/auth/signin' state={{ from: location }} replace />
+      )}
+
+      {!isAllowedRole && !isSignedIn && isAdminRoute && (
+        <Navigate to='/unauthorised' state={{ from: location }} replace />
       )}
     </>
   );

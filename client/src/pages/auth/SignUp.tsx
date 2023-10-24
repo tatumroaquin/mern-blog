@@ -7,14 +7,14 @@ import { Button } from '@ui/Button';
 import { ErrorModal } from '@ui/ErrorModal';
 
 import { useForm } from '@hooks/useForm';
-import { useHttp } from '@hooks/useHttp';
+import { useHttpPrivate } from '@hooks/useHttpPrivate';
 
 import { signUpForm } from '@form/SignUpForm';
 
 export const SignUp = () => {
   const navigate = useNavigate();
   const { renderForm } = useForm(signUpForm);
-  const { sendRequest, error, setError } = useHttp();
+  const { sendRequest, error, setError } = useHttpPrivate();
 
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [recaptcha, setRecaptcha] = useState('');
@@ -44,7 +44,6 @@ export const SignUp = () => {
       },
       body: JSON.stringify(body),
       abortController,
-      withCredentials: true,
     });
     if (!response.error) navigate('/auth/signin');
   }

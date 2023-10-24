@@ -44,13 +44,18 @@ function App() {
           </Route>
 
           <Route path='auth'>
-            <Route path='signup' element={<SignUp />} />
             <Route path='signin' element={<SignIn />} />
             <Route path='logout' element={<SignOut />} />
             <Route
               path='verify/:userId/:verifyToken'
               element={<VerifyUser />}
             />
+          </Route>
+          <Route
+            path='auth'
+            element={<ProtectRoute allowedRoles={[ROLES.ADMIN]} />}
+          >
+            <Route path='signup' element={<SignUp />} />
           </Route>
 
           <Route
