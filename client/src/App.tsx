@@ -19,6 +19,7 @@ import { NotFound } from '@pages/NotFound';
 import { Unauthorised } from '@pages/auth/Unauthorised';
 import { VerifyUser } from '@pages/auth/VerifyUser';
 import { ListPosts } from '@pages/ListPosts';
+import { PrivacyPolicy } from '@pages/legal/PrivacyPolicy';
 
 function App() {
   const ROLES = {
@@ -33,6 +34,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path='about' element={<About />} />
           <Route path='contact' element={<Contact />} />
+          <Route path='privacy-policy' element={<PrivacyPolicy />} />
 
           <Route path='post'>
             <Route path='all' element={<AllPosts />} />
