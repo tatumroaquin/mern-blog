@@ -1,0 +1,33 @@
+.footer {
+  background-color: var(--very-light-malachite-green);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 2vw;
+  justify-content: space-between;
+  width: 100%;
+
+  position: fixed;
+  bottom: 0;
+
+  &__link {
+    text-decoration: none;
+    color: var(--majorelle-blue);
+    font-weight: bold;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .footer {
+    font-size: 0.5rem;
+    &__heading {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    &__description {
+      &--text {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
