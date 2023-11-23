@@ -61,7 +61,7 @@ export const SignUp = () => {
         onCancel={() => setError('')}
       />
       <div className={styles['signup']}>
-        <h1>Sign Up</h1>
+        <h1 className={styles['signup__title']}>Sign Up</h1>
         <form className={styles['signup__form']} onSubmit={handleSubmit}>
           {renderForm()}
           <ReCAPTCHA

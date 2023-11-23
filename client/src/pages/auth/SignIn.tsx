@@ -67,7 +67,7 @@ export const SignIn = () => {
       {isLoading && <Spinner />}
       {!isLoading && (
         <div className={styles['signin']}>
-          <h1>Sign In</h1>
+          <h1 className={styles['signin__title']}>Sign In</h1>
           <form className={styles['signin__form']} onSubmit={handleSubmit}>
             {renderForm()}
             <ReCAPTCHA
