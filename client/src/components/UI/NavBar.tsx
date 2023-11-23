@@ -6,6 +6,8 @@ import styles from '@ui/NavBar.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+
 import {
   faMagnifyingGlass,
   faArrowRightFromBracket,
@@ -60,10 +62,8 @@ export const NavBar = () => {
     <nav className={styles['navbar']}>
       <div className={styles['navbar__brand']}>
         <NavLink to='/'>
-          <img src='/eye-code.png' alt="tatum's eye code logo" />
-        </NavLink>
-        <NavLink to='/'>
-          <b>#!/blog/tatum</b>
+          <FontAwesomeIcon icon={faEye} />
+          <b> #!/blog/tatum</b>
         </NavLink>
       </div>
 
@@ -90,13 +90,6 @@ export const NavBar = () => {
           <li className={styles['navbar__item']} key='/post/new'>
             <NavLink className={handleNavLink} to='/post/new'>
               New Post
-            </NavLink>
-          </li>
-        )}
-        {!isSignedIn && (
-          <li className={styles['navbar__item']} key='/auth/signin'>
-            <NavLink className={handleNavLink} to='/auth/signin'>
-              Sign In
             </NavLink>
           </li>
         )}
