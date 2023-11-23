@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ReactCusdis } from 'react-cusdis';
 import styles from './ViewPost.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -114,6 +115,17 @@ export const ViewPost: FC = () => {
             ))}
           </div>
           <MarkDown markdown={post.markdown} />
+          <hr />
+          <h2>Comments</h2>
+          <ReactCusdis
+            attrs={{
+              host: import.meta.env.VITE_CUSDIS_URL,
+              appId: import.meta.env.VITE_CUSDIS_APP_ID,
+              pageId: post._id,
+              pageTitle: post.title,
+              pageUrl: `${window.location.href}`,
+            }}
+          />
         </div>
       )}
     </>
