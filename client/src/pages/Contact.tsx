@@ -6,8 +6,12 @@ export const Contact = () => {
     <div className={styles['contact']}>
       <h1 className={styles['contact__heading']}>Contact</h1>
 
-      <p className={styles['contact__text']}>You can contact me via email <a href="mailto:blog@tatumroaquin.dev">blog@tatumroaquin.dev</a> or one of my socials below</p>
-      <p className={styles['contact__text']}>For the nerds who like privacy here is my <a href="/tatums-pubkey.asc">PGP Public Key</a></p>
+      <p className={styles['contact__text']}>
+        You can contact me via email{' '}
+        <a href='mailto:blog@tatumroaquin.dev'>blog@tatumroaquin.dev</a> or one
+        of my socials below. For privacy centric communications that require encryption. Here is my{' '}
+        <a href='/tatums-pubkey.asc'>PGP Public Key</a>
+      </p>
 
       <h2 className={styles['contact__heading']}>Socials</h2>
       <Card className={styles['contact__socials--card']}>
@@ -27,7 +31,8 @@ export const Contact = () => {
         <a
           className={styles['contact__socials--link']}
           href='https://github.com/tatumroaquin'
-          target='_blank' rel='noreferrer'
+          target='_blank'
+          rel='noreferrer'
         >
           <img
             src='https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg'
@@ -43,25 +48,12 @@ export const Contact = () => {
           rel='noreferrer'
         >
           <img
-          className={styles['contact__socials--shadow']}
+            className={styles['contact__socials--shadow']}
             src='https://www.frontendmentor.io/static/favicon/apple-touch-icon.png'
             width='32'
             height='32'
           />
           <span>Frontend Mentor</span>
-        </a>
-        <a
-          className={styles['contact__socials--link']}
-          href='https://discord.com/users/ormux'
-          target='_blank'
-          rel='noreferrer'
-        >
-          <img
-            src='https://raw.githubusercontent.com/danielcranney/profileme-dev/main/public/icons/socials/discord.svg'
-            width='32'
-            height='32'
-          />
-          <span>Discord</span>
         </a>
       </Card>
     </div>
