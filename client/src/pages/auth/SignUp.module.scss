@@ -1,11 +1,13 @@
 .signup {
-  margin: 3rem auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
   gap: 1rem;
   width: 25rem;
+
+  margin: 2rem auto;
+  padding: 4rem 0;
+
   &__button {
     width: 100%;
   }
@@ -23,4 +25,30 @@
   color: var(--american-purple);
   align-self: center;
   margin-top: 1rem;
+}
+
+@media only screen and (max-width: 1450px) {
+  .signup {
+    margin: 0 auto;
+    padding: 4rem 1rem;
+  }
+}
+
+@media only screen and (max-width: 848px) {
+  .signup {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .signup {
+    width: 100vw;
+    &__title {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    &__form {
+      width: 100%;
+    }
+  }
 }

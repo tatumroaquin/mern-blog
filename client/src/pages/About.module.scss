@@ -2,12 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem auto;
   width: 50rem;
+  line-height: 1.5rem;
+
+  margin: 2rem auto;
+  padding: 5rem 0;
 
   &__heading {
     margin-bottom: 1rem;
     font-size: 2rem;
+    text-align: center;
   }
 
   &__description {
@@ -17,6 +21,12 @@
     &--text {
       text-align: center;
     }
+  }
+}
+
+@media only screen and (max-width: 1450px) {
+  .about {
+    margin: 0 auto;
   }
 }
 
@@ -35,7 +45,7 @@
 
 @media only screen and (max-width: 510px) {
   .about {
-    padding: 0 1rem;
+    padding: 4rem 0;
 
     &__heading {
       margin-bottom: 1rem;
@@ -43,9 +53,7 @@
     }
 
     &__description {
-      margin: 0 2rem;
       &--text {
-        text-align: center;
         font-size: 0.7rem;
       }
     }

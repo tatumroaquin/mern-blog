@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
-  padding: 1rem;
+  padding: 5rem 1rem;
   gap: 1rem;
 
   &__title {
@@ -39,6 +39,12 @@
     width: 100%;
     grid-row: 2;
     grid-column: 2;
+  }
+}
+
+@media only screen and (max-width: 1450px) {
+  .post-new {
+    padding: 4rem 1rem;
   }
 }
 

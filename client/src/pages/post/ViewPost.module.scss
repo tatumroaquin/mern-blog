@@ -1,10 +1,12 @@
 .post-view {
   width: 40rem;
   min-height: 100vh;
-  margin: 2rem auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  margin: 2rem auto;
+  padding: 5rem 0;
 
   &__title {
     font-size: 2rem;
@@ -76,11 +78,15 @@
     font-family: 'Hack' !important;
   }
 }
+@media only screen and (max-width: 1450px) {
+  .post-view {
+    padding: 3rem 1rem;
+  }
+}
 
 @media only screen and (max-width: 760px) {
   .post-view {
     width: 100%;
-    padding: 0 1rem;
 
     &__title {
       font-size: 1.5rem;
@@ -91,18 +97,17 @@
     }
   }
 }
+
 @media only screen and (max-width: 510px) {
   .post-view {
-    width: 100%;
-    padding: 0 1rem;
     font-size: 0.7rem;
+    padding: 2rem 1rem;
 
     &__title {
       font-size: 1.1rem;
     }
     &__metadata {
       flex-direction: column;
-      gap: 1rem;
       font-size: 0.7rem;
     }
 

@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
-  padding: 1rem;
+  padding: 5rem 1rem;
   gap: 1rem;
 
   &__title {
@@ -42,8 +42,17 @@
   }
 }
 
+@media only screen and (max-width: 1450px) {
+  .post-edit {
+    padding: 4rem 1rem;
+  }
+}
+
 @media only screen and (max-width: 910px) {
   .post-edit {
+    &__title {
+      font-size: 1.5rem;
+    }
     &__form {
       grid-row: 3;
       grid-column: span 2;
@@ -59,7 +68,7 @@
   .post-edit {
     width: 100vw;
     &__title {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
   }
 }
