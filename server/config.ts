@@ -9,6 +9,8 @@ export const allowedOrigins = [
 
   'http://blog.tatumroaquin.dev',
   'https://blog.tatumroaquin.dev',
+  'https://cusdis.mdg',
+  'https://cusdis.com',
 ];
 export const sslCertificates = {
   publicKey: '../ssl/fullchain.pem',
