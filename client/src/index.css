@@ -70,3 +70,13 @@ body {
   color: var(--rich-black);
   font-family: 'Red Hat Mono';
 }
+
+#cusdis_thread iframe {
+  min-height: 26rem;
+}
+
+@media only screen and (max-width: 510px) {
+  #cusdis_thread {
+    font-size: inherit !important;
+  }
+}
